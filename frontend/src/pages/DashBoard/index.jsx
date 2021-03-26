@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "@material-ui/core";
+import { RoomCard } from "/home/ron/RON/Sem 6/SE/DiscussIn/frontend/src/components/Card/index.jsx";
 
 class DashBoard extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class DashBoard extends Component {
   render() {
     return (
       <div>
-        <h1>Dashboard</h1>
+        {/* <h1>Dashboard</h1>
         <Button color="primary" variant="contained">
           PRIMARY
         </Button>
@@ -17,7 +18,8 @@ class DashBoard extends Component {
         <br />
         <Button color="secondary" variant="contained">
           SECONDARY
-        </Button>
+        </Button> */}
+        <RoomCard></RoomCard>
       </div>
     );
   }
