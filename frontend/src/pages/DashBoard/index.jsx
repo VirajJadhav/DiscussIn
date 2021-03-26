@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "@material-ui/core";
-import { RoomCard } from "/home/ron/RON/Sem 6/SE/DiscussIn/frontend/src/components/Card/index.jsx";
+import { RoomCard } from "../../components/RoomCard";
 
 class DashBoard extends Component {
   constructor(props) {
