@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/VirajJadhav/DiscussIn#readme",
   "dependencies": {
-    "concurrently": "^6.0.0"
+    "concurrently": "^6.0.0",
+    "react-router-dom": "^5.2.0"
   }
 }
