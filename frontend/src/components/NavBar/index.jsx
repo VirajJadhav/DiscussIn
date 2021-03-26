@@ -1,13 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import Fab from "@material-ui/core/Fab";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Zoom from "@material-ui/core/Zoom";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  makeStyles,
+  useScrollTrigger,
+  Fab,
+  Zoom,
+} from "@material-ui/core";
+import { KeyboardArrowUp as KeyboardArrowUpIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -71,7 +73,14 @@ export default function NavBar(props) {
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
       <ScrollTop {...props}>
-        <Fab color="secondary" size="small" aria-label="scroll back to top">
+        <Fab
+          style={{
+            boxShadow: "1px 1px 2px 3px #888888",
+          }}
+          color="secondary"
+          size="small"
+          aria-label="scroll back to top"
+        >
           <KeyboardArrowUpIcon />
         </Fab>
       </ScrollTop>
