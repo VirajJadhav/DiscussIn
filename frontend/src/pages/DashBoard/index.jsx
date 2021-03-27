@@ -1,6 +1,7 @@
+import { Container, Grid } from "@material-ui/core";
 import React, { Component } from "react";
-import { Button } from "@material-ui/core";
-import { RoomCard } from "../../components/RoomCard";
+// import { Button } from "@material-ui/core";
+import { RoomCard } from "../../components";
 
 class DashBoard extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class DashBoard extends Component {
   }
   render() {
     return (
-      <div>
+      <Container>
         {/* <h1>Dashboard</h1>
         <Button color="primary" variant="contained">
           PRIMARY
@@ -19,8 +20,29 @@ class DashBoard extends Component {
         <Button color="secondary" variant="contained">
           SECONDARY
         </Button> */}
-        <RoomCard></RoomCard>
-      </div>
+        <Grid container spacing={2}>
+          <Grid item>
+            <RoomCard></RoomCard>
+          </Grid>
+          <Grid item>
+            <RoomCard></RoomCard>
+          </Grid>
+          <Grid item>
+            <RoomCard></RoomCard>
+          </Grid>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item>
+            <RoomCard></RoomCard>
+          </Grid>
+          <Grid item>
+            <RoomCard></RoomCard>
+          </Grid>
+          <Grid item>
+            <RoomCard></RoomCard>
+          </Grid>
+        </Grid>
+      </Container>
     );
   }
 }
