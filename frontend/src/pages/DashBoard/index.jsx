@@ -20,7 +20,7 @@ class DashBoard extends Component {
         <Button color="secondary" variant="contained">
           SECONDARY
         </Button> */}
-        <Grid container spacing={2}>
+        <Grid container>
           <Grid item>
             <RoomCard></RoomCard>
           </Grid>
