@@ -28,11 +28,20 @@ const useStyles = makeStyles(theme => ({
     paddingTop: 0,
   },
   auther: {
-    width: 200,
-    marginLeft: 15,
+    width: "16rem",
+    marginLeft: 2,
   },
   date: {
     marginRight: 0,
+  },
+  title: {
+    height: "2rem",
+  },
+  subtitle: {
+    height: "1.5rem",
+  },
+  description: {
+    height: "8.5rem",
   },
 }));
 
@@ -44,14 +53,33 @@ export default function RoomCard() {
       <Card className={classes.root}>
         <CardActionArea className={classes.cardUpper}>
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="h2"
+              className={classes.title}
+            >
               Topic Title
             </Typography>
-            <Typography gutterBottom variant="subtitle1" component="p">
+            <Typography
+              gutterBottom
+              variant="subtitle1"
+              component="p"
+              className={classes.subtitle}
+            >
               Topic Subtitle
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              Lizards are a widespread group of squamate reptiles, with over
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              className={classes.description}
+              flexWrap="wrap"
+            >
+              Lizards are a widespread group of squamate reptiles, with overA
+              scientist is a person who conducts scientific research to advance
+              knowledge in an area of interest. In classical antiquity, there
+              was no real ancient analog
             </Typography>
           </CardContent>
         </CardActionArea>

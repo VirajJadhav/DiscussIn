@@ -30,8 +30,6 @@ class DashBoard extends Component {
           <Grid item>
             <RoomCard></RoomCard>
           </Grid>
-        </Grid>
-        <Grid container spacing={2}>
           <Grid item>
             <RoomCard></RoomCard>
           </Grid>
