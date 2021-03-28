@@ -28,11 +28,13 @@ const useStyles = makeStyles(theme => ({
     paddingTop: 0,
   },
   auther: {
-    width: "16rem",
+    width: "20rem",
     marginLeft: 2,
   },
   date: {
     marginRight: 0,
+    paddingRight: 0,
+    width: "4rem",
   },
   title: {
     height: "2rem",
@@ -85,25 +87,31 @@ export default function RoomCard() {
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.cardBottom}>
-        <Grid container spacing={1}>
-          <Grid item xs={7} wrap="nowrap" spacing={2}>
+        <Grid container spacing={1} justify="center">
+          <Grid item xs={7} container justify="flex-end">
             <Typography
               variant="body2"
               color={theme.palette.secondary.main}
               className={classes.auther}
               noWrap
+              style={{ margin: "auto" }}
             >
-              Auther: Nagesh Nagshakti
+              Nagesh Nagshakti shjgvhb ehgfhg
             </Typography>
           </Grid>
-          <Grid item xs={5} wrap="nowrap" spacing={2}>
+          <Grid
+            item
+            xs={5}
+            container
+            justify="flex-end"
+            className={classes.date}
+          >
             <Typography
               variant="caption"
-              justify="flex-end"
-              className={classes.date}
+              style={{ margin: "auto", marginRight: 0 }}
               noWrap
             >
-              27 Mar 2021 12.00 PM
+              28 Mar 2021
             </Typography>
           </Grid>
         </Grid>
