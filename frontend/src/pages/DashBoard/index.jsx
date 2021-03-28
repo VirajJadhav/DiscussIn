@@ -1,4 +1,4 @@
-import { Container, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import React, { Component } from "react";
 // import { Button } from "@material-ui/core";
 import { RoomCard } from "../../components";
@@ -10,7 +10,8 @@ class DashBoard extends Component {
   }
   render() {
     return (
-      <Container>
+      <div>
+        {/* <Container> */}
         {/* <h1>Dashboard</h1>
         <Button color="primary" variant="contained">
           PRIMARY
@@ -20,27 +21,15 @@ class DashBoard extends Component {
         <Button color="secondary" variant="contained">
           SECONDARY
         </Button> */}
-        <Grid container>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
+        <Grid container direction="row" justify="center" alignItems="center">
+          {[...Array(10)].map(() => (
+            <Grid item>
+              <RoomCard></RoomCard>
+            </Grid>
+          ))}
         </Grid>
-      </Container>
+        {/* </Container> */}
+      </div>
     );
   }
 }
