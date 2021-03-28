@@ -57,6 +57,7 @@ export default function RoomCard() {
             variant="h5"
             component="h2"
             className={classes.title}
+            noWrap
           >
             Topic Title
           </Typography>
@@ -65,6 +66,7 @@ export default function RoomCard() {
             variant="subtitle1"
             component="p"
             className={classes.subtitle}
+            noWrap
           >
             Topic Subtitle
           </Typography>
@@ -89,6 +91,7 @@ export default function RoomCard() {
               variant="body2"
               color={theme.palette.secondary.main}
               className={classes.auther}
+              noWrap
             >
               Auther: Nagesh Nagshakti
             </Typography>
@@ -98,6 +101,7 @@ export default function RoomCard() {
               variant="caption"
               justify="flex-end"
               className={classes.date}
+              noWrap
             >
               27 Mar 2021 12.00 PM
             </Typography>
