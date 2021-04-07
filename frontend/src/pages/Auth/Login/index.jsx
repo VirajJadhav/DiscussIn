@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavBar } from "../../../components";
 import { Link } from "react-router-dom";
 import {
   Avatar,
@@ -53,65 +54,69 @@ export default function Login() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign In
-        </Typography>
-        <form onSubmit={onSubmit} className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            value={userName}
-            onChange={event => setuserName(event.target.value)}
-            id="userName"
-            label="Username"
-            name="userName"
-            autoComplete="discussin-userName"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="discussin-password"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="secondary"
-            className={classes.submit}
-          >
+    <div>
+      <NavBar />
+
+      <Container component="main" maxWidth="xs">
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Sign In
-          </Button>
-          <Grid container direction="row" justify="center">
-            <Grid item>
-              <Link
-                to="/register"
-                className={classes.Link}
-                style={{
-                  textDecoration: "none",
-                }}
-              >
-                {"Don't have an account? Sign Up"}
-              </Link>
+          </Typography>
+          <form onSubmit={onSubmit} className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              value={userName}
+              onChange={event => setuserName(event.target.value)}
+              id="userName"
+              label="Username"
+              name="userName"
+              autoComplete="discussin-userName"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              value={password}
+              onChange={event => setPassword(event.target.value)}
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="discussin-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="secondary"
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
+            <Grid container direction="row" justify="center">
+              <Grid item>
+                <Link
+                  to="/register"
+                  className={classes.Link}
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NavBar } from "../../components";
 
 class DashBoard extends Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class DashBoard extends Component {
   render() {
     return (
       <div>
+        <NavBar />
         <h1>Dashboard</h1>
       </div>
     );
