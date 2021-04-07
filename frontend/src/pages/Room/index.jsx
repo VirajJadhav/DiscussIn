@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RoomLayout } from "../../components";
+import { RoomLayout, InfoModal } from "../../components";
 
 class Room extends Component {
   constructor(props) {
@@ -10,18 +10,39 @@ class Room extends Component {
       subTitle: "This is the sub-title",
       description: "This is the description",
       createdAt: "Thu Apr 8 2021",
+
+      modalOpen: false,
     };
   }
+  handleInfoModal = () => {
+    this.setState({
+      modalOpen: !this.state.modalOpen,
+    });
+  };
   render() {
-    const { users, title, subTitle, description, createdAt } = this.state;
+    const {
+      users,
+      title,
+      subTitle,
+      description,
+      createdAt,
+      modalOpen,
+    } = this.state;
     return (
       <div>
-        <RoomLayout
-          users={users}
+        <InfoModal
+          open={modalOpen}
+          handleInfoModal={this.handleInfoModal}
           title={title}
           subTitle={subTitle}
           description={description}
+        />
+
+        <RoomLayout
+          users={users}
+          title={title}
           createdAt={createdAt}
+          handleInfoModal={this.handleInfoModal}
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus

@@ -17,6 +17,7 @@ import {
   ArrowBack as BackButton,
   Info as InfoIcon,
 } from "@material-ui/icons";
+import { useHistory } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -47,11 +48,16 @@ export default function RoomLayout({
   children,
   users,
   title,
-  subTitle,
-  description,
   createdAt,
+  handleInfoModal,
 }) {
   const classes = useStyles();
+
+  const history = useHistory();
+
+  const goBack = () => {
+    history.replace("/");
+  };
 
   return (
     <div className={classes.root}>
@@ -60,23 +66,28 @@ export default function RoomLayout({
           <div
             style={{
               marginRight: "1rem",
+              cursor: "pointer",
             }}
+            onClick={goBack}
           >
             <BackButton />
           </div>
           <Grid container justify="space-between" alignItems="center">
-            <Grid item>
-              <Typography variant="h6" noWrap>
-                {title}
-              </Typography>
-            </Grid>
+            <Grid item />
             <Grid item>
               <Typography variant="h6" noWrap>
                 {createdAt}
               </Typography>
             </Grid>
             <Grid item>
-              <InfoIcon fontSize="large" />
+              <div
+                style={{
+                  cursor: "pointer",
+                }}
+                onClick={handleInfoModal}
+              >
+                <InfoIcon fontSize="large" />
+              </div>
             </Grid>
           </Grid>
         </Toolbar>
@@ -92,13 +103,12 @@ export default function RoomLayout({
         <div className={classes.drawerContainer}>
           <List>
             {users.map((text, index) => (
-              <div>
+              <div key={`room-users-${text}-${index}`}>
                 <ListItem
                   style={{
                     margin: "0.7rem 0 0.7rem 0",
                   }}
                   button
-                  key={text}
                 >
                   <ListItemIcon>
                     <Person />
