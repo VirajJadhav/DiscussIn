@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Drawer,
   AppBar,
@@ -19,10 +19,12 @@ import {
   ArrowBack as BackButton,
   Info as InfoIcon,
   Send as SendIcon,
+  Menu as MenuIcon,
+  Close as CloseIcon,
 } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,6 +39,10 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
+  },
+  mobileDrawer: {
+    width: drawerWidth,
+    flexShrink: 0,
   },
   drawerPaper: {
     width: drawerWidth,
@@ -65,6 +71,14 @@ const useStyles = makeStyles(theme => ({
     // color: theme.palette.darkSlateBlue.main,
     color: "#006bb3",
   },
+  mobileDrawerIcon: {
+    display: "none",
+    [theme.breakpoints.down("sm")]: {
+      cursor: "pointer",
+      display: "initial",
+      marginLeft: "1rem",
+    },
+  },
 }));
 
 export default function RoomLayout({
@@ -78,25 +92,32 @@ export default function RoomLayout({
 
   const history = useHistory();
 
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+
   const goBack = () => {
     history.replace("/");
+  };
+
+  const handleMobileDrawer = () => {
+    setMobileDrawerOpen(prevState => !prevState);
   };
 
   return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <div
-            style={{
-              marginRight: "1rem",
-              cursor: "pointer",
-            }}
-            onClick={goBack}
-          >
-            <BackButton />
-          </div>
           <Grid container justify="space-between" alignItems="center">
-            <Grid item />
+            <Grid item>
+              <div
+                style={{
+                  marginRight: "1rem",
+                  cursor: "pointer",
+                }}
+                onClick={goBack}
+              >
+                <BackButton />
+              </div>
+            </Grid>
             <Grid item>
               <Typography variant="h6" noWrap>
                 {createdAt}
@@ -113,16 +134,67 @@ export default function RoomLayout({
               </div>
             </Grid>
           </Grid>
+          <div
+            className={classes.mobileDrawerIcon}
+            onClick={handleMobileDrawer}
+          >
+            <MenuIcon />
+          </div>
         </Toolbar>
       </AppBar>
+      {/* Desktop Drawer */}
       <Drawer
         className={classes.drawer}
         variant="permanent"
+        open={mobileDrawerOpen}
         classes={{
           paper: classes.drawerPaper,
         }}
       >
         <Toolbar />
+        <div className={classes.drawerContainer}>
+          <List>
+            {users.map((text, index) => (
+              <div key={`room-users-${text}-${index}`}>
+                <ListItem
+                  style={{
+                    margin: "0.7rem 0 0.7rem 0",
+                  }}
+                  button
+                >
+                  <ListItemIcon>
+                    <Person />
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItem>
+                <Divider />
+              </div>
+            ))}
+          </List>
+        </div>
+      </Drawer>
+      {/* Mobile drawer */}
+      <Drawer
+        className={classes.mobileDrawer}
+        onClose={handleMobileDrawer}
+        anchor="right"
+        open={mobileDrawerOpen}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <Toolbar>
+          <div
+            style={{
+              cursor: "pointer",
+              margin: "0.5rem 0 0.5rem 0",
+            }}
+            onClick={handleMobileDrawer}
+          >
+            <CloseIcon />
+          </div>
+        </Toolbar>
+        <Divider />
         <div className={classes.drawerContainer}>
           <List>
             {users.map((text, index) => (
