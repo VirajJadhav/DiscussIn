@@ -11,11 +11,14 @@ import {
   ListItemText,
   makeStyles,
   Grid,
+  TextField,
+  IconButton,
 } from "@material-ui/core";
 import {
   Person,
   ArrowBack as BackButton,
   Info as InfoIcon,
+  Send as SendIcon,
 } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
@@ -31,6 +34,9 @@ const useStyles = makeStyles(theme => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   drawerPaper: {
     width: drawerWidth,
@@ -41,6 +47,23 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    marginBottom: "4rem",
+  },
+  textSection: {
+    position: "fixed",
+    top: "auto",
+    left: drawerWidth,
+    right: 0,
+    bottom: 0,
+    padding: "0.7rem 0 0.7rem 0",
+    backgroundColor: "white",
+    [theme.breakpoints.down("sm")]: {
+      left: 0,
+    },
+  },
+  sendButton: {
+    // color: theme.palette.darkSlateBlue.main,
+    color: "#006bb3",
   },
 }));
 
@@ -125,6 +148,19 @@ export default function RoomLayout({
         <Toolbar />
         <Typography paragraph>{children}</Typography>
         <Typography paragraph>{children}</Typography>
+        <div className={classes.textSection}>
+          <Toolbar>
+            <TextField
+              id="message-text"
+              label="Type a message here ..."
+              variant="outlined"
+              fullWidth
+            />
+            <IconButton edge="end">
+              <SendIcon className={classes.sendButton} />
+            </IconButton>
+          </Toolbar>
+        </div>
       </main>
     </div>
   );
