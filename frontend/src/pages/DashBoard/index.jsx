@@ -1,46 +1,34 @@
-import { Container, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import React, { Component } from "react";
-// import { Button } from "@material-ui/core";
-import { RoomCard } from "../../components";
+import { NavBar, RoomCard } from "../../components";
 
 class DashBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+  joinRoom = () => {
+    this.props.history.push("/join");
+  };
   render() {
     return (
-      <Container>
-        {/* <h1>Dashboard</h1>
-        <Button color="primary" variant="contained">
-          PRIMARY
-        </Button>
-        <br />
-        <br />
-        <Button color="secondary" variant="contained">
-          SECONDARY
-        </Button> */}
-        <Grid container>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
-          <Grid item>
-            <RoomCard></RoomCard>
-          </Grid>
+      <div>
+        <NavBar />
+        <Grid container direction="row" justify="center" alignItems="center">
+          {[...Array(4)].map((data, index) => (
+            <Grid key={`room-${index}`} item>
+              <div
+                style={{
+                  cursor: "pointer",
+                }}
+                onClick={this.joinRoom}
+              >
+                <RoomCard />
+              </div>
+            </Grid>
+          ))}
         </Grid>
-      </Container>
+      </div>
     );
   }
 }

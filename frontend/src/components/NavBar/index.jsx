@@ -8,14 +8,20 @@ import {
   useScrollTrigger,
   Fab,
   Zoom,
+  Button,
 } from "@material-ui/core";
-import { KeyboardArrowUp as KeyboardArrowUpIcon } from "@material-ui/icons";
+import {
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+  VpnKey,
+} from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
     position: "fixed",
     bottom: theme.spacing(2),
     right: theme.spacing(2),
+    zIndex: 10000,
   },
   appbar: {
     backgroundColor: theme.palette.greyBlueShade.main,
@@ -68,7 +74,26 @@ export default function NavBar(props) {
     <div>
       <AppBar className={classes.appbar}>
         <Toolbar>
-          <Typography variant="h6">DiscussIn</Typography>
+          <Link
+            style={{
+              textDecoration: "none",
+              flexGrow: 1,
+              color: "white",
+            }}
+            to="/"
+          >
+            <Typography variant="h6">DiscussIn</Typography>
+          </Link>
+          <Link
+            style={{
+              textDecoration: "none",
+            }}
+            to="/login"
+          >
+            <Button variant="contained" endIcon={<VpnKey />}>
+              Login
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
