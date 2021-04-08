@@ -18,27 +18,7 @@ const useStyles = makeStyles(theme => ({
   cardBottom: {
     backgroundColor: theme.palette.primary.main,
     color: "white",
-<<<<<<< HEAD
-    height: "2rem",
-    paddingTop: 0,
-  },
-  auther: {
-    width: "20rem",
-    marginLeft: 2,
-  },
-  date: {
-    marginRight: 0,
-    paddingRight: 0,
-    width: "4rem",
-  },
-  title: {
-    height: "2rem",
-  },
-  subtitle: {
-    height: "1.5rem",
-=======
     padding: "1rem 0.5rem 1rem 0.5rem",
->>>>>>> 962a902d8c2610be39735312255db56c8895aad4
   },
   description: {
     height: "5rem",
@@ -78,33 +58,6 @@ export default function RoomCard() {
         </Typography>
       </CardContent>
       <CardActions className={classes.cardBottom}>
-<<<<<<< HEAD
-        <Grid container spacing={1} justify="center">
-          <Grid item xs={7} container justify="flex-end">
-            <Typography
-              variant="body2"
-              color={theme.palette.secondary.main}
-              className={classes.auther}
-              noWrap
-              style={{ margin: "auto" }}
-            >
-              Nagesh Nagshakti shjgvhb ehgfhg
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={5}
-            container
-            justify="flex-end"
-            className={classes.date}
-          >
-            <Typography
-              variant="caption"
-              style={{ margin: "auto", marginRight: 0 }}
-              noWrap
-            >
-              28 Mar 2021
-=======
         <Grid
           container
           direction="row"
@@ -119,7 +72,6 @@ export default function RoomCard() {
           <Grid item>
             <Typography variant="body2" noWrap>
               27 March 2021
->>>>>>> 962a902d8c2610be39735312255db56c8895aad4
             </Typography>
           </Grid>
         </Grid>
