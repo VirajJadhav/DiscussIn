@@ -56,40 +56,40 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
-// router.route("/signup").post(async (req, res) => {
-//   try {
-//     const { userName, firstName, lastName, email, password } = req.body;
-//     const user = await User.findOne({ userName });
-//     if (user) {
-//       res.status(403).json({
-//         result: "Username Already exists, please choose another one !",
-//         error: true,
-//       });
-//     } else {
-//       // to-do add code to add user to database
-//       // const parsedUser = JSON.parse(JSON.stringify(user));
-//       // compareHashedPassword(password, parsedUser.password)
-//       //   .then(result => {
-//       //     if (result) {
-//       //       res.status(200).json({
-//       //         result: parsedUser,
-//       //         error: false,
-//       //       });
-//       //     } else
-//       //       res.status(403).json({
-//       //         result: "Please check your password !",
-//       //         error: true,
-//       //       });
-//       //   })
-//       //   .catch(error => console.log(error.message));
-//     }
-//   } catch (error) {
-//     res.status(400).json({
-//       result: "User Sign up Failed !",
-//       error: true,
-//     });
-//   }
-// });
+router.route("/signup").post(async (req, res) => {
+  try {
+    const { userName, firstName, lastName, email, password } = req.body;
+    const user = await User.findOne({ userName });
+    if (user) {
+      res.status(403).json({
+        result: "Username Already exists, please choose another one !",
+        error: true,
+      });
+    } else {
+      returnHashedPassowrd(password)
+        .then(hashedPassword => {
+          const newUser = new User({
+            userName,
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword,
+          });
+          newUser.save();
+        })
+        .catch(error => console.log(error.message));
+      res.status(200).json({
+        result: "User registered !",
+        error: false,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      result: "User Sign up Failed !",
+      error: true,
+    });
+  }
+});
 
 router.route("/").get(async (req, res) => {
   try {

@@ -53,10 +53,9 @@ export default function Signup() {
 
   const onSubmit = event => {
     event.preventDefault();
-    if (password === confPassword) {
-      event.persist();
-    } else {
-      console.log("Confirm password not matched !");
+    event.persist();
+    if (password !== confPassword) {
+      return;
     }
 
     console.log(userName, firstName, lastName, email, password);
@@ -173,7 +172,7 @@ export default function Signup() {
                     textDecoration: "none",
                   }}
                 >
-                  {"Already have an account? Login"}
+                  {"Already have an account ? Login"}
                 </Link>
               </Grid>
             </Grid>
