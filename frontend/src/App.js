@@ -1,4 +1,4 @@
-import { DashBoard, Room, Login } from "./pages";
+import { DashBoard, Room, Login, Signup } from "./pages";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
@@ -18,6 +18,7 @@ function App() {
             path="/join"
             render={props => <Room theme={theme.palette} {...props} />}
           />
+          <Route exact path="/signup" render={props => <Signup {...props} />} />
           <Route exact path="/login" render={props => <Login {...props} />} />
         </Switch>
       </Router>
