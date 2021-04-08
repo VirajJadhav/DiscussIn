@@ -9,10 +9,13 @@ import {
   Fab,
   Zoom,
   Button,
+  Menu,
+  MenuItem,
 } from "@material-ui/core";
 import {
   KeyboardArrowUp as KeyboardArrowUpIcon,
   VpnKey,
+  MeetingRoom,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
@@ -70,6 +73,17 @@ ScrollTop.propTypes = {
 
 export default function NavBar(props) {
   const classes = useStyles();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div>
       <AppBar className={classes.appbar}>
@@ -84,6 +98,30 @@ export default function NavBar(props) {
           >
             <Typography variant="h6">DiscussIn</Typography>
           </Link>
+          <div>
+            <Button
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={handleClick}
+              variant="contained"
+              endIcon={<MeetingRoom />}
+              style={{
+                marginRight: "1rem",
+              }}
+            >
+              Rooms
+            </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem>Add Room</MenuItem>
+              <MenuItem>Join Room</MenuItem>
+            </Menu>
+          </div>
           <Link
             style={{
               textDecoration: "none",

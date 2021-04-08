@@ -110,7 +110,7 @@ export default function Login() {
                     textDecoration: "none",
                   }}
                 >
-                  {"Don't have an account? Sign Up"}
+                  {"Don't have an account ? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
