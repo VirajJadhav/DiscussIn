@@ -14,7 +14,8 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -48,10 +49,15 @@ export default function Signup() {
   const [lastName, setlastName] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+  const [confPassword, setconfPassword] = useState("");
 
   const onSubmit = event => {
     event.preventDefault();
-    event.persist();
+    if (password === confPassword) {
+      event.persist();
+    } else {
+      console.log("Confirm password not matched !");
+    }
 
     console.log(userName, firstName, lastName, email, password);
   };
@@ -133,13 +139,27 @@ export default function Signup() {
               id="password"
               label="Password"
               name="password"
+              type="password"
               autoComplete="discussin-password"
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              value={confPassword}
+              onChange={event => setconfPassword(event.target.value)}
+              id="confPassword"
+              label="Confirm Password"
+              name="confPassword"
+              type="password"
+              autoComplete="discussin-confPassword"
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              color="primary"
+              color="secondary"
               className={classes.submit}
             >
               Sign Up

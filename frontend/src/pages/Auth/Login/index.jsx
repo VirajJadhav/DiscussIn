@@ -104,7 +104,7 @@ export default function Login() {
             <Grid container direction="row" justify="center">
               <Grid item>
                 <Link
-                  to="/Signup"
+                  to="/signup"
                   className={classes.Link}
                   style={{
                     textDecoration: "none",
