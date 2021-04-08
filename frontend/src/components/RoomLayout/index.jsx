@@ -152,7 +152,8 @@ export default function RoomLayout({
           <Toolbar>
             <TextField
               id="message-text"
-              label="Type a message here ..."
+              label="Message"
+              placeholder="Type a message here ..."
               variant="outlined"
               fullWidth
             />
