@@ -16,6 +16,8 @@ import {
   KeyboardArrowUp as KeyboardArrowUpIcon,
   VpnKey,
   MeetingRoom,
+  Add as AddIcon,
+  TransitEnterexit as EnterIcon,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
@@ -118,8 +120,22 @@ export default function NavBar(props) {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem>Add Room</MenuItem>
-              <MenuItem>Join Room</MenuItem>
+              <MenuItem>
+                Add Room{" "}
+                <AddIcon
+                  style={{
+                    marginLeft: "0.5rem",
+                  }}
+                />
+              </MenuItem>
+              <MenuItem>
+                Join Room{" "}
+                <EnterIcon
+                  style={{
+                    marginLeft: "0.5rem",
+                  }}
+                />
+              </MenuItem>
             </Menu>
           </div>
           <Link
