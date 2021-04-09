@@ -218,8 +218,7 @@ export default function RoomLayout({
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        <Typography paragraph>{children}</Typography>
-        <Typography paragraph>{children}</Typography>
+        {children}
         <div className={classes.textSection}>
           <Toolbar>
             <TextField
