@@ -24,7 +24,7 @@ import {
 } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
-const drawerWidth = 250;
+const drawerWidth = 260;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -86,7 +86,10 @@ export default function RoomLayout({
   users,
   title,
   createdAt,
+  message,
   handleInfoModal,
+  handleSendMessage,
+  handleChange,
 }) {
   const classes = useStyles();
 
@@ -222,13 +225,17 @@ export default function RoomLayout({
         <div className={classes.textSection}>
           <Toolbar>
             <TextField
-              id="message-text"
+              onKeyDown={event => handleSendMessage(event)}
+              value={message}
+              onChange={handleChange}
+              name="message"
+              id="message"
               label="Message"
               placeholder="Type a message here ..."
               variant="outlined"
               fullWidth
             />
-            <IconButton edge="end">
+            <IconButton onClick={event => handleSendMessage(event)} edge="end">
               <SendIcon className={classes.sendButton} />
             </IconButton>
           </Toolbar>
