@@ -1,17 +1,17 @@
 import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST } from "./types";
 
-export const login = (userName, password) => {
-  return async function (dispatch) {
+export const login = (userName, password) => async dispatch => {
+  dispatch({
+    type: LOGIN_REQUEST,
+  });
+  try {
     dispatch({
-      type: LOGIN_REQUEST,
+      type: LOGIN_SUCCESS,
     });
-    try {
-      console.log(userName, password);
-    } catch (error) {
-      dispatch({
-        type: LOGIN_FAILURE,
-        message: error.message,
-      });
-    }
-  };
+  } catch (error) {
+    dispatch({
+      type: LOGIN_FAILURE,
+      message: error.message,
+    });
+  }
 };

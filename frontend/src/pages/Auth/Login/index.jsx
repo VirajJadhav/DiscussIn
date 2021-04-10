@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../../redux/AuthRedux/action";
 import { NavBar } from "../../../components";
 import { Link } from "react-router-dom";
 import {
@@ -43,6 +45,10 @@ const useStyles = makeStyles(theme => ({
 export default function Login() {
   const classes = useStyles();
 
+  const state = useSelector(state => state.authReducer);
+
+  const dispatch = useDispatch();
+
   const [userName, setuserName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -50,9 +56,8 @@ export default function Login() {
     event.preventDefault();
     event.persist();
 
-    console.log(userName, password);
+    dispatch(login(userName, password));
   };
-
   return (
     <div>
       <NavBar />

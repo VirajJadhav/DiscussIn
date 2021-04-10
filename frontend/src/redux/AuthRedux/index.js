@@ -18,7 +18,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        payload: action.payload || "",
+        payload: action.payload || "Login Success",
         error: false,
         message: "",
       };
