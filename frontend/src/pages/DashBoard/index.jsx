@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { NavBar, RoomCard } from "../../components";
 import { Container, Grid, TextField } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
@@ -54,7 +55,6 @@ class DashBoard extends Component {
     newRooms = rooms.filter(data => {
       return data.title.toLowerCase().includes(searchValue);
     });
-
     return (
       <div>
         <NavBar />
@@ -104,4 +104,10 @@ class DashBoard extends Component {
   }
 }
 
-export default DashBoard;
+const mapStateToProps = state => {
+  return {
+    state,
+  };
+};
+
+export default connect(mapStateToProps, {})(DashBoard);
