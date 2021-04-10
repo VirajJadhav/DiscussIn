@@ -5,6 +5,7 @@ export const login = (userName, password) => async dispatch => {
     type: LOGIN_REQUEST,
   });
   try {
+    console.log("this:", userName, password);
     dispatch({
       type: LOGIN_SUCCESS,
     });
