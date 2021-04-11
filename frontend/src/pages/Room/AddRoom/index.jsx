@@ -22,7 +22,16 @@ class AddRoom extends Component {
     event.preventDefault();
     event.persist();
 
-    console.log(this.state);
+    const { title, subTitle, description, status } = this.state;
+
+    const data = {
+      title,
+      subTitle,
+      description,
+      status,
+    };
+
+    // console.log(this.state);
   };
   render() {
     const { title, subTitle, description, status } = this.state;
