@@ -1,18 +1,40 @@
-import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST } from "./types";
+import { AUTH_SUCCESS, AUTH_FAILURE, AUTH_REQUEST } from "./types";
+import axios from "axios";
 
-export const login = (userName, password) => async dispatch => {
+const backendURL = global.config.backendURL;
+
+export const login = data => async dispatch => {
   dispatch({
-    type: LOGIN_REQUEST,
+    type: AUTH_REQUEST,
   });
   try {
-    console.log("this:", userName, password);
+    const response = await axios.post(`${backendURL}/auth/login`, data);
     dispatch({
-      type: LOGIN_SUCCESS,
+      type: AUTH_SUCCESS,
+      payload: response.data,
     });
   } catch (error) {
     dispatch({
-      type: LOGIN_FAILURE,
-      message: error.message,
+      type: AUTH_FAILURE,
+      message: error.response.data.result,
+    });
+  }
+};
+
+export const register = data => async dispatch => {
+  dispatch({
+    type: AUTH_REQUEST,
+  });
+  try {
+    const response = await axios.post(`${backendURL}/auth/signup`, data);
+    dispatch({
+      type: AUTH_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: AUTH_FAILURE,
+      message: error.response.data.result,
     });
   }
 };

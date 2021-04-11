@@ -54,8 +54,16 @@ function Login(props) {
     event.preventDefault();
     event.persist();
 
-    dispatch(login(userName, password));
+    const data = {
+      userName,
+      password,
+    };
+
+    dispatch(login(data));
   };
+
+  // console.log(props.authReducer);
+
   return (
     <div>
       <NavBar />
@@ -68,7 +76,7 @@ function Login(props) {
           <Typography component="h1" variant="h5">
             Sign In
           </Typography>
-          <form onSubmit={onSubmit} className={classes.form} noValidate>
+          <form onSubmit={onSubmit} className={classes.form}>
             <TextField
               variant="outlined"
               margin="normal"

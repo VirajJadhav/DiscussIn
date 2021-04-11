@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS } from "./types";
+import { AUTH_FAILURE, AUTH_REQUEST, AUTH_SUCCESS } from "./types";
 
 const initialState = {
   loading: false,
@@ -9,25 +9,25 @@ const initialState = {
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_REQUEST:
+    case AUTH_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case LOGIN_SUCCESS:
+    case AUTH_SUCCESS:
       return {
         ...state,
         loading: false,
-        payload: action.payload || "Login Success",
+        payload: action.payload || "Auth Success",
         error: false,
         message: "",
       };
-    case LOGIN_FAILURE:
+    case AUTH_FAILURE:
       return {
         ...state,
         loading: false,
         error: true,
-        message: action.message || "Error occured in login",
+        message: action.message || "Auth Error",
       };
     default:
       return state;
