@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { register } from "../../../redux/AuthRedux/action";
 import { NavBar } from "../../../components";
 import { Link } from "react-router-dom";
@@ -9,15 +9,14 @@ import {
   TextField,
   Grid,
   makeStyles,
-  Typography,
   Container,
 } from "@material-ui/core";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(8),
+    // marginBottom: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -25,6 +24,7 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.iceCold.main,
+    padding: theme.spacing(1.2),
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -81,11 +81,8 @@ function Signup(props) {
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <PersonAddIcon />
+            <PersonAddIcon fontSize="large" />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
           <form onSubmit={onSubmit} className={classes.form}>
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>

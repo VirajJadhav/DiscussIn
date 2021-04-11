@@ -120,22 +120,38 @@ export default function NavBar(props) {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem>
-                Add Room{" "}
-                <AddIcon
-                  style={{
-                    marginLeft: "0.5rem",
-                  }}
-                />
-              </MenuItem>
-              <MenuItem>
-                Join Room{" "}
-                <EnterIcon
-                  style={{
-                    marginLeft: "0.5rem",
-                  }}
-                />
-              </MenuItem>
+              <Link
+                to="/addRoom"
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
+              >
+                <MenuItem>
+                  Add Room{" "}
+                  <AddIcon
+                    style={{
+                      marginLeft: "0.5rem",
+                    }}
+                  />
+                </MenuItem>
+              </Link>
+              <Link
+                to="/joinRoom"
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
+              >
+                <MenuItem>
+                  Join Room{" "}
+                  <EnterIcon
+                    style={{
+                      marginLeft: "0.5rem",
+                    }}
+                  />
+                </MenuItem>
+              </Link>
             </Menu>
           </div>
           <Link

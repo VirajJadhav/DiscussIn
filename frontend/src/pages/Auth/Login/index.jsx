@@ -8,7 +8,6 @@ import {
   Button,
   TextField,
   Grid,
-  Typography,
   makeStyles,
   Container,
 } from "@material-ui/core";
@@ -24,6 +23,7 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.iceCold.main,
+    padding: theme.spacing(1.2),
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -71,11 +71,8 @@ function Login(props) {
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <LockOutlinedIcon fontSize="large" />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign In
-          </Typography>
           <form onSubmit={onSubmit} className={classes.form}>
             <TextField
               variant="outlined"
