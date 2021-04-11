@@ -11,7 +11,7 @@ export const login = data => async dispatch => {
     const response = await axios.post(`${backendURL}/auth/login`, data);
     dispatch({
       type: AUTH_SUCCESS,
-      payload: response.data,
+      payload: response.data.result,
     });
   } catch (error) {
     dispatch({
@@ -29,7 +29,7 @@ export const register = data => async dispatch => {
     const response = await axios.post(`${backendURL}/auth/signup`, data);
     dispatch({
       type: AUTH_SUCCESS,
-      payload: response.data,
+      payload: response.data.result,
     });
   } catch (error) {
     dispatch({

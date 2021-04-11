@@ -11,7 +11,7 @@ export const addRoom = data => async dispatch => {
     const response = await axios.post(`${backendURL}/room/add`, data);
     dispatch({
       type: ROOM_SUCCESS,
-      payload: response.data,
+      payload: response.data.result,
     });
   } catch (error) {
     dispatch({
