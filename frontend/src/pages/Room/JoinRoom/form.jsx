@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { NavBar } from "../../../components";
 import { Link } from "react-router-dom";
 import {
@@ -10,13 +11,11 @@ import {
   Container,
   Badge,
   withStyles,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  FormHelperText,
-  Select,
 } from "@material-ui/core";
-import { MeetingRoom as RoomIcon, Add as AddIcon } from "@material-ui/icons";
+import {
+  MeetingRoom as RoomIcon,
+  TransitEnterexit as EnterIcon,
+} from "@material-ui/icons";
 
 const SmallAvatar = withStyles(theme => ({
   root: {
@@ -56,16 +55,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Form({
-  userName,
-  title,
-  subTitle,
-  description,
-  status,
-  onSubmit,
-  handleChange,
-}) {
+function Form({ roomID, userName, onSubmit, handleChange }) {
   const classes = useStyles();
+
+  const state = useSelector(state => state.roomReducer);
 
   return (
     <div>
@@ -79,12 +72,12 @@ function Form({
               horizontal: "right",
             }}
             badgeContent={
-              <SmallAvatar alt="add">
-                <AddIcon />
+              <SmallAvatar alt="join">
+                <EnterIcon />
               </SmallAvatar>
             }
           >
-            <Avatar alt="Add room" className={classes.avatar}>
+            <Avatar alt="Join room" className={classes.avatar}>
               <RoomIcon fontSize="large" />
             </Avatar>
           </Badge>
@@ -94,91 +87,53 @@ function Form({
               margin="normal"
               required
               fullWidth
-              value={userName}
+              value={roomID}
               onChange={handleChange}
-              id="userName"
-              label="Username"
-              name="userName"
-              helperText={"Please enter a guest name, if not registered !"}
-              autoComplete="discussin-userName"
+              id="roomID"
+              label="Room ID"
+              name="roomID"
+              type="password"
               autoFocus
+              autoComplete="discussin-roomID"
             />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={title}
-              onChange={handleChange}
-              id="title"
-              label="Title"
-              name="title"
-              autoComplete="discussin-title"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              value={subTitle}
-              onChange={handleChange}
-              id="subTitle"
-              label="Subtitle"
-              name="subTitle"
-              autoComplete="discussin-subTitle"
-            />
-            <TextField
-              style={{
-                marginTop: "1rem",
-              }}
-              id="description"
-              name="description"
-              label="Description"
-              fullWidth
-              multiline
-              rows={4}
-              value={description}
-              onChange={handleChange}
-              variant="outlined"
-              autoComplete="discussin-description"
-            />
-            <FormControl
-              style={{
-                marginTop: "1rem",
-              }}
-              fullWidth
-            >
-              <InputLabel id="discussin-room-status">Status</InputLabel>
-              <Select
-                labelId="discussin-room-status"
-                id="discussin-room-status"
-                name="status"
-                value={status}
+            {state.payload !== "" && state.payload.status === "private" ? (
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={userName}
                 onChange={handleChange}
-              >
-                <MenuItem value={"public"}>Public</MenuItem>
-                <MenuItem value={"private"}>Private</MenuItem>
-              </Select>
-              <FormHelperText>Label + placeholder</FormHelperText>
-            </FormControl>
+                id="userName"
+                label="Username"
+                name="userName"
+                error={userName === ""}
+                helperText={
+                  "This room is private. Please enter your username or register on DiscussIn !"
+                }
+                autoComplete="discussin-userName"
+              />
+            ) : null}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="secondary"
               className={classes.submit}
+              disabled={state.loading}
             >
-              Add
+              Join
             </Button>
             <Grid container direction="row" justify="center">
               <Grid item>
                 <Link
-                  to="/joinRoom"
+                  to="/addRoom"
                   className={classes.Link}
                   style={{
                     textDecoration: "none",
                   }}
                 >
-                  {"Join other rooms ?"}
+                  {"Create new room ?"}
                 </Link>
               </Grid>
             </Grid>

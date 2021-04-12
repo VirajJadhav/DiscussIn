@@ -1,4 +1,4 @@
-import { ROOM_FAILURE, ROOM_REQUEST, ROOM_SUCCESS } from "./types";
+import { ROOM_FAILURE, ROOM_REQUEST, ROOM_SUCCESS, CLEAR_STATE } from "./types";
 
 const initialState = {
   loading: false,
@@ -29,6 +29,8 @@ export const roomReducer = (state = initialState, action) => {
         error: true,
         message: action.message || "Room Error",
       };
+    case CLEAR_STATE:
+      return initialState;
     default:
       return state;
   }

@@ -20,3 +20,21 @@ export const addRoom = data => async dispatch => {
     });
   }
 };
+
+export const getRoom = roomID => async dispatch => {
+  dispatch({
+    type: ROOM_REQUEST,
+  });
+  try {
+    const response = await axios.get(`${backendURL}/room/getRoom/${roomID}`);
+    dispatch({
+      type: ROOM_SUCCESS,
+      payload: response.data.result,
+    });
+  } catch (error) {
+    dispatch({
+      type: ROOM_FAILURE,
+      message: error.response.data.result,
+    });
+  }
+};
