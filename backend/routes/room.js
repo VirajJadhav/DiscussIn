@@ -1,15 +1,19 @@
 const router = require("express").Router();
 const Room = require("../models/Room");
 
+const { nanoid } = require("nanoid");
+
 router.route("/add").post(async (req, res) => {
   try {
-    const { title, subTitle, description, status } = req.body;
+    const { title, subTitle, description, status, userName } = req.body;
     const data = {
       title,
       subTitle,
       description,
       status,
-      roomID: "",
+      roomID: nanoid(),
+      members: [],
+      userName: userName || "",
     };
     const room = await Room.findOne({ roomID: data.roomID, title });
     if (room) {
@@ -22,7 +26,7 @@ router.route("/add").post(async (req, res) => {
       const response = newRoom.save();
       response
         .then(result => {
-          res.status(200).send({
+          res.status(200).json({
             result,
           });
         })
