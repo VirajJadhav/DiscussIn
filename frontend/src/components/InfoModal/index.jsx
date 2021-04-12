@@ -24,12 +24,13 @@ export default function InfoModal({
   description,
 }) {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
     <div>
       <Dialog
         fullScreen={fullScreen}
+        fullWidth
         maxWidth="sm"
         open={open}
         onClose={handleInfoModal}

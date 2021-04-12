@@ -107,7 +107,7 @@ function Form({ roomID, userName, onSubmit, handleChange }) {
                 id="userName"
                 label="Username"
                 name="userName"
-                error={userName === ""}
+                // error={userName === ""}
                 helperText={
                   "This room is private. Please enter your username or register on DiscussIn !"
                 }

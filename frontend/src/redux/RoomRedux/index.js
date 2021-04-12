@@ -28,6 +28,7 @@ export const roomReducer = (state = initialState, action) => {
         loading: false,
         error: true,
         message: action.message || "Room Error",
+        payload: "",
       };
     case CLEAR_STATE:
       return initialState;

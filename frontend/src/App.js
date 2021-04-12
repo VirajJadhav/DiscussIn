@@ -25,7 +25,7 @@ function App() {
           />
           <Route
             exact
-            path="/join"
+            path="/join/:roomID"
             render={props => <Room theme={theme.palette} {...props} />}
           />
           <Route

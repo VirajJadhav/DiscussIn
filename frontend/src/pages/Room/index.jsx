@@ -1,10 +1,14 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { RoomLayout, InfoModal, Message } from "../../components";
+import { getRoom } from "../../redux/RoomRedux/action";
 
 class Room extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      roomData: {},
+      roomDataIndex: -1,
       users: ["User 1", "User 2", "User 3", "User 4"],
       title: "This is the title",
       subTitle: "This is the sub-title",
@@ -28,12 +32,63 @@ class Room extends Component {
 
     this.messagesEndRef = React.createRef();
   }
-  componentDidMount() {
+  async componentDidMount() {
+    const locArray = this.props.location.pathname.split("/");
+    let roomID = "";
+    if (locArray.length === 3) {
+      roomID = locArray[2];
+    }
+
+    if (Array.isArray(this.props.roomReducer.payload) && roomID !== "") {
+      let index = -1;
+      for (let i = 0; i < this.props.roomReducer.payload.length; i++) {
+        if (this.props.roomReducer.payload[i].roomID === roomID) {
+          index = i;
+          break;
+        }
+      }
+      if (index !== -1) {
+        let data = this.props.roomReducer.payload[index];
+        this.setState({
+          roomData: data,
+          roomDataIndex: index,
+          users: data.members,
+          title: data.title,
+          subTitle: data.subTitle,
+          description: data.description,
+          createdAt: data.timestamp,
+        });
+      }
+    }
+    if (roomID !== "" && this.state.roomDataIndex === -1) {
+      await this.props.getRoom(roomID);
+      let data = this.props.roomReducer.payload;
+      if (typeof data === "object" && data !== null) {
+        this.setState({
+          roomData: data,
+          users: data.members,
+          title: data.title,
+          subTitle: data.subTitle,
+          description: data.description,
+          createdAt: this.returnDateFormat(data.createdAt),
+        });
+      }
+    }
+
     this.scrollToBottom();
   }
   componentDidUpdate() {
     this.scrollToBottom();
   }
+  returnDateFormat = date => {
+    const newDate = new Date(date);
+    const result = newDate.toLocaleDateString("default", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
+    return result.split("-").join(" ") || result;
+  };
   scrollToBottom = () => {
     this.messagesEndRef.current.scrollIntoView({
       behaviour: "smooth",
@@ -69,6 +124,7 @@ class Room extends Component {
       });
     }
   };
+
   render() {
     const {
       users,
@@ -116,4 +172,16 @@ class Room extends Component {
   }
 }
 
-export default Room;
+const mapStateToProps = state => {
+  return {
+    roomReducer: state.roomReducer,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getRoom: roomID => dispatch(getRoom(roomID)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Room);

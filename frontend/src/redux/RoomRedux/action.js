@@ -38,3 +38,41 @@ export const getRoom = roomID => async dispatch => {
     });
   }
 };
+
+export const getRoomByStatus = status => async dispatch => {
+  dispatch({
+    type: ROOM_REQUEST,
+  });
+  try {
+    const response = await axios.get(`${backendURL}/room/status/${status}`);
+    dispatch({
+      type: ROOM_SUCCESS,
+      payload: response.data.result,
+    });
+  } catch (error) {
+    dispatch({
+      type: ROOM_FAILURE,
+      message: error.response.data.result,
+    });
+  }
+};
+
+export const checkRoomUser = data => async dispatch => {
+  dispatch({
+    type: ROOM_REQUEST,
+  });
+  try {
+    const response = await axios.get(
+      `${backendURL}/room/getRoom/${data.roomID}/${data.userName}`
+    );
+    dispatch({
+      type: ROOM_SUCCESS,
+      payload: response.data.result,
+    });
+  } catch (error) {
+    dispatch({
+      type: ROOM_FAILURE,
+      message: error.response.data.result,
+    });
+  }
+};

@@ -155,6 +155,16 @@ export default function RoomLayout({
         }}
       >
         <Toolbar />
+        <Typography
+          style={{
+            textAlign: "center",
+            margin: "1rem 0 1rem 0",
+          }}
+          variant="h6"
+        >
+          {`Active Users ( ${users.length} )`}
+        </Typography>
+        <Divider />
         <div className={classes.drawerContainer}>
           <List>
             {users.map((text, index) => (
@@ -197,6 +207,16 @@ export default function RoomLayout({
             <CloseIcon />
           </div>
         </Toolbar>
+        <Divider />
+        <Typography
+          style={{
+            textAlign: "center",
+            margin: "1rem 0 1rem 0",
+          }}
+          variant="h6"
+        >
+          {`Active Users ( ${users.length} )`}
+        </Typography>
         <Divider />
         <div className={classes.drawerContainer}>
           <List>

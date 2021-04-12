@@ -9,7 +9,6 @@ import {
   Typography,
   Tooltip,
   IconButton,
-  useTheme,
 } from "@material-ui/core";
 import { FileCopy } from "@material-ui/icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -24,8 +23,6 @@ export default function CopyModal({
   roomID,
   handleCopy,
 }) {
-  const theme = useTheme();
-  //   console.log(theme.palette);
   return (
     <div>
       <Dialog
@@ -73,10 +70,8 @@ export default function CopyModal({
         <DialogActions>
           <Button
             onClick={handleCopyModal}
-            variant="outlined"
-            style={{
-              color: theme.palette.error.light,
-            }}
+            variant="contained"
+            color="secondary"
           >
             Close
           </Button>

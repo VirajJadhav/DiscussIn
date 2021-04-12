@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getRoom } from "../../../redux/RoomRedux/action";
+import { getRoom, checkRoomUser } from "../../../redux/RoomRedux/action";
 import { NavBar } from "../../../components";
 import Form from "./form";
 
@@ -25,6 +25,17 @@ class JoinRoom extends Component {
     const { roomReducer } = this.props;
     if (userName === "" && roomReducer.payload === "") {
       this.props.getRoom(roomID);
+    } else {
+      const data = {
+        roomID,
+        userName,
+      };
+      const response = this.props.checkRoomUser(data);
+      response
+        .then(() => {
+          console.log(this.props.roomReducer);
+        })
+        .catch(error => console.log(error.message));
     }
   };
   render() {
@@ -52,6 +63,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getRoom: roomID => dispatch(getRoom(roomID)),
+    checkRoomUser: data => dispatch(checkRoomUser(data)),
   };
 };
 
