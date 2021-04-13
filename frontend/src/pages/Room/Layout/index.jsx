@@ -149,7 +149,6 @@ export default function RoomLayout({
       <Drawer
         className={classes.drawer}
         variant="permanent"
-        open={mobileDrawerOpen}
         classes={{
           paper: classes.drawerPaper,
         }}

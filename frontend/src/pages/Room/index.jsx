@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { RoomLayout, InfoModal, Message } from "../../components";
+import { InfoModal, Message } from "../../components";
+import RoomLayout from "./Layout";
 import { getRoom } from "../../redux/RoomRedux/action";
 
 class Room extends Component {

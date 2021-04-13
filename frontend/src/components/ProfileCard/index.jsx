@@ -14,10 +14,11 @@ import {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "30rem",
+    width: "auto",
     height: "auto",
     borderRadius: "1rem",
-    margin: "0.6rem",
+    margin: "0.5rem",
+    boxShadow: "1px 1px 2px 4px grey",
   },
   paper: {
     display: "flex",

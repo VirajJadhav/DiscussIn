@@ -18,25 +18,22 @@ function App() {
         <Switch>
           <Route exact path="/signup" render={props => <Signup {...props} />} />
           <Route exact path="/login" render={props => <Login {...props} />} />
-          <Route
-            exact
-            path="/"
-            render={props => <DashBoard theme={theme.palette} {...props} />}
-          />
+
+          <Route exact path="/" render={props => <DashBoard {...props} />} />
           <Route
             exact
             path="/join/:roomID"
-            render={props => <Room theme={theme.palette} {...props} />}
+            render={props => <Room {...props} />}
           />
           <Route
             exact
             path="/addRoom"
-            render={props => <AddRoom theme={theme.palette} {...props} />}
+            render={props => <AddRoom {...props} />}
           />
           <Route
             exact
             path="/joinRoom"
-            render={props => <JoinRoom theme={theme.palette} {...props} />}
+            render={props => <JoinRoom {...props} />}
           />
           <Route
             exact
