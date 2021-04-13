@@ -28,19 +28,17 @@ const SmallAvatar = withStyles(theme => ({
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
   avatar: {
-    margin: theme.spacing(1),
     backgroundColor: theme.palette.iceCold.main,
     padding: theme.spacing(1.2),
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "99%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
