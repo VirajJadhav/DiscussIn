@@ -69,7 +69,7 @@ export default function CopyModal({
 
         <DialogActions>
           <Button
-            onClick={handleCopyModal}
+            onClick={() => handleCopyModal(true)}
             variant="contained"
             color="secondary"
           >

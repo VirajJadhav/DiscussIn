@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addRoom } from "../../../redux/RoomRedux/action";
+import { checkUser } from "../../../redux/AuthRedux/action";
 import { NavBar } from "../../../components";
 import Form from "./form";
 import CopyModal from "./CopyModal";
@@ -16,6 +17,8 @@ class AddRoom extends Component {
       status: "public",
       copyOpen: false,
       roomID: "",
+      checkedUser: false,
+      helperText: "",
     };
   }
   handleChange = event => {
@@ -23,10 +26,24 @@ class AddRoom extends Component {
       [event.target.name]: event.target.value,
     });
   };
-  handleCopyModal = () => {
-    this.setState({
-      copyOpen: !this.state.copyOpen,
-    });
+  handleCopyModal = clear => {
+    if (clear) {
+      this.setState({
+        userName: "",
+        title: "",
+        subTitle: "",
+        description: "",
+        status: "public",
+        copyOpen: false,
+        roomID: "",
+        checkedUser: false,
+        helperText: "",
+      });
+    } else {
+      this.setState({
+        copyOpen: !this.state.copyOpen,
+      });
+    }
   };
   handleCopy = () => {
     this.props.clearState();
@@ -47,27 +64,46 @@ class AddRoom extends Component {
       status,
     };
 
-    const response = this.props.addRoom(data);
-    response
-      .then(() => {
-        if (!this.props.roomReducer.loading) {
-          this.setState({
-            roomID: this.props.roomReducer.payload.roomID,
-          });
-          this.handleCopyModal();
-        }
-      })
-      .catch(error => console.log(error.message));
+    if (status === "private" && !this.state.checkedUser) {
+      const response = this.props.checkUser(userName);
+      response
+        .then(() => {
+          if (!this.props.authReducer.payload) {
+            this.setState({
+              status: "public",
+              helperText:
+                "You are not registered. You can add only public rooms.",
+              checkedUser: true,
+            });
+          }
+        })
+        .catch(error => console.log(error.message));
+    } else {
+      const response = this.props.addRoom(data);
+      response
+        .then(() => {
+          if (!this.props.roomReducer.loading) {
+            this.setState({
+              roomID: this.props.roomReducer.payload.roomID,
+            });
+            this.handleCopyModal();
+          }
+        })
+        .catch(error => console.log(error.message));
+    }
   };
 
   render() {
     const {
+      userName,
       title,
       subTitle,
       description,
       status,
       copyOpen,
       roomID,
+      checkedUser,
+      helperText,
     } = this.state;
     return (
       <div>
@@ -83,6 +119,9 @@ class AddRoom extends Component {
           subTitle={subTitle}
           description={description}
           status={status}
+          checkedUser={checkedUser}
+          userName={userName}
+          helperText={helperText}
           onSubmit={this.onSubmit}
           handleChange={this.handleChange}
         />
@@ -94,12 +133,14 @@ class AddRoom extends Component {
 const mapStateToProps = state => {
   return {
     roomReducer: state.roomReducer,
+    authReducer: state.authReducer,
   };
 };
 
 const mapDispatchToprops = dispatch => {
   return {
     addRoom: data => dispatch(addRoom(data)),
+    checkUser: userName => dispatch(checkUser(userName)),
     clearState: () =>
       dispatch({
         type: "CLEAR_STATE",

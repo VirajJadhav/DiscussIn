@@ -18,7 +18,10 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        payload: action.payload || "Auth Success",
+        payload:
+          action.payload !== undefined && action.payload !== null
+            ? action.payload
+            : "Auth Success",
         error: false,
         message: "",
       };

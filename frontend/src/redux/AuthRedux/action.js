@@ -38,3 +38,23 @@ export const register = data => async dispatch => {
     });
   }
 };
+
+export const checkUser = userName => async dispatch => {
+  dispatch({
+    type: AUTH_REQUEST,
+  });
+  try {
+    const response = await axios.get(
+      `${backendURL}/auth/verify/user/${userName}`
+    );
+    dispatch({
+      type: AUTH_SUCCESS,
+      payload: response.data.result,
+    });
+  } catch (error) {
+    dispatch({
+      type: AUTH_FAILURE,
+      message: error.response.data.result,
+    });
+  }
+};

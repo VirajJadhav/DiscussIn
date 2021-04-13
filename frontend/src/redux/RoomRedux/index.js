@@ -18,7 +18,10 @@ export const roomReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        payload: action.payload || "Room Success",
+        payload:
+          action.payload !== undefined && action.payload !== null
+            ? action.payload
+            : "Room Success",
         error: false,
         message: "",
       };

@@ -84,6 +84,20 @@ router.route("/signup").post(async (req, res) => {
   }
 });
 
+router.route("/verify/user/:userName").get(async (req, res) => {
+  try {
+    const userName = req.params.userName;
+    const user = await User.findOne({ userName });
+    res.status(200).json({
+      result: user !== null,
+    });
+  } catch (error) {
+    res.status(400).json({
+      result: "User check failed !",
+    });
+  }
+});
+
 router.route("/").get(async (req, res) => {
   try {
     res.status(200).send("Hello !");

@@ -62,6 +62,8 @@ function Form({
   subTitle,
   description,
   status,
+  checkedUser,
+  helperText,
   onSubmit,
   handleChange,
 }) {
@@ -154,11 +156,12 @@ function Form({
                 name="status"
                 value={status}
                 onChange={handleChange}
+                disabled={checkedUser}
               >
                 <MenuItem value={"public"}>Public</MenuItem>
                 <MenuItem value={"private"}>Private</MenuItem>
               </Select>
-              <FormHelperText>Label + placeholder</FormHelperText>
+              <FormHelperText>{helperText}</FormHelperText>
             </FormControl>
             <Button
               type="submit"
@@ -167,7 +170,7 @@ function Form({
               color="secondary"
               className={classes.submit}
             >
-              Add
+              {checkedUser ? "Procced to Add ?" : "Add"}
             </Button>
             <Grid container direction="row" justify="center">
               <Grid item>
