@@ -19,19 +19,12 @@ class Profile extends Component {
     return (
       <div>
         <NavBar />
-<<<<<<< HEAD
-        <ProfileCard
-          userName="Nagesh007"
-          firstName="Nagesh"
-          lastName="Nagshakti"
-          email="nageshnagshakti@gmail.com"
-          password="1234"
-        />
-=======
         <ProfileLayout>
           <Typography variant="body1">{"Rooms will be here"}</Typography>
         </ProfileLayout>
->>>>>>> aa4d7f117deb223846e68e196db3d8a68d5b6aaf
+        <ProfileLayout>
+          <Typography variant="body1">{"Rooms will be here"}</Typography>
+        </ProfileLayout>
       </div>
     );
   }

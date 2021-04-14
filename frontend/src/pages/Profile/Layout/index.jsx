@@ -91,7 +91,13 @@ export default function ProfileLayout({
               margin: "6rem 1.2rem 6rem 1.2rem",
             }}
           >
-            <ProfileCard />
+            <ProfileCard
+              userName="UserName"
+              firstName="First Name"
+              lastName="Last Name"
+              email="emailid@gmail.com"
+              password="123456"
+            />
           </div>
         </div>
       </Drawer>
