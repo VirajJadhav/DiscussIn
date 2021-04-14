@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: "1rem",
     margin: "0.5rem",
     boxShadow: "1px 1px 2px 4px grey",
+    backgroundColor: "rgba(129, 162, 162, 0.6)",
   },
   paper: {
     display: "flex",
@@ -26,9 +27,11 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(2),
-    width: "8rem",
-    height: "8rem",
-    backgroundColor: theme.palette.iceCold.main,
+    width: "4rem",
+    height: "4rem",
+    padding: "0.5rem",
+    backgroundColor: theme.palette.heavyPurple.light,
+    color: "black",
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -106,7 +109,7 @@ export default function ProfileCard({
       <CardContent>
         <Container component="main" maxWidth="xs">
           <div className={classes.paper}>
-            <Avatar className={classes.avatar}></Avatar>
+            <Avatar className={classes.avatar} />
             <Grid item xs={12}>
               <Typography className={classes.userName} variant="h6" noWrap>
                 {userName}

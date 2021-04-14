@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     [theme.breakpoints.down("sm")]: {
       width: "100%",
+      backgroundColor: theme.palette.freezePurple.main,
     },
   },
   drawerContainer: {

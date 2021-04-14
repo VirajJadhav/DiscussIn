@@ -30,6 +30,7 @@ const theme = createMuiTheme({
     },
     heavyPurple: {
       main: "#a28089",
+      light: "#e9e2e4",
     },
     greyBlueShade: {
       main: "#494D5F",
