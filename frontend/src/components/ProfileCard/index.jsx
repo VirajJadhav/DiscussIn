@@ -42,6 +42,19 @@ const useStyles = makeStyles(theme => ({
       color: "black",
     },
   },
+  infoTitle: {
+    fontSize: "0.8rem",
+    marginLeft: "1px",
+    marginTop: "1rem",
+    color: theme.palette.greyBlueShade.main,
+  },
+  info: {
+    fontSize: "1.3rem",
+  },
+  userName: {
+    fontSize: "2.6rem",
+    fontWeight: 600,
+  },
 }));
 
 export default function ProfileCard({
@@ -58,16 +71,22 @@ export default function ProfileCard({
 
   const onSubmit = event => {
     event.preventDefault();
-    event.persist();
+    if (resetPassOpen) {
+      if (newPassword === confPassword) {
+        event.persist();
+      } else {
+        console.log("Confirm password not matched!!");
+      }
+    }
 
     console.log(userName, password);
   };
 
-  const resetPassSubmit = event => {
-    event.preventDefault();
-    event.persist();
+  const [updateProfOpen, setUpdateProfOpen] = useState(false);
 
-    console.log(confPassword);
+  const handelUpdateProfOpen = () => {
+    setUpdateProfOpen(prevState => !prevState);
+    setResetPassOpen(false);
   };
 
   const [resetPassOpen, setResetPassOpen] = useState(false);
@@ -82,10 +101,93 @@ export default function ProfileCard({
         <Container component="main" maxWidth="xs">
           <div className={classes.paper}>
             <Avatar className={classes.avatar}></Avatar>
-            <Typography component="h1" variant="h5">
-              Profile
-            </Typography>
-            <form onSubmit={onSubmit} className={classes.form} noValidate>
+            <Grid item xs={12}>
+              <Typography
+                className={classes.userName}
+                component="h1"
+                variant="h3"
+                noWrap
+              >
+                {userName}
+              </Typography>
+            </Grid>
+            <br></br>
+            <div
+              className={classes.form}
+              style={{ display: updateProfOpen ? "none" : "block" }}
+            >
+              <Grid container>
+                <Grid item xs={12} sm={6}>
+                  <Typography
+                    className={classes.infoTitle}
+                    variant="caption"
+                    component="h4"
+                    noWrap
+                  >
+                    {"First Name :"}
+                  </Typography>
+                  <Typography
+                    className={classes.info}
+                    variant="h6"
+                    component="h2"
+                    noWrap
+                  >
+                    {firstName}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography
+                    className={classes.infoTitle}
+                    variant="caption"
+                    component="h4"
+                    noWrap
+                  >
+                    {"Last Name :"}
+                  </Typography>
+                  <Typography
+                    className={classes.info}
+                    variant="h6"
+                    component="h2"
+                    noWrap
+                  >
+                    {lastName}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <Typography
+                    className={classes.infoTitle}
+                    variant="caption"
+                    component="h4"
+                    noWrap
+                  >
+                    {"Email Address :"}
+                  </Typography>
+                  <Typography
+                    className={classes.info}
+                    variant="h6"
+                    component="h2"
+                    noWrap
+                  >
+                    {email}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Button
+                onClick={handelUpdateProfOpen}
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className={classes.submit}
+              >
+                Update Profile
+              </Button>
+            </div>
+            <form
+              onSubmit={onSubmit}
+              className={classes.form}
+              noValidate
+              style={{ display: updateProfOpen ? "block" : "none" }}
+            >
               <Grid container spacing={1}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -125,72 +227,47 @@ export default function ProfileCard({
                 name="email"
                 autoComplete="discussin-email"
               />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={userName}
-                id="userName"
-                label="Username"
-                name="userName"
-                autoComplete="discussin-userName"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="secondary"
-                className={classes.submit}
-              >
-                Update Profile
-              </Button>
-            </form>
-            <Grid container direction="row" justify="center">
-              <Grid item>
-                <Link
-                  onClick={handleResetPassform}
-                  className={classes.Link}
-                  style={{
-                    textDecoration: "none",
-                  }}
-                >
-                  {"Reset Password"}
-                </Link>
+              <Grid container direction="row" justify="center">
+                <Grid item>
+                  <Link
+                    onClick={handleResetPassform}
+                    className={classes.Link}
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    {resetPassOpen ? "Cancel Reset Password" : "Reset Password"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
-            <form
-              onSubmit={resetPassSubmit}
-              className={classes.form}
-              noValidate
-              style={{ display: resetPassOpen ? "block" : "none" }}
-            >
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={newPassword}
-                onChange={event => setnewPassword(event.target.value)}
-                id="newPassword"
-                label="New Password"
-                name="newPassword"
-                type="password"
-                autoComplete="discussin-newPassword"
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={confPassword}
-                onChange={event => setConfPassword(event.target.value)}
-                id="confPassword"
-                label="Confirm Password"
-                name="confPassword"
-                type="password"
-                autoComplete="discussin-confPassword"
-              />
+              <div style={{ display: resetPassOpen ? "block" : "none" }}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  value={newPassword}
+                  onChange={event => setnewPassword(event.target.value)}
+                  id="newPassword"
+                  label="New Password"
+                  name="newPassword"
+                  type="password"
+                  autoComplete="discussin-newPassword"
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  value={confPassword}
+                  onChange={event => setConfPassword(event.target.value)}
+                  id="confPassword"
+                  label="Confirm Password"
+                  name="confPassword"
+                  type="password"
+                  autoComplete="discussin-confPassword"
+                />
+              </div>
               <Button
                 type="submit"
                 fullWidth
@@ -198,7 +275,15 @@ export default function ProfileCard({
                 color="secondary"
                 className={classes.submit}
               >
-                Reset Password
+                Save
+              </Button>
+              <Button
+                onClick={handelUpdateProfOpen}
+                fullWidth
+                variant="contained"
+                color="secondary"
+              >
+                Cancel
               </Button>
             </form>
           </div>

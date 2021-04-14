@@ -23,7 +23,13 @@ class Profile extends Component {
     return (
       <div>
         <NavBar />
-        <ProfileCard />
+        <ProfileCard
+          userName="Nagesh007"
+          firstName="Nagesh"
+          lastName="Nagshakti"
+          email="nageshnagshakti@gmail.com"
+          password="1234"
+        />
       </div>
     );
   }
