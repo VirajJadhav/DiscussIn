@@ -22,6 +22,9 @@ class Profile extends Component {
         <ProfileLayout>
           <Typography variant="body1">{"Rooms will be here"}</Typography>
         </ProfileLayout>
+        <ProfileLayout>
+          <Typography variant="body1">{"Rooms will be here"}</Typography>
+        </ProfileLayout>
       </div>
     );
   }

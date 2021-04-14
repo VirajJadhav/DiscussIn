@@ -22,6 +22,7 @@
   "homepage": "https://github.com/VirajJadhav/DiscussIn#readme",
   "dependencies": {
     "concurrently": "^6.0.0",
+    "react-copy-to-clipboard": "^5.0.3",
     "react-router-dom": "^5.2.0"
   }
 }
