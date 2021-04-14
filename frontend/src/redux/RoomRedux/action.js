@@ -16,7 +16,7 @@ export const addRoom = data => async dispatch => {
   } catch (error) {
     dispatch({
       type: ROOM_FAILURE,
-      message: error.response.data.result,
+      message: error.response ? error.response.data.result : error.message,
     });
   }
 };
@@ -34,7 +34,7 @@ export const getRoom = roomID => async dispatch => {
   } catch (error) {
     dispatch({
       type: ROOM_FAILURE,
-      message: error.response.data.result,
+      message: error.response ? error.response.data.result : error.message,
     });
   }
 };
@@ -52,7 +52,7 @@ export const getRoomByStatus = status => async dispatch => {
   } catch (error) {
     dispatch({
       type: ROOM_FAILURE,
-      message: error.response.data.result,
+      message: error.response ? error.response.data.result : error.message,
     });
   }
 };
@@ -72,7 +72,7 @@ export const checkRoomUser = data => async dispatch => {
   } catch (error) {
     dispatch({
       type: ROOM_FAILURE,
-      message: error.response.data.result,
+      message: error.response ? error.response.data.result : error.message,
     });
   }
 };

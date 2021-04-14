@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -36,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(2, 0, 2),
     backgroundColor: theme.palette.primary.main,
     color: "white",
     "&:hover": {
@@ -55,6 +54,12 @@ const useStyles = makeStyles(theme => ({
   userName: {
     fontSize: "2.6rem",
     fontWeight: 600,
+  },
+  resetPass: {
+    color: theme.palette.error.main,
+    textAlign: "center",
+    margin: "1rem 0 0.5rem 0",
+    cursor: "pointer",
   },
 }));
 
@@ -103,12 +108,7 @@ export default function ProfileCard({
           <div className={classes.paper}>
             <Avatar className={classes.avatar}></Avatar>
             <Grid item xs={12}>
-              <Typography
-                className={classes.userName}
-                component="h1"
-                variant="h3"
-                noWrap
-              >
+              <Typography className={classes.userName} variant="h6" noWrap>
                 {userName}
               </Typography>
             </Grid>
@@ -154,7 +154,7 @@ export default function ProfileCard({
                     {lastName}
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={12}>
+                <Grid item xs={12}>
                   <Typography
                     className={classes.infoTitle}
                     variant="caption"
@@ -228,19 +228,11 @@ export default function ProfileCard({
                 name="email"
                 autoComplete="discussin-email"
               />
-              <Grid container direction="row" justify="center">
-                <Grid item>
-                  <Link
-                    onClick={handleResetPassform}
-                    className={classes.Link}
-                    style={{
-                      textDecoration: "none",
-                    }}
-                  >
-                    {resetPassOpen ? "Cancel Reset Password" : "Reset Password"}
-                  </Link>
-                </Grid>
-              </Grid>
+              <div className={classes.resetPass}>
+                <Typography onClick={handleResetPassform}>
+                  {resetPassOpen ? "Cancel Reset Password" : "Reset Password"}
+                </Typography>
+              </div>
               <div style={{ display: resetPassOpen ? "block" : "none" }}>
                 <TextField
                   variant="outlined"

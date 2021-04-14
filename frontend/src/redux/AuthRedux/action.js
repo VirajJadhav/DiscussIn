@@ -16,7 +16,7 @@ export const login = data => async dispatch => {
   } catch (error) {
     dispatch({
       type: AUTH_FAILURE,
-      message: error.response.data.result,
+      message: error.response ? error.response.data.result : error.message,
     });
   }
 };
@@ -34,7 +34,7 @@ export const register = data => async dispatch => {
   } catch (error) {
     dispatch({
       type: AUTH_FAILURE,
-      message: error.response.data.result,
+      message: error.response ? error.response.data.result : error.message,
     });
   }
 };
@@ -54,7 +54,7 @@ export const checkUser = userName => async dispatch => {
   } catch (error) {
     dispatch({
       type: AUTH_FAILURE,
-      message: error.response.data.result,
+      message: error.response ? error.response.data.result : error.message,
     });
   }
 };
