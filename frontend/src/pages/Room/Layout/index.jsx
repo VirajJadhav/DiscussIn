@@ -24,7 +24,7 @@ import {
 } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
-const drawerWidth = 250;
+const drawerWidth = 260;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -86,7 +86,10 @@ export default function RoomLayout({
   users,
   title,
   createdAt,
+  message,
   handleInfoModal,
+  handleSendMessage,
+  handleChange,
 }) {
   const classes = useStyles();
 
@@ -146,12 +149,21 @@ export default function RoomLayout({
       <Drawer
         className={classes.drawer}
         variant="permanent"
-        open={mobileDrawerOpen}
         classes={{
           paper: classes.drawerPaper,
         }}
       >
         <Toolbar />
+        <Typography
+          style={{
+            textAlign: "center",
+            margin: "1rem 0 1rem 0",
+          }}
+          variant="h6"
+        >
+          {`Active Users ( ${users.length} )`}
+        </Typography>
+        <Divider />
         <div className={classes.drawerContainer}>
           <List>
             {users.map((text, index) => (
@@ -195,6 +207,16 @@ export default function RoomLayout({
           </div>
         </Toolbar>
         <Divider />
+        <Typography
+          style={{
+            textAlign: "center",
+            margin: "1rem 0 1rem 0",
+          }}
+          variant="h6"
+        >
+          {`Active Users ( ${users.length} )`}
+        </Typography>
+        <Divider />
         <div className={classes.drawerContainer}>
           <List>
             {users.map((text, index) => (
@@ -218,18 +240,21 @@ export default function RoomLayout({
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        <Typography paragraph>{children}</Typography>
-        <Typography paragraph>{children}</Typography>
+        {children}
         <div className={classes.textSection}>
           <Toolbar>
             <TextField
-              id="message-text"
+              onKeyDown={event => handleSendMessage(event)}
+              value={message}
+              onChange={handleChange}
+              name="message"
+              id="message"
               label="Message"
               placeholder="Type a message here ..."
               variant="outlined"
               fullWidth
             />
-            <IconButton edge="end">
+            <IconButton onClick={event => handleSendMessage(event)} edge="end">
               <SendIcon className={classes.sendButton} />
             </IconButton>
           </Toolbar>

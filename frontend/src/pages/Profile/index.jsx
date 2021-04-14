@@ -1,17 +1,13 @@
+import { Typography } from "@material-ui/core";
 import React, { Component } from "react";
-import { NavBar, ProfileCard } from "../../components";
+import { NavBar } from "../../components";
+import ProfileLayout from "./Layout";
 
 class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: ["User 1", "User 2", "User 3", "User 4"],
-      title: "This is the title",
-      subTitle: "This is the sub-title",
-      description: "This is the description",
-      createdAt: "Thu Apr 8 2021",
-
-      modalOpen: false,
+      user: {},
     };
   }
   handleInfoModal = () => {
@@ -23,6 +19,7 @@ class Profile extends Component {
     return (
       <div>
         <NavBar />
+<<<<<<< HEAD
         <ProfileCard
           userName="Nagesh007"
           firstName="Nagesh"
@@ -30,6 +27,11 @@ class Profile extends Component {
           email="nageshnagshakti@gmail.com"
           password="1234"
         />
+=======
+        <ProfileLayout>
+          <Typography variant="body1">{"Rooms will be here"}</Typography>
+        </ProfileLayout>
+>>>>>>> aa4d7f117deb223846e68e196db3d8a68d5b6aaf
       </div>
     );
   }

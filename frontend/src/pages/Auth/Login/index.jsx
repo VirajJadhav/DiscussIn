@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { connect, useDispatch } from "react-redux";
+import { login } from "../../../redux/AuthRedux/action";
 import { NavBar } from "../../../components";
 import { Link } from "react-router-dom";
 import {
@@ -6,7 +8,6 @@ import {
   Button,
   TextField,
   Grid,
-  Typography,
   makeStyles,
   Container,
 } from "@material-ui/core";
@@ -22,6 +23,7 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.iceCold.main,
+    padding: theme.spacing(1.2),
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -40,8 +42,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Login() {
+function Login(props) {
   const classes = useStyles();
+
+  const dispatch = useDispatch();
 
   const [userName, setuserName] = useState("");
   const [password, setPassword] = useState("");
@@ -50,8 +54,15 @@ export default function Login() {
     event.preventDefault();
     event.persist();
 
-    console.log(userName, password);
+    const data = {
+      userName,
+      password,
+    };
+
+    dispatch(login(data));
   };
+
+  // console.log(props.authReducer);
 
   return (
     <div>
@@ -60,12 +71,9 @@ export default function Login() {
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <LockOutlinedIcon fontSize="large" />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign In
-          </Typography>
-          <form onSubmit={onSubmit} className={classes.form} noValidate>
+          <form onSubmit={onSubmit} className={classes.form}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -120,3 +128,11 @@ export default function Login() {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    authReducer: state.authReducer,
+  };
+};
+
+export default connect(mapStateToProps, {})(Login);

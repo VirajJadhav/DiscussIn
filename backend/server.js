@@ -4,7 +4,8 @@ const connectDatabase = require("./config/database");
 // require("dotenv").config();
 
 const PORT = process.env.PORT || 5000;
-const routes = ["user"];
+
+const routes = ["auth", "room"];
 
 const app = express();
 

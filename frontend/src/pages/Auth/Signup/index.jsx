@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { connect, useDispatch } from "react-redux";
+import { register } from "../../../redux/AuthRedux/action";
 import { NavBar } from "../../../components";
 import { Link } from "react-router-dom";
 import {
@@ -7,7 +9,6 @@ import {
   TextField,
   Grid,
   makeStyles,
-  Typography,
   Container,
 } from "@material-ui/core";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
@@ -23,6 +24,7 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.iceCold.main,
+    padding: theme.spacing(1.2),
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -41,8 +43,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Signup() {
+function Signup(props) {
   const classes = useStyles();
+
+  const dispatch = useDispatch();
 
   const [userName, setuserName] = useState("");
   const [firstName, setfirstName] = useState("");
@@ -58,8 +62,18 @@ export default function Signup() {
       return;
     }
 
-    console.log(userName, firstName, lastName, email, password);
+    const data = {
+      userName,
+      firstName,
+      lastName,
+      email,
+      password,
+    };
+
+    dispatch(register(data));
   };
+
+  // console.log(props.authReducer);
 
   return (
     <div>
@@ -67,12 +81,9 @@ export default function Signup() {
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <PersonAddIcon />
+            <PersonAddIcon fontSize="large" />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <form onSubmit={onSubmit} className={classes.form} noValidate>
+          <form onSubmit={onSubmit} className={classes.form}>
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -182,3 +193,11 @@ export default function Signup() {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    authReducer: state.authReducer,
+  };
+};
+
+export default connect(mapStateToProps)(Signup);

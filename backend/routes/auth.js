@@ -33,25 +33,21 @@ router.route("/login").post(async (req, res) => {
           if (result) {
             res.status(200).json({
               result: parsedUser,
-              error: false,
             });
           } else
             res.status(403).json({
               result: "Please check your password !",
-              error: true,
             });
         })
         .catch(error => console.log(error.message));
     } else {
       res.status(403).json({
         result: "Please complete your registration first !",
-        error: true,
       });
     }
   } catch (error) {
     res.status(400).json({
       result: "User Login Failed !",
-      error: true,
     });
   }
 });
@@ -63,7 +59,6 @@ router.route("/signup").post(async (req, res) => {
     if (user) {
       res.status(403).json({
         result: "Username Already exists, please choose another one !",
-        error: true,
       });
     } else {
       returnHashedPassowrd(password)
@@ -80,13 +75,25 @@ router.route("/signup").post(async (req, res) => {
         .catch(error => console.log(error.message));
       res.status(200).json({
         result: "User registered !",
-        error: false,
       });
     }
   } catch (error) {
     res.status(400).json({
       result: "User Sign up Failed !",
-      error: true,
+    });
+  }
+});
+
+router.route("/verify/user/:userName").get(async (req, res) => {
+  try {
+    const userName = req.params.userName;
+    const user = await User.findOne({ userName });
+    res.status(200).json({
+      result: user !== null,
+    });
+  } catch (error) {
+    res.status(400).json({
+      result: "User check failed !",
     });
   }
 });
