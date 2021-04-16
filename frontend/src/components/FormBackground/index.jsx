@@ -1,0 +1,25 @@
+import React from "react";
+import { makeStyles, Box } from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    maxWidth: "26rem",
+    width: "auto",
+    height: "auto",
+    margin: "auto",
+    marginTop: "2rem",
+    marginBottom: "2rem",
+    padding: "0.2rem 0.1rem 1rem 0.1rem",
+    backgroundColor: theme.palette.silverGrey.main,
+  },
+}));
+
+export default function FormBackground(props) {
+  const classes = useStyles();
+
+  return (
+    <Box boxShadow={3} className={classes.root}>
+      {props.children}
+    </Box>
+  );
+}

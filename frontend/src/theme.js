@@ -38,6 +38,9 @@ const theme = createMuiTheme({
     darkSlateBlue: {
       main: "#483D8B",
     },
+    silverGrey: {
+      main: "#D0D3D4",
+    },
   },
   props: {
     MuiPaper: {

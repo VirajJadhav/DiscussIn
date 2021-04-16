@@ -13,6 +13,7 @@ import {
   Grid,
   TextField,
   IconButton,
+  Button,
 } from "@material-ui/core";
 import {
   Person,
@@ -22,6 +23,7 @@ import {
   Menu as MenuIcon,
   Close as CloseIcon,
 } from "@material-ui/icons";
+import SaveIcon from "@material-ui/icons/Save";
 import { useHistory } from "react-router-dom";
 
 const drawerWidth = 260;
@@ -90,6 +92,7 @@ export default function RoomLayout({
   handleInfoModal,
   handleSendMessage,
   handleChange,
+  saveChat,
 }) {
   const classes = useStyles();
 
@@ -126,15 +129,31 @@ export default function RoomLayout({
                 {createdAt}
               </Typography>
             </Grid>
-            <Grid item>
-              <div
-                style={{
-                  cursor: "pointer",
-                }}
-                onClick={handleInfoModal}
-              >
-                <InfoIcon fontSize="large" />
-              </div>
+            <Grid justify="flex-end">
+              <Grid item>
+                <Button
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={saveChat}
+                  variant="contained"
+                  endIcon={<SaveIcon />}
+                  style={{
+                    marginRight: "1rem",
+                  }}
+                >
+                  Save Chat
+                </Button>
+              </Grid>
+              <Grid item>
+                <div
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  onClick={handleInfoModal}
+                >
+                  <InfoIcon fontSize="large" />
+                </div>
+              </Grid>
             </Grid>
           </Grid>
           <div

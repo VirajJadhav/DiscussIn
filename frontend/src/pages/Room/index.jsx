@@ -125,6 +125,7 @@ class Room extends Component {
       });
     }
   };
+  saveChat = event => {};
 
   render() {
     const {
@@ -146,7 +147,6 @@ class Room extends Component {
           subTitle={subTitle}
           description={description}
         />
-
         <RoomLayout
           users={users}
           title={title}
@@ -155,6 +155,7 @@ class Room extends Component {
           handleInfoModal={this.handleInfoModal}
           handleSendMessage={this.handleSendMessage}
           handleChange={this.handleChange}
+          saveChat={this.saveChat}
         >
           {messageList.map((data, index) => {
             return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { NavBar } from "../../../components";
+import { NavBar, FormBackground } from "../../../components";
 import { Link } from "react-router-dom";
 import {
   Avatar,
@@ -27,7 +27,7 @@ const SmallAvatar = withStyles(theme => ({
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
@@ -63,83 +63,85 @@ function Form({ roomID, userName, onSubmit, handleChange }) {
   return (
     <div>
       <NavBar />
-      <Container component="main" maxWidth="xs">
-        <div className={classes.paper}>
-          <Badge
-            overlap="circle"
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            badgeContent={
-              <SmallAvatar alt="join">
-                <EnterIcon />
-              </SmallAvatar>
-            }
-          >
-            <Avatar alt="Join room" className={classes.avatar}>
-              <RoomIcon fontSize="large" />
-            </Avatar>
-          </Badge>
-          <form onSubmit={onSubmit} className={classes.form}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={roomID}
-              onChange={handleChange}
-              id="roomID"
-              label="Room ID"
-              name="roomID"
-              type="password"
-              autoFocus
-              autoComplete="discussin-roomID"
-            />
-            {state.payload !== "" && state.payload.status === "private" ? (
+      <FormBackground>
+        <Container component="main" maxWidth="xs">
+          <div className={classes.paper}>
+            <Badge
+              overlap="circle"
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              badgeContent={
+                <SmallAvatar alt="join">
+                  <EnterIcon />
+                </SmallAvatar>
+              }
+            >
+              <Avatar alt="Join room" className={classes.avatar}>
+                <RoomIcon fontSize="large" />
+              </Avatar>
+            </Badge>
+            <form onSubmit={onSubmit} className={classes.form}>
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                value={userName}
+                value={roomID}
                 onChange={handleChange}
-                id="userName"
-                label="Username"
-                name="userName"
-                // error={userName === ""}
-                helperText={
-                  "This room is private. Please enter your username or register on DiscussIn !"
-                }
-                autoComplete="discussin-userName"
+                id="roomID"
+                label="Room ID"
+                name="roomID"
+                type="password"
+                autoFocus
+                autoComplete="discussin-roomID"
               />
-            ) : null}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="secondary"
-              className={classes.submit}
-              disabled={state.loading}
-            >
-              Join
-            </Button>
-            <Grid container direction="row" justify="center">
-              <Grid item>
-                <Link
-                  to="/addRoom"
-                  className={classes.Link}
-                  style={{
-                    textDecoration: "none",
-                  }}
-                >
-                  {"Create new room ?"}
-                </Link>
+              {state.payload !== "" && state.payload.status === "private" ? (
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  value={userName}
+                  onChange={handleChange}
+                  id="userName"
+                  label="Username"
+                  name="userName"
+                  // error={userName === ""}
+                  helperText={
+                    "This room is private. Please enter your username or register on DiscussIn !"
+                  }
+                  autoComplete="discussin-userName"
+                />
+              ) : null}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className={classes.submit}
+                disabled={state.loading}
+              >
+                Join
+              </Button>
+              <Grid container direction="row" justify="center">
+                <Grid item>
+                  <Link
+                    to="/addRoom"
+                    className={classes.Link}
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    {"Create new room ?"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </div>
-      </Container>
+            </form>
+          </div>
+        </Container>
+      </FormBackground>
     </div>
   );
 }

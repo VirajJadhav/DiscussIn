@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { ProfileCard } from "../../../components";
+import { FullScreenDialog, ProfileCard } from "../../../components";
 import {
   Drawer,
   Toolbar,
   Typography,
   Divider,
   makeStyles,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import { Close as CloseIcon } from "@material-ui/icons";
 
@@ -76,6 +78,29 @@ export default function ProfileLayout({
     setMobileDrawerOpen(prevState => !prevState);
   };
 
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("sm"));
+  const mobiledialog = () => {
+    if (!matches) {
+      return (
+        <FullScreenDialog
+          buttonName="View Private Rooms"
+          dialogTitle="Private Rooms"
+        >
+          <Typography
+            style={{
+              textAlign: "center",
+              margin: "1rem 0 1rem 0",
+            }}
+            variant="h6"
+          >
+            {`Private Rooms here`}
+          </Typography>
+        </FullScreenDialog>
+      );
+    }
+  };
+
   return (
     <div className={classes.root}>
       <Drawer
@@ -92,6 +117,7 @@ export default function ProfileLayout({
               margin: "6rem 1.2rem 6rem 1.2rem",
             }}
           >
+            {mobiledialog()}
             <ProfileCard
               userName="UserName"
               firstName="First Name"
