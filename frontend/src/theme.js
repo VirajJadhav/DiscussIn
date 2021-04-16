@@ -39,7 +39,7 @@ const theme = createMuiTheme({
       main: "#483D8B",
     },
     silverGrey: {
-      main: "#D0D3D4",
+      main: "#d7dada",
     },
   },
   props: {

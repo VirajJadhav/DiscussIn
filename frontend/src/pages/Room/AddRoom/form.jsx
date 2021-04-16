@@ -1,5 +1,5 @@
 import React from "react";
-import { NavBar, FormBackground } from "../../../components";
+import { FormBackground } from "../../../components";
 import { Link } from "react-router-dom";
 import {
   Avatar,
@@ -71,7 +71,6 @@ function Form({
 
   return (
     <div>
-      <NavBar />
       <FormBackground>
         <Container component="main" maxWidth="xs">
           <div className={classes.paper}>

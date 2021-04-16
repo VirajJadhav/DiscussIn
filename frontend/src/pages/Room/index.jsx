@@ -125,7 +125,9 @@ class Room extends Component {
       });
     }
   };
-  saveChat = event => {};
+  saveChat = event => {
+    // console.log("saved chat");
+  };
 
   render() {
     const {

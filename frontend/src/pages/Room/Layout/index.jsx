@@ -14,14 +14,16 @@ import {
   TextField,
   IconButton,
   Button,
+  Hidden,
+  Tooltip,
 } from "@material-ui/core";
 import {
   Person,
-  ArrowBack as BackButton,
   Info as InfoIcon,
   Send as SendIcon,
   Menu as MenuIcon,
   Close as CloseIcon,
+  Home as HomeIcon,
 } from "@material-ui/icons";
 import SaveIcon from "@material-ui/icons/Save";
 import { useHistory } from "react-router-dom";
@@ -81,6 +83,14 @@ const useStyles = makeStyles(theme => ({
       marginLeft: "1rem",
     },
   },
+  saveChat: {
+    display: "none",
+    marginRight: "1rem",
+    [theme.breakpoints.down("sm")]: {
+      display: "initial",
+      cursor: "pointer",
+    },
+  },
 }));
 
 export default function RoomLayout({
@@ -121,7 +131,11 @@ export default function RoomLayout({
                 }}
                 onClick={goBack}
               >
-                <BackButton />
+                <HomeIcon
+                  style={{
+                    fontSize: "1.8rem",
+                  }}
+                />
               </div>
             </Grid>
             <Grid item>
@@ -129,30 +143,47 @@ export default function RoomLayout({
                 {createdAt}
               </Typography>
             </Grid>
-            <Grid justify="flex-end">
-              <Grid item>
-                <Button
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={saveChat}
-                  variant="contained"
-                  endIcon={<SaveIcon />}
-                  style={{
-                    marginRight: "1rem",
-                  }}
-                >
-                  Save Chat
-                </Button>
-              </Grid>
-              <Grid item>
-                <div
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={handleInfoModal}
-                >
-                  <InfoIcon fontSize="large" />
-                </div>
+            <Grid item>
+              <Grid container>
+                <Grid item>
+                  <Hidden smDown>
+                    <Button
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={saveChat}
+                      variant="contained"
+                      endIcon={<SaveIcon />}
+                      style={{
+                        marginRight: "1rem",
+                      }}
+                    >
+                      Save Chat
+                    </Button>
+                  </Hidden>
+                  <div onClick={saveChat} className={classes.saveChat}>
+                    <Tooltip title="Save Chat">
+                      <SaveIcon
+                        style={{
+                          fontSize: "1.8rem",
+                        }}
+                      />
+                    </Tooltip>
+                  </div>
+                </Grid>
+                <Grid item>
+                  <div
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    onClick={handleInfoModal}
+                  >
+                    <InfoIcon
+                      style={{
+                        fontSize: "1.8rem",
+                      }}
+                    />
+                  </div>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>

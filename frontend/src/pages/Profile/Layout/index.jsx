@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { FullScreenDialog, ProfileCard } from "../../../components";
+import { ProfileCard } from "../../../components";
 import {
   Drawer,
   Toolbar,
   Typography,
   Divider,
   makeStyles,
-  useMediaQuery,
-  useTheme,
+  Button,
 } from "@material-ui/core";
 import { Close as CloseIcon } from "@material-ui/icons";
 
@@ -58,47 +57,23 @@ const useStyles = makeStyles(theme => ({
       marginLeft: "1rem",
     },
   },
+  privateButton: {
+    display: "none",
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      marginTop: "2rem",
+      justifyContent: "center",
+    },
+  },
 }));
 
-export default function ProfileLayout({
-  children,
-  users,
-  title,
-  createdAt,
-  message,
-  handleInfoModal,
-  handleSendMessage,
-  handleChange,
-}) {
+export default function ProfileLayout({ children, handleDialog }) {
   const classes = useStyles();
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
   const handleMobileDrawer = () => {
     setMobileDrawerOpen(prevState => !prevState);
-  };
-
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
-  const mobiledialog = () => {
-    if (!matches) {
-      return (
-        <FullScreenDialog
-          buttonName="View Private Rooms"
-          dialogTitle="Private Rooms"
-        >
-          <Typography
-            style={{
-              textAlign: "center",
-              margin: "1rem 0 1rem 0",
-            }}
-            variant="h6"
-          >
-            {`Private Rooms here`}
-          </Typography>
-        </FullScreenDialog>
-      );
-    }
   };
 
   return (
@@ -112,12 +87,16 @@ export default function ProfileLayout({
       >
         <Toolbar />
         <div className={classes.drawerContainer}>
+          <div className={classes.privateButton}>
+            <Button onClick={handleDialog} variant="contained" color="primary">
+              View Private Rooms
+            </Button>
+          </div>
           <div
             style={{
-              margin: "6rem 1.2rem 6rem 1.2rem",
+              margin: "2rem 1.2rem 4rem 1.2rem",
             }}
           >
-            {mobiledialog()}
             <ProfileCard
               userName="UserName"
               firstName="First Name"

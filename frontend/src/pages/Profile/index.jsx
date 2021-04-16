@@ -1,6 +1,6 @@
-import { Typography } from "@material-ui/core";
 import React, { Component } from "react";
-import { NavBar } from "../../components";
+import { Typography } from "@material-ui/core";
+import { NavBar, FullScreenDialog } from "../../components";
 import ProfileLayout from "./Layout";
 
 class Profile extends Component {
@@ -8,18 +8,35 @@ class Profile extends Component {
     super(props);
     this.state = {
       user: {},
+      open: false,
     };
   }
-  handleInfoModal = () => {
+  handleDialog = () => {
     this.setState({
-      modalOpen: !this.state.modalOpen,
+      open: !this.state.open,
     });
   };
   render() {
+    const { open } = this.state;
     return (
       <div>
         <NavBar />
-        <ProfileLayout>
+        <FullScreenDialog
+          title="Private Rooms"
+          open={open}
+          handleDialog={this.handleDialog}
+        >
+          <Typography
+            style={{
+              textAlign: "center",
+              margin: "1rem 0 1rem 0",
+            }}
+            variant="h6"
+          >
+            {`Private Rooms here`}
+          </Typography>
+        </FullScreenDialog>
+        <ProfileLayout handleDialog={this.handleDialog}>
           <Typography variant="body1">{"Rooms will be here"}</Typography>
         </ProfileLayout>
       </div>
