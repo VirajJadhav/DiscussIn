@@ -1,5 +1,5 @@
 import React from "react";
-import { NavBar } from "../../../components";
+import { NavBar, FormBackground } from "../../../components";
 import { Link } from "react-router-dom";
 import {
   Avatar,
@@ -28,12 +28,14 @@ const SmallAvatar = withStyles(theme => ({
 
 const useStyles = makeStyles(theme => ({
   paper: {
+    marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
   avatar: {
+    margin: theme.spacing(1),
     backgroundColor: theme.palette.iceCold.main,
     padding: theme.spacing(1.2),
   },
@@ -70,122 +72,124 @@ function Form({
   return (
     <div>
       <NavBar />
-      <Container component="main" maxWidth="xs">
-        <div className={classes.paper}>
-          <Badge
-            overlap="circle"
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            badgeContent={
-              <SmallAvatar alt="add">
-                <AddIcon />
-              </SmallAvatar>
-            }
-          >
-            <Avatar alt="Add room" className={classes.avatar}>
-              <RoomIcon fontSize="large" />
-            </Avatar>
-          </Badge>
-          <form onSubmit={onSubmit} className={classes.form}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={userName}
-              onChange={handleChange}
-              id="userName"
-              label="Username"
-              name="userName"
-              helperText={"Please enter a guest name, if not registered !"}
-              autoComplete="discussin-userName"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={title}
-              onChange={handleChange}
-              id="title"
-              label="Title"
-              name="title"
-              autoComplete="discussin-title"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              value={subTitle}
-              onChange={handleChange}
-              id="subTitle"
-              label="Subtitle"
-              name="subTitle"
-              autoComplete="discussin-subTitle"
-            />
-            <TextField
-              style={{
-                marginTop: "1rem",
+      <FormBackground>
+        <Container component="main" maxWidth="xs">
+          <div className={classes.paper}>
+            <Badge
+              overlap="circle"
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
               }}
-              id="description"
-              name="description"
-              label="Description"
-              fullWidth
-              multiline
-              rows={4}
-              value={description}
-              onChange={handleChange}
-              variant="outlined"
-              autoComplete="discussin-description"
-            />
-            <FormControl
-              style={{
-                marginTop: "1rem",
-              }}
-              fullWidth
+              badgeContent={
+                <SmallAvatar alt="add">
+                  <AddIcon />
+                </SmallAvatar>
+              }
             >
-              <InputLabel id="discussin-room-status">Status</InputLabel>
-              <Select
-                labelId="discussin-room-status"
-                id="discussin-room-status"
-                name="status"
-                value={status}
+              <Avatar alt="Add room" className={classes.avatar}>
+                <RoomIcon fontSize="large" />
+              </Avatar>
+            </Badge>
+            <form onSubmit={onSubmit} className={classes.form}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={userName}
                 onChange={handleChange}
-                disabled={checkedUser}
+                id="userName"
+                label="Username"
+                name="userName"
+                helperText={"Please enter a guest name, if not registered !"}
+                autoComplete="discussin-userName"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={title}
+                onChange={handleChange}
+                id="title"
+                label="Title"
+                name="title"
+                autoComplete="discussin-title"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                value={subTitle}
+                onChange={handleChange}
+                id="subTitle"
+                label="Subtitle"
+                name="subTitle"
+                autoComplete="discussin-subTitle"
+              />
+              <TextField
+                style={{
+                  marginTop: "1rem",
+                }}
+                id="description"
+                name="description"
+                label="Description"
+                fullWidth
+                multiline
+                rows={4}
+                value={description}
+                onChange={handleChange}
+                variant="outlined"
+                autoComplete="discussin-description"
+              />
+              <FormControl
+                style={{
+                  marginTop: "1rem",
+                }}
+                fullWidth
               >
-                <MenuItem value={"public"}>Public</MenuItem>
-                <MenuItem value={"private"}>Private</MenuItem>
-              </Select>
-              <FormHelperText>{helperText}</FormHelperText>
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="secondary"
-              className={classes.submit}
-            >
-              {checkedUser ? "Procced to Add ?" : "Add"}
-            </Button>
-            <Grid container direction="row" justify="center">
-              <Grid item>
-                <Link
-                  to="/joinRoom"
-                  className={classes.Link}
-                  style={{
-                    textDecoration: "none",
-                  }}
+                <InputLabel id="discussin-room-status">Status</InputLabel>
+                <Select
+                  labelId="discussin-room-status"
+                  id="discussin-room-status"
+                  name="status"
+                  value={status}
+                  onChange={handleChange}
+                  disabled={checkedUser}
                 >
-                  {"Join other rooms ?"}
-                </Link>
+                  <MenuItem value={"public"}>Public</MenuItem>
+                  <MenuItem value={"private"}>Private</MenuItem>
+                </Select>
+                <FormHelperText>{helperText}</FormHelperText>
+              </FormControl>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className={classes.submit}
+              >
+                {checkedUser ? "Procced to Add ?" : "Add"}
+              </Button>
+              <Grid container direction="row" justify="center">
+                <Grid item>
+                  <Link
+                    to="/joinRoom"
+                    className={classes.Link}
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    {"Join other rooms ?"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </div>
-      </Container>
+            </form>
+          </div>
+        </Container>
+      </FormBackground>
     </div>
   );
 }

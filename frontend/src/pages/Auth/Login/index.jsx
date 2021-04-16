@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { login } from "../../../redux/AuthRedux/action";
-import { NavBar } from "../../../components";
+import { FormBackground, NavBar } from "../../../components";
 import { Link } from "react-router-dom";
 import {
   Avatar,
@@ -15,7 +15,8 @@ import { LockOutlined as LockOutlinedIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -67,64 +68,65 @@ function Login(props) {
   return (
     <div>
       <NavBar />
-
-      <Container component="main" maxWidth="xs">
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon fontSize="large" />
-          </Avatar>
-          <form onSubmit={onSubmit} className={classes.form}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={userName}
-              onChange={event => setuserName(event.target.value)}
-              id="userName"
-              label="Username"
-              name="userName"
-              autoComplete="discussin-userName"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={password}
-              onChange={event => setPassword(event.target.value)}
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="discussin-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="secondary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            <Grid container direction="row" justify="center">
-              <Grid item>
-                <Link
-                  to="/signup"
-                  className={classes.Link}
-                  style={{
-                    textDecoration: "none",
-                  }}
-                >
-                  {"Don't have an account ? Sign Up"}
-                </Link>
+      <FormBackground>
+        <Container component="main" maxWidth="xs">
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon fontSize="large" />
+            </Avatar>
+            <form onSubmit={onSubmit} className={classes.form}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={userName}
+                onChange={event => setuserName(event.target.value)}
+                id="userName"
+                label="Username"
+                name="userName"
+                autoComplete="discussin-userName"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={password}
+                onChange={event => setPassword(event.target.value)}
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="discussin-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+              <Grid container direction="row" justify="center">
+                <Grid item>
+                  <Link
+                    to="/signup"
+                    className={classes.Link}
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    {"Don't have an account ? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </div>
-      </Container>
+            </form>
+          </div>
+        </Container>
+      </FormBackground>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { register } from "../../../redux/AuthRedux/action";
-import { NavBar } from "../../../components";
+import { NavBar, FormBackground } from "../../../components";
 import { Link } from "react-router-dom";
 import {
   Avatar,
@@ -78,118 +78,120 @@ function Signup(props) {
   return (
     <div>
       <NavBar />
-      <Container component="main" maxWidth="xs">
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <PersonAddIcon fontSize="large" />
-          </Avatar>
-          <form onSubmit={onSubmit} className={classes.form}>
-            <Grid container spacing={1}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  value={firstName}
-                  onChange={event => setfirstName(event.target.value)}
-                  id="firstName"
-                  label="First Name"
-                  name="firstName"
-                  autoComplete="discussin-firstName"
-                  autoFocus
-                />
+      <FormBackground>
+        <Container component="main" maxWidth="xs">
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <PersonAddIcon fontSize="large" />
+            </Avatar>
+            <form onSubmit={onSubmit} className={classes.form}>
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    value={firstName}
+                    onChange={event => setfirstName(event.target.value)}
+                    id="firstName"
+                    label="First Name"
+                    name="firstName"
+                    autoComplete="discussin-firstName"
+                    autoFocus
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    value={lastName}
+                    onChange={event => setlastName(event.target.value)}
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    autoComplete="discussin-lastName"
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  value={lastName}
-                  onChange={event => setlastName(event.target.value)}
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="discussin-lastName"
-                />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={email}
+                onChange={event => setemail(event.target.value)}
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="discussin-email"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={userName}
+                onChange={event => setuserName(event.target.value)}
+                id="userName"
+                label="Username"
+                name="userName"
+                autoComplete="discussin-userName"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={password}
+                onChange={event => setpassword(event.target.value)}
+                id="password"
+                label="Password"
+                name="password"
+                type="password"
+                autoComplete="discussin-password"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={confPassword}
+                onChange={event => setconfPassword(event.target.value)}
+                id="confPassword"
+                label="Confirm Password"
+                name="confPassword"
+                type="password"
+                autoComplete="discussin-confPassword"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className={classes.submit}
+              >
+                Sign Up
+              </Button>
+              <Grid container direction="row" justify="center">
+                <Grid item>
+                  <Link
+                    to="/Login"
+                    className={classes.Link}
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    {"Already have an account ? Login"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={email}
-              onChange={event => setemail(event.target.value)}
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="discussin-email"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={userName}
-              onChange={event => setuserName(event.target.value)}
-              id="userName"
-              label="Username"
-              name="userName"
-              autoComplete="discussin-userName"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={password}
-              onChange={event => setpassword(event.target.value)}
-              id="password"
-              label="Password"
-              name="password"
-              type="password"
-              autoComplete="discussin-password"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={confPassword}
-              onChange={event => setconfPassword(event.target.value)}
-              id="confPassword"
-              label="Confirm Password"
-              name="confPassword"
-              type="password"
-              autoComplete="discussin-confPassword"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="secondary"
-              className={classes.submit}
-            >
-              Sign Up
-            </Button>
-            <Grid container direction="row" justify="center">
-              <Grid item>
-                <Link
-                  to="/Login"
-                  className={classes.Link}
-                  style={{
-                    textDecoration: "none",
-                  }}
-                >
-                  {"Already have an account ? Login"}
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
-      </Container>
+            </form>
+          </div>
+        </Container>
+      </FormBackground>
     </div>
   );
 }
