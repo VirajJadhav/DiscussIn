@@ -14,12 +14,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Loading({ isloading, color }) {
+export default function Loading({ isloading, color, style }) {
   const classes = useStyles({ color });
 
   if (isloading) {
     return (
-      <div className={classes.root}>
+      <div className={classes.root} style={style}>
         <CircularProgress className={classes.loading} />
       </div>
     );

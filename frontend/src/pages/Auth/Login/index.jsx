@@ -51,9 +51,13 @@ function Login(props) {
   const [userName, setuserName] = useState("");
   const [password, setPassword] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = event => {
     event.preventDefault();
     event.persist();
+
+    setLoading(true);
 
     const data = {
       userName,
@@ -61,6 +65,10 @@ function Login(props) {
     };
 
     dispatch(login(data));
+
+    if (!props.authReducer.loading) {
+      setLoading(false);
+    }
   };
 
   // console.log(props.authReducer);
@@ -107,6 +115,7 @@ function Login(props) {
                 variant="contained"
                 color="secondary"
                 className={classes.submit}
+                disabled={loading}
               >
                 Sign In
               </Button>

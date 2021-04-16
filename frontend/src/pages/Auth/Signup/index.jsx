@@ -55,12 +55,17 @@ function Signup(props) {
   const [password, setpassword] = useState("");
   const [confPassword, setconfPassword] = useState("");
 
-  const onSubmit = event => {
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async event => {
     event.preventDefault();
     event.persist();
+
     if (password !== confPassword) {
       return;
     }
+
+    setLoading(true);
 
     const data = {
       userName,
@@ -71,9 +76,11 @@ function Signup(props) {
     };
 
     dispatch(register(data));
-  };
 
-  // console.log(props.authReducer);
+    if (!props.authReducer.loading) {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -172,6 +179,7 @@ function Signup(props) {
                 variant="contained"
                 color="secondary"
                 className={classes.submit}
+                disabled={loading}
               >
                 Sign Up
               </Button>

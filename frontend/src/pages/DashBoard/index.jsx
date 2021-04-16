@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NavBar, RoomCard } from "../../components";
+import { NavBar, RoomCard, Loading } from "../../components";
 import { Container, Grid, TextField } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
@@ -41,20 +41,29 @@ class DashBoard extends Component {
         // },
       ],
       searchValue: "",
+      loading: true,
     };
   }
   async componentDidMount() {
-    await this.props.getRoomByStatus("public");
-    if (!this.props.roomReducer.error) {
-      let newRooms = [];
-      newRooms = this.props.roomReducer.payload.map((r, i) => {
-        return {
-          ...r,
-          timestamp: this.returnDateFormat(r.createdAt || new Date()),
-        };
-      });
+    try {
+      await this.props.getRoomByStatus("public");
+      if (!this.props.roomReducer.error) {
+        let newRooms = [];
+        newRooms = this.props.roomReducer.payload.map((r, i) => {
+          return {
+            ...r,
+            timestamp: this.returnDateFormat(r.createdAt || new Date()),
+          };
+        });
+        this.setState({
+          rooms: newRooms,
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
       this.setState({
-        rooms: newRooms,
+        loading: !this.state.loading,
       });
     }
   }
@@ -73,7 +82,7 @@ class DashBoard extends Component {
     });
   };
   render() {
-    const { rooms, searchValue } = this.state;
+    const { rooms, searchValue, loading } = this.state;
     let newRooms = [];
     newRooms = rooms.filter(data => {
       return data.title.toLowerCase().includes(searchValue);
@@ -97,32 +106,43 @@ class DashBoard extends Component {
           />
         </Container>
 
-        <Grid
-          container
-          direction="row"
-          justify="space-evenly"
-          alignItems="center"
-        >
-          {newRooms.map((data, index) => (
-            <Grid key={`room-${index}`} item>
-              <Link
-                style={{
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-                to={data.roomID ? `/join/${data.roomID}` : `/join/some`}
-              >
-                <RoomCard
-                  title={data.title}
-                  subTitle={data.subTitle}
-                  description={data.description}
-                  author={data.userName}
-                  date={data.timestamp}
-                />
-              </Link>
-            </Grid>
-          ))}
-        </Grid>
+        {loading ? (
+          <Loading
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "2rem",
+            }}
+            isloading={loading}
+          />
+        ) : (
+          <Grid
+            container
+            direction="row"
+            justify="space-evenly"
+            alignItems="center"
+          >
+            {newRooms.map((data, index) => (
+              <Grid key={`room-${index}`} item>
+                <Link
+                  style={{
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  to={data.roomID ? `/join/${data.roomID}` : `/join/some`}
+                >
+                  <RoomCard
+                    title={data.title}
+                    subTitle={data.subTitle}
+                    description={data.description}
+                    author={data.userName}
+                    date={data.timestamp}
+                  />
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </div>
     );
   }

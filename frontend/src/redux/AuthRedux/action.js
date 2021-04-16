@@ -58,3 +58,21 @@ export const checkUser = userName => async dispatch => {
     });
   }
 };
+
+export const getUserData = userName => async dispatch => {
+  dispatch({
+    type: AUTH_REQUEST,
+  });
+  try {
+    const response = await axios.get(`${backendURL}/auth/user/${userName}`);
+    dispatch({
+      type: AUTH_SUCCESS,
+      payload: response.data.result,
+    });
+  } catch (error) {
+    dispatch({
+      type: AUTH_FAILURE,
+      message: error.response ? error.response.data.result : error.message,
+    });
+  }
+};

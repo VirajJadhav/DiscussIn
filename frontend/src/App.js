@@ -37,7 +37,7 @@ function App() {
           />
           <Route
             exact
-            path="/profile"
+            path="/profile/:userName"
             render={props => <Profile {...props} />}
           />
         </Switch>

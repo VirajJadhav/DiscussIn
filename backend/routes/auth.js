@@ -98,6 +98,20 @@ router.route("/verify/user/:userName").get(async (req, res) => {
   }
 });
 
+router.route("/user/:userName").get(async (req, res) => {
+  try {
+    const userName = req.params.userName;
+    const user = await User.findOne({ userName });
+    res.status(200).json({
+      result: user === null ? {} : user,
+    });
+  } catch (error) {
+    res.status(400).json({
+      result: "Failed to fetch user data !",
+    });
+  }
+});
+
 router.route("/").get(async (req, res) => {
   try {
     res.status(200).send("Hello !");
