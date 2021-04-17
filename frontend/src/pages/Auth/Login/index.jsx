@@ -1,143 +1,68 @@
-import React, { useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import { login } from "../../../redux/AuthRedux/action";
-import { FormBackground, NavBar } from "../../../components";
-import { Link } from "react-router-dom";
-import {
-  Avatar,
-  Button,
-  TextField,
-  Grid,
-  makeStyles,
-  Container,
-} from "@material-ui/core";
-import { LockOutlined as LockOutlinedIcon } from "@material-ui/icons";
-
-const useStyles = makeStyles(theme => ({
-  paper: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.iceCold.main,
-    padding: theme.spacing(1.2),
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-    backgroundColor: theme.palette.primary.main,
-    color: "white",
-    "&:hover": {
-      color: "black",
-    },
-  },
-  Link: {
-    color: theme.palette.darkSlateBlue.main,
-  },
-}));
-
-function Login(props) {
-  const classes = useStyles();
-
-  const dispatch = useDispatch();
-
-  const [userName, setuserName] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [loading, setLoading] = useState(false);
-
-  const onSubmit = event => {
+import { NavBar, FormBackground } from "../../../components";
+import Form from "./form";
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: "",
+      password: "",
+      loading: false,
+    };
+  }
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
+  onSubmit = async event => {
     event.preventDefault();
     event.persist();
 
-    setLoading(true);
+    this.setState({
+      loading: true,
+    });
+
+    const { userName, password } = this.state;
 
     const data = {
       userName,
       password,
     };
 
-    dispatch(login(data));
+    await this.props.login(data);
 
-    if (!props.authReducer.loading) {
-      setLoading(false);
+    if (!this.props.authReducer.loading) {
+      this.setState({
+        loading: false,
+      });
+      if (this.props.authReducer.error) {
+        alert(this.props.authReducer.message);
+      } else {
+        const userName = this.props.authReducer.payload.userName;
+        this.props.history.push(`/profile/${userName}`);
+      }
     }
   };
-
-  // console.log(props.authReducer);
-
-  return (
-    <div>
-      <NavBar />
-      <FormBackground>
-        <Container component="main" maxWidth="xs">
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon fontSize="large" />
-            </Avatar>
-            <form onSubmit={onSubmit} className={classes.form}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={userName}
-                onChange={event => setuserName(event.target.value)}
-                id="userName"
-                label="Username"
-                name="userName"
-                autoComplete="discussin-userName"
-                autoFocus
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={password}
-                onChange={event => setPassword(event.target.value)}
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="discussin-password"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="secondary"
-                className={classes.submit}
-                disabled={loading}
-              >
-                Sign In
-              </Button>
-              <Grid container direction="row" justify="center">
-                <Grid item>
-                  <Link
-                    to="/signup"
-                    className={classes.Link}
-                    style={{
-                      textDecoration: "none",
-                    }}
-                  >
-                    {"Don't have an account ? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-            </form>
-          </div>
-        </Container>
-      </FormBackground>
-    </div>
-  );
+  render() {
+    const { userName, password, loading } = this.state;
+    return (
+      <div>
+        <NavBar />
+        <FormBackground>
+          <Form
+            userName={userName}
+            password={password}
+            loading={loading}
+            handleChange={this.handleChange}
+            onSubmit={this.onSubmit}
+          />
+        </FormBackground>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => {
@@ -146,4 +71,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {})(Login);
+const mapDispatchToProps = dispatch => {
+  return {
+    login: data => dispatch(login(data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

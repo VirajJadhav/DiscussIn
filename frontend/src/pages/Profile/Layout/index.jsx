@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ProfileCard } from "../../../components";
+import { ProfileCard, FullScreenDialog } from "../../../components";
 import {
   Drawer,
   Toolbar,
@@ -65,9 +65,21 @@ const useStyles = makeStyles(theme => ({
       justifyContent: "center",
     },
   },
+  profileCard: {
+    margin: "4rem 1.2rem 4rem 1.2rem",
+    [theme.breakpoints.down("sm")]: {
+      margin: "2rem 1.2rem 4rem 1.2rem",
+    },
+  },
 }));
 
-export default function ProfileLayout({ children, handleDialog }) {
+export default function ProfileLayout({
+  children,
+  open,
+  userData,
+  handleDialog,
+  updateProfile,
+}) {
   const classes = useStyles();
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -78,6 +90,13 @@ export default function ProfileLayout({ children, handleDialog }) {
 
   return (
     <div className={classes.root}>
+      <FullScreenDialog
+        title="Private Rooms"
+        open={open}
+        handleDialog={handleDialog}
+      >
+        {children}
+      </FullScreenDialog>
       <Drawer
         className={classes.drawer}
         variant="permanent"
@@ -92,17 +111,13 @@ export default function ProfileLayout({ children, handleDialog }) {
               View Private Rooms
             </Button>
           </div>
-          <div
-            style={{
-              margin: "2rem 1.2rem 4rem 1.2rem",
-            }}
-          >
+          <div className={classes.profileCard}>
             <ProfileCard
-              userName="UserName"
-              firstName="First Name"
-              lastName="Last Name"
-              email="emailid@gmail.com"
-              password="123456"
+              userName={userData.userName ? userData.userName : ""}
+              firstName={userData.firstName ? userData.firstName : ""}
+              lastName={userData.lastName ? userData.lastName : ""}
+              email={userData.email ? userData.email : ""}
+              updateProfile={updateProfile}
             />
           </div>
         </div>
@@ -143,7 +158,7 @@ export default function ProfileLayout({ children, handleDialog }) {
       <main className={classes.content}>
         <Typography variant="h4">{"Private Rooms"}</Typography>
         <Divider />
-        <Toolbar />
+        {/* <Toolbar /> */}
         {children}
       </main>
     </div>

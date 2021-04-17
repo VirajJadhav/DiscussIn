@@ -5,7 +5,7 @@ const connectDatabase = require("./config/database");
 
 const PORT = process.env.PORT || 5000;
 
-const routes = ["auth", "room"];
+const routes = ["auth", "room", "user"];
 
 const app = express();
 

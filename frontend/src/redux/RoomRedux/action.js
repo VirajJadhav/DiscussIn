@@ -26,7 +26,7 @@ export const getRoom = roomID => async dispatch => {
     type: ROOM_REQUEST,
   });
   try {
-    const response = await axios.get(`${backendURL}/room/getRoom/${roomID}`);
+    const response = await axios.get(`${backendURL}/room/${roomID}`);
     dispatch({
       type: ROOM_SUCCESS,
       payload: response.data.result,
@@ -63,7 +63,27 @@ export const checkRoomUser = data => async dispatch => {
   });
   try {
     const response = await axios.get(
-      `${backendURL}/room/getRoom/${data.roomID}/${data.userName}`
+      `${backendURL}/room/${data.roomID}/${data.userName}`
+    );
+    dispatch({
+      type: ROOM_SUCCESS,
+      payload: response.data.result,
+    });
+  } catch (error) {
+    dispatch({
+      type: ROOM_FAILURE,
+      message: error.response ? error.response.data.result : error.message,
+    });
+  }
+};
+
+export const getRoomUserNameStatus = data => async dispatch => {
+  dispatch({
+    type: ROOM_REQUEST,
+  });
+  try {
+    const response = await axios.get(
+      `${backendURL}/room/userName/status/${data.userName}/${data.status}`
     );
     dispatch({
       type: ROOM_SUCCESS,

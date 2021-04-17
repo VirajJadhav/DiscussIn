@@ -35,7 +35,7 @@ router.route("/add").post(async (req, res) => {
   }
 });
 
-router.route("/getRoom/:roomID").get(async (req, res) => {
+router.route("/:roomID").get(async (req, res) => {
   try {
     const roomID = req.params.roomID;
     const room = await Room.findOne({ roomID });
@@ -55,7 +55,7 @@ router.route("/getRoom/:roomID").get(async (req, res) => {
   }
 });
 
-router.route("/getRoom/:roomID/:userName").get(async (req, res) => {
+router.route("/userName/:roomID/:userName").get(async (req, res) => {
   try {
     const roomID = req.params.roomID;
     const userName = req.params.userName;
@@ -82,6 +82,21 @@ router.route("/status/:status").get(async (req, res) => {
     const rooms = await Room.find({ status });
     res.status(200).json({
       result: rooms,
+    });
+  } catch (error) {
+    res.status(400).json({
+      result: error.message,
+    });
+  }
+});
+
+router.route("/userName/status/:userName/:status").get(async (req, res) => {
+  try {
+    const userName = req.params.userName;
+    const status = req.params.status;
+    const room = await Room.find({ userName, status });
+    res.status(200).json({
+      result: room,
     });
   } catch (error) {
     res.status(400).json({

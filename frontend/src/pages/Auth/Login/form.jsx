@@ -8,7 +8,7 @@ import {
   makeStyles,
   Container,
 } from "@material-ui/core";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import { LockOutlined as LockOutlinedIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -40,69 +40,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Form({
-  userName,
-  firstName,
-  lastName,
-  email,
-  password,
-  confPassword,
-  loading,
-  handleChange,
-  onSubmit,
-}) {
+function Form({ userName, password, loading, handleChange, onSubmit }) {
   const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <PersonAddIcon fontSize="large" />
+          <LockOutlinedIcon fontSize="large" />
         </Avatar>
         <form onSubmit={onSubmit} className={classes.form}>
-          <Grid container spacing={1}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={firstName}
-                onChange={handleChange}
-                id="firstName"
-                label="First Name"
-                name="firstName"
-                autoComplete="discussin-firstName"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={lastName}
-                onChange={handleChange}
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="discussin-lastName"
-              />
-            </Grid>
-          </Grid>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            value={email}
-            onChange={handleChange}
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="discussin-email"
-          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -114,6 +61,7 @@ function Form({
             label="Username"
             name="userName"
             autoComplete="discussin-userName"
+            autoFocus
           />
           <TextField
             variant="outlined"
@@ -122,24 +70,11 @@ function Form({
             fullWidth
             value={password}
             onChange={handleChange}
-            id="password"
-            label="Password"
             name="password"
+            label="Password"
             type="password"
+            id="password"
             autoComplete="discussin-password"
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            value={confPassword}
-            onChange={handleChange}
-            id="confPassword"
-            label="Confirm Password"
-            name="confPassword"
-            type="password"
-            autoComplete="discussin-confPassword"
           />
           <Button
             type="submit"
@@ -149,18 +84,18 @@ function Form({
             className={classes.submit}
             disabled={loading}
           >
-            Sign Up
+            Sign In
           </Button>
           <Grid container direction="row" justify="center">
             <Grid item>
               <Link
-                to="/Login"
+                to="/signup"
                 className={classes.Link}
                 style={{
                   textDecoration: "none",
                 }}
               >
-                {"Already have an account ? Login"}
+                {"Don't have an account ? Sign Up"}
               </Link>
             </Grid>
           </Grid>

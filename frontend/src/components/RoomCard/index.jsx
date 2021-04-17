@@ -40,6 +40,16 @@ export default function RoomCard({
 }) {
   const classes = useStyles();
 
+  const returnDateFormat = date => {
+    const newDate = new Date(date);
+    const result = newDate.toLocaleDateString("default", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
+    return result.split("-").join(" ") || result;
+  };
+
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -71,7 +81,7 @@ export default function RoomCard({
           </Grid>
           <Grid item>
             <Typography variant="body2" noWrap>
-              {date}
+              {returnDateFormat(date)}
             </Typography>
           </Grid>
         </Grid>

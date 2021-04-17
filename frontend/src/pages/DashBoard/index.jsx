@@ -48,15 +48,15 @@ class DashBoard extends Component {
     try {
       await this.props.getRoomByStatus("public");
       if (!this.props.roomReducer.error) {
-        let newRooms = [];
-        newRooms = this.props.roomReducer.payload.map((r, i) => {
-          return {
-            ...r,
-            timestamp: this.returnDateFormat(r.createdAt || new Date()),
-          };
-        });
+        // let newRooms = [];
+        // newRooms = this.props.roomReducer.payload.map((r, i) => {
+        //   return {
+        //     ...r,
+        //     timestamp: this.returnDateFormat(r.createdAt || new Date()),
+        //   };
+        // });
         this.setState({
-          rooms: newRooms,
+          rooms: this.props.roomReducer.payload,
         });
       }
     } catch (error) {
@@ -67,15 +67,6 @@ class DashBoard extends Component {
       });
     }
   }
-  returnDateFormat = date => {
-    const newDate = new Date(date);
-    const result = newDate.toLocaleDateString("default", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-    });
-    return result.split("-").join(" ") || result;
-  };
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value,
@@ -136,7 +127,7 @@ class DashBoard extends Component {
                     subTitle={data.subTitle}
                     description={data.description}
                     author={data.userName}
-                    date={data.timestamp}
+                    date={data.createdAt || new Date()}
                   />
                 </Link>
               </Grid>

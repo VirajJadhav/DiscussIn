@@ -1,26 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
-const bcrypt = require("bcrypt");
-
-async function compareHashedPassword(password, dbpassword) {
-  try {
-    const compared = await bcrypt.compare(password, dbpassword);
-    return compared;
-  } catch (error) {
-    console.log(error.message);
-    return false;
-  }
-}
-
-async function returnHashedPassowrd(password) {
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    return hashedPassword;
-  } catch (error) {
-    console.log(error.message);
-    return password;
-  }
-}
+const { compareHashedPassword, returnHashedPassowrd } = require("../utils");
 
 router.route("/login").post(async (req, res) => {
   try {
@@ -80,34 +60,6 @@ router.route("/signup").post(async (req, res) => {
   } catch (error) {
     res.status(400).json({
       result: "User Sign up Failed !",
-    });
-  }
-});
-
-router.route("/verify/user/:userName").get(async (req, res) => {
-  try {
-    const userName = req.params.userName;
-    const user = await User.findOne({ userName });
-    res.status(200).json({
-      result: user !== null,
-    });
-  } catch (error) {
-    res.status(400).json({
-      result: "User check failed !",
-    });
-  }
-});
-
-router.route("/user/:userName").get(async (req, res) => {
-  try {
-    const userName = req.params.userName;
-    const user = await User.findOne({ userName });
-    res.status(200).json({
-      result: user === null ? {} : user,
-    });
-  } catch (error) {
-    res.status(400).json({
-      result: "Failed to fetch user data !",
     });
   }
 });

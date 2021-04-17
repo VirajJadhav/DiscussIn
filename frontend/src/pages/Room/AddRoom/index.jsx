@@ -72,6 +72,14 @@ class AddRoom extends Component {
           helperText: "You are not registered. You can add only public rooms.",
           checkedUser: true,
         });
+      } else {
+        await this.props.addRoom(data);
+        if (!this.props.roomReducer.loading) {
+          this.setState({
+            roomID: this.props.roomReducer.payload.roomID,
+          });
+          this.handleCopyModal();
+        }
       }
     } else {
       await this.props.addRoom(data);

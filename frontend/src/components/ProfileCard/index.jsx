@@ -71,24 +71,40 @@ export default function ProfileCard({
   firstName,
   lastName,
   email,
-  password,
+  updateProfile,
 }) {
   const classes = useStyles();
+  const [newFirstName, setnewFirstName] = useState(firstName);
+  const [newLastName, setnewLastName] = useState(lastName);
+  const [newEmail, setnewEmail] = useState(email);
 
   const [newPassword, setnewPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
 
   const onSubmit = event => {
     event.preventDefault();
+    event.persist();
     if (resetPassOpen) {
-      if (newPassword === confPassword) {
-        event.persist();
-      } else {
-        console.log("Confirm password not matched!!");
+      if (newPassword !== confPassword) {
+        alert("Please check your passwords !");
+        return;
       }
     }
 
-    console.log(userName, password);
+    const data = {
+      userName,
+      firstName: newFirstName,
+      lastName: newLastName,
+      email: newEmail,
+    };
+
+    if (newPassword !== "") {
+      data["password"] = newPassword;
+    }
+
+    updateProfile(data);
+
+    handelUpdateProfOpen();
   };
 
   const [updateProfOpen, setUpdateProfOpen] = useState(false);
@@ -189,7 +205,6 @@ export default function ProfileCard({
             <form
               onSubmit={onSubmit}
               className={classes.form}
-              noValidate
               style={{ display: updateProfOpen ? "block" : "none" }}
             >
               <Grid container spacing={1}>
@@ -199,7 +214,8 @@ export default function ProfileCard({
                     margin="normal"
                     required
                     fullWidth
-                    value={firstName}
+                    value={newFirstName}
+                    onChange={event => setnewFirstName(event.target.value)}
                     id="firstName"
                     label="First Name"
                     name="firstName"
@@ -212,7 +228,8 @@ export default function ProfileCard({
                     margin="normal"
                     required
                     fullWidth
-                    value={lastName}
+                    value={newLastName}
+                    onChange={event => setnewLastName(event.target.value)}
                     id="lastName"
                     label="Last Name"
                     name="lastName"
@@ -225,7 +242,8 @@ export default function ProfileCard({
                 margin="normal"
                 required
                 fullWidth
-                value={email}
+                value={newEmail}
+                onChange={event => setnewEmail(event.target.value)}
                 id="email"
                 label="Email Address"
                 name="email"
@@ -240,7 +258,6 @@ export default function ProfileCard({
                 <TextField
                   variant="outlined"
                   margin="normal"
-                  required
                   fullWidth
                   value={newPassword}
                   onChange={event => setnewPassword(event.target.value)}
@@ -253,7 +270,6 @@ export default function ProfileCard({
                 <TextField
                   variant="outlined"
                   margin="normal"
-                  required
                   fullWidth
                   value={confPassword}
                   onChange={event => setConfPassword(event.target.value)}

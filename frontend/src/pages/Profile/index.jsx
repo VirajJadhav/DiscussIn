@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getUserData } from "../../redux/UserRedux/action";
-import { Typography } from "@material-ui/core";
-import { NavBar, FullScreenDialog } from "../../components";
+import { getUserData, updateUser } from "../../redux/UserRedux/action";
+import { getRoomUserNameStatus } from "../../redux/RoomRedux/action";
+import { Container, TextField, Grid } from "@material-ui/core";
+import { Search as SearchIcon } from "@material-ui/icons";
+import { NavBar, Loading, RoomCard } from "../../components";
 import ProfileLayout from "./Layout";
 
 class Profile extends Component {
@@ -10,8 +13,11 @@ class Profile extends Component {
     super(props);
     this.state = {
       user: {},
+      rooms: [],
+      searchValue: "",
       open: false,
       loading: true,
+      roomLoading: true,
     };
   }
   async componentDidMount() {
@@ -22,14 +28,36 @@ class Profile extends Component {
         userName = locArray[2];
       }
       await this.props.getUserData(userName);
-      this.setState({
-        user: this.props.userReducer.payload,
-      });
+      const payload = this.props.userReducer.payload;
+      if (
+        !this.props.userReducer.loading &&
+        typeof payload !== "string" &&
+        payload.userName !== undefined
+      ) {
+        this.setState({
+          user: payload,
+          loading: false,
+        });
+        const data = {
+          userName: payload.userName,
+          status: "private",
+        };
+        await this.props.getRoomUserNameStatus(data);
+        if (!this.props.roomReducer.loading) {
+          this.setState({
+            rooms: this.props.roomReducer.payload,
+          });
+        }
+      } else {
+        alert("Invalid User Name !");
+        this.props.history.replace("/login");
+      }
     } catch (error) {
       console.log(error.message);
     } finally {
       this.setState({
-        loading: !this.state.loading,
+        roomLoading: false,
+        loading: false,
       });
     }
   }
@@ -38,29 +66,110 @@ class Profile extends Component {
       open: !this.state.open,
     });
   };
+  updateProfile = async data => {
+    let newUserData = { ...this.state.user };
+    newUserData["firstName"] = data.firstName;
+    newUserData["lastName"] = data.lastName;
+    newUserData["email"] = data.email;
+    if (data.password) {
+      newUserData["password"] = data.password;
+    }
+
+    await this.props.updateUser(newUserData);
+    if (!this.props.userReducer.loading) {
+      if (this.props.userReducer.error) {
+        alert(this.props.userReducer.message);
+      } else {
+        this.setState({
+          user: newUserData,
+        });
+      }
+    }
+  };
   render() {
-    const { open } = this.state;
+    const { rooms, searchValue, open, user, loading, roomLoading } = this.state;
+    let newRooms = [];
+    newRooms = rooms.filter(data => {
+      return data.title.toLowerCase().includes(searchValue);
+    });
     return (
       <div>
         <NavBar />
-        <FullScreenDialog
-          title="Private Rooms"
-          open={open}
-          handleDialog={this.handleDialog}
-        >
-          <Typography
+        {loading ? (
+          <Loading
+            isloading={loading}
             style={{
-              textAlign: "center",
-              margin: "1rem 0 1rem 0",
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "5rem",
             }}
-            variant="h6"
+          />
+        ) : (
+          <ProfileLayout
+            open={open}
+            userData={user}
+            handleDialog={this.handleDialog}
+            updateProfile={this.updateProfile}
           >
-            {`Private Rooms here`}
-          </Typography>
-        </FullScreenDialog>
-        <ProfileLayout handleDialog={this.handleDialog}>
-          <Typography variant="body1">{"Rooms will be here"}</Typography>
-        </ProfileLayout>
+            {roomLoading ? (
+              <Loading
+                isloading={roomLoading}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "4rem",
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  marginTop: "2rem",
+                }}
+              >
+                <Container>
+                  <TextField
+                    name="searchValue"
+                    onChange={this.handleChange}
+                    fullWidth
+                    placeholder="Search Title"
+                    style={{
+                      margin: "1rem 0 1rem 0",
+                    }}
+                    InputProps={{
+                      endAdornment: <SearchIcon />,
+                    }}
+                  />
+                </Container>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-evenly"
+                  alignItems="center"
+                >
+                  {newRooms.map((data, index) => (
+                    <Grid key={`room-${index}`} item>
+                      <Link
+                        style={{
+                          textDecoration: "none",
+                          cursor: "pointer",
+                        }}
+                        to={data.roomID ? `/join/${data.roomID}` : `/join/some`}
+                      >
+                        <RoomCard
+                          title={data.title}
+                          subTitle={data.subTitle}
+                          description={data.description}
+                          author={data.userName}
+                          date={data.createdAt || new Date()}
+                        />
+                      </Link>
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
+            )}
+          </ProfileLayout>
+        )}
       </div>
     );
   }
@@ -77,6 +186,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getUserData: userName => dispatch(getUserData(userName)),
+    getRoomUserNameStatus: data => dispatch(getRoomUserNameStatus(data)),
+    updateUser: data => dispatch(updateUser(data)),
   };
 };
 
