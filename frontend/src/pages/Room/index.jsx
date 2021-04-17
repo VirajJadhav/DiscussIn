@@ -10,23 +10,12 @@ class Room extends Component {
     this.state = {
       roomData: {},
       roomDataIndex: -1,
-      users: ["User 1", "User 2", "User 3", "User 4"],
-      title: "This is the title",
-      subTitle: "This is the sub-title",
-      description: "This is the description",
-      createdAt: "Thu Apr 8 2021",
-      messageList: [
-        {
-          position: "right",
-          message: "This message is from right",
-          messageDate: "Fri Apr 10 22:00",
-        },
-        {
-          position: "left",
-          message: "This message is from left",
-          messageDate: "Fri Apr 10 22:00",
-        },
-      ],
+      users: [""],
+      title: "",
+      subTitle: "",
+      description: "",
+      createdAt: "",
+      messageList: [],
       message: "",
       modalOpen: false,
       loading: true,
@@ -34,7 +23,7 @@ class Room extends Component {
     this.socketIO = global.config.socketIO;
     this.messagesEndRef = React.createRef();
     this.socketIO.on("chat-message", data => this.handleReceivedMessage(data));
-    this.socketIO.on("room-data", data => console.log(data));
+    this.socketIO.on("room-data", data => this.handleRoomUsers(data));
   }
   async componentDidMount() {
     try {
@@ -88,9 +77,35 @@ class Room extends Component {
 
       socketIO.emit("join-room", data);
 
-      socketIO.on("join-message", data => console.log(data));
+      socketIO.on("join-message", data => {
+        let prevList = [...this.state.messageList];
+        prevList.push({
+          message: data,
+        });
+        this.setState({
+          messageList: prevList,
+        });
+      });
 
-      socketIO.on("user-joined", data => console.log(data));
+      socketIO.on("user-joined", data => {
+        let prevList = [...this.state.messageList];
+        prevList.push({
+          message: data,
+        });
+        this.setState({
+          messageList: prevList,
+        });
+      });
+
+      socketIO.on("user-left", data => {
+        let prevList = [...this.state.messageList];
+        prevList.push({
+          message: data,
+        });
+        this.setState({
+          messageList: prevList,
+        });
+      });
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -102,6 +117,9 @@ class Room extends Component {
   }
   componentDidUpdate() {
     this.scrollToBottom();
+  }
+  componentWillUnmount() {
+    this.socketIO.close();
   }
   returnDateFormat = date => {
     let newDate = "";
@@ -176,6 +194,13 @@ class Room extends Component {
     });
   };
 
+  handleRoomUsers = data => {
+    let newUsers = data.map(user => user.userName);
+    this.setState({
+      users: newUsers,
+    });
+  };
+
   saveChat = event => {
     // console.log("saved chat");
   };
@@ -223,14 +248,28 @@ class Room extends Component {
             saveChat={this.saveChat}
           >
             {messageList.map((data, index) => {
-              return (
-                <Message
-                  key={index}
-                  position={data.position}
-                  message={data.message}
-                  messageDate={data.messageDate}
-                />
-              );
+              if (data.messageDate === undefined) {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      textAlign: "center",
+                      margin: "0.8rem 0 0.8rem 0",
+                    }}
+                  >
+                    &bull; {data.message} &bull;
+                  </div>
+                );
+              } else {
+                return (
+                  <Message
+                    key={index}
+                    position={data.position}
+                    message={data.message}
+                    messageDate={data.messageDate}
+                  />
+                );
+              }
             })}
           </RoomLayout>
         )}

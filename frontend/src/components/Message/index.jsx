@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { Divider, makeStyles, Typography } from "@material-ui/core";
 
 function checkProps(props) {
   if (props.position === "right") {
@@ -30,22 +30,35 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "white",
   },
   messageDate: {
-    textAlign: props => checkProps(props),
+    textAlign: props => (props.position === "right" ? "left" : "right"),
     margin: props =>
       props.position === "right" ? "0.5rem 0.5rem 0 0" : "0.5rem 0 0 0.5rem",
     fontSize: "0.9rem",
   },
+  sender: {
+    textAlign: props => checkProps(props),
+    fontSize: "0.8rem",
+  },
 }));
 
-export default function Message({ position, message, messageDate }) {
+export default function Message({ position, message, messageDate, sender }) {
   const classes = useStyles({ position });
 
   return (
     <div className={classes.root}>
       <div className={classes.messageContainer}>
-        <Typography variant="body1" className={classes.message}>
+        <div className={classes.message}>
           {message}
-        </Typography>
+          <Divider
+            style={{
+              margin: "0.5rem 0 0.5rem 0",
+              fontSize: "2rem",
+              fontWeight: "bold",
+            }}
+          />
+          <div className={classes.sender}>{sender ? sender : "Guest"}</div>
+        </div>
+
         <Typography variant="subtitle1" className={classes.messageDate}>
           {messageDate}
         </Typography>

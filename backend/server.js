@@ -32,17 +32,33 @@ httpServer.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
 
+const totalUsers = {};
+
 io.on("connection", socket => {
   socket.on("join-room", data => {
     const roomID = data.roomID;
+    const userName = data.userName || "Guest User";
+
+    if (totalUsers[roomID] === undefined) {
+      totalUsers[roomID] = new Set();
+      totalUsers[roomID].add({
+        userName,
+        id: socket.id,
+      });
+    } else {
+      totalUsers[roomID].add({
+        userName,
+        id: socket.id,
+      });
+    }
 
     socket.join(roomID);
 
-    socket.emit("join-message", "Welcome to Discuss In");
+    socket.emit("join-message", `Welcome, ${userName}`);
 
-    socket.broadcast.to(roomID).emit("user-joined", "A user joined !");
+    socket.broadcast.to(roomID).emit("user-joined", `${userName} joined`);
 
-    // socket.to(roomID).emit("room-data", "data");
+    io.to(roomID).emit("room-data", [...totalUsers[roomID]]);
   });
 
   socket.on("room-chat-message", data => {
@@ -51,5 +67,35 @@ io.on("connection", socket => {
     socket.broadcast.to(roomID).emit("chat-message", data);
   });
 
-  // socket.on("disconnect", () => {});
+  socket.on("disconnect", () => {
+    const id = socket.id;
+    let found = false,
+      roomID = null,
+      userName = "";
+    Object.keys(totalUsers).forEach(key => {
+      found = false;
+      if (totalUsers[key].size === 1) {
+        found = true;
+        delete totalUsers[key];
+      } else {
+        for (const ele of totalUsers[key]) {
+          if (ele.id === id) {
+            userName = ele.userName;
+            roomID = key;
+            found = true;
+            totalUsers[key].delete(ele);
+            break;
+          }
+        }
+      }
+      if (found) {
+        return;
+      }
+    });
+    if (found && totalUsers[roomID] !== undefined) {
+      socket.broadcast.to(roomID).emit("user-left", `${userName} left`);
+
+      socket.to(roomID).emit("room-data", [...totalUsers[roomID]]);
+    }
+  });
 });
