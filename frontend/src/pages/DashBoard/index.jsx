@@ -10,36 +10,7 @@ class DashBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rooms: [
-        // {
-        //   title: "First Title",
-        //   subTitle: "Topic Subtitle",
-        //   description: "This is the description",
-        //   author: "Author",
-        //   date: "Today",
-        // },
-        // {
-        //   title: "Second Title",
-        //   subTitle: "Topic Subtitle",
-        //   description: "This is the description",
-        //   author: "Author",
-        //   date: "Today",
-        // },
-        // {
-        //   title: "Third Title",
-        //   subTitle: "Topic Subtitle",
-        //   description: "This is the description",
-        //   author: "Author",
-        //   date: "Today",
-        // },
-        // {
-        //   title: "Fourth Title",
-        //   subTitle: "Topic Subtitle",
-        //   description: "This is the description",
-        //   author: "Author",
-        //   date: "Today",
-        // },
-      ],
+      rooms: [],
       searchValue: "",
       loading: true,
     };

@@ -31,8 +31,10 @@ class Room extends Component {
       modalOpen: false,
       loading: true,
     };
-
+    this.socketIO = global.config.socketIO;
     this.messagesEndRef = React.createRef();
+    this.socketIO.on("chat-message", data => this.handleReceivedMessage(data));
+    this.socketIO.on("room-data", data => console.log(data));
   }
   async componentDidMount() {
     try {
@@ -77,6 +79,18 @@ class Room extends Component {
           });
         }
       }
+
+      const socketIO = this.socketIO;
+
+      const data = {
+        roomID,
+      };
+
+      socketIO.emit("join-room", data);
+
+      socketIO.on("join-message", data => console.log(data));
+
+      socketIO.on("user-joined", data => console.log(data));
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -90,13 +104,22 @@ class Room extends Component {
     this.scrollToBottom();
   }
   returnDateFormat = date => {
-    const newDate = new Date(date);
+    let newDate = "";
+    if (date === true) {
+      newDate = new Date();
+    } else {
+      newDate = new Date(date);
+    }
     const result = newDate.toLocaleDateString("default", {
       month: "short",
       day: "2-digit",
       year: "numeric",
     });
     return result.split("-").join(" ") || result;
+  };
+  returnTimeFormat = () => {
+    const date = new Date();
+    return date.getHours() + ":" + date.getMinutes();
   };
   scrollToBottom = () => {
     this.messagesEndRef.current.scrollIntoView({
@@ -122,10 +145,18 @@ class Room extends Component {
       event.type === "click"
     ) {
       let prevList = [...this.state.messageList];
+      const messageDate =
+        this.returnDateFormat(true) + " " + this.returnTimeFormat();
       prevList.push({
         position: "right",
         message: this.state.message,
-        messageDate: "Fri Apr 10 22:00",
+        messageDate,
+      });
+      this.socketIO.emit("room-chat-message", {
+        roomID: this.state.roomData.roomID,
+        message: this.state.message,
+        position: "left",
+        messageDate,
       });
       this.setState({
         messageList: prevList,
@@ -133,6 +164,18 @@ class Room extends Component {
       });
     }
   };
+  handleReceivedMessage = data => {
+    let prevList = [...this.state.messageList];
+    prevList.push({
+      position: data.position,
+      message: data.message,
+      messageDate: data.messageDate,
+    });
+    this.setState({
+      messageList: prevList,
+    });
+  };
+
   saveChat = event => {
     // console.log("saved chat");
   };
@@ -149,6 +192,7 @@ class Room extends Component {
       message,
       loading,
     } = this.state;
+
     return (
       <div>
         <InfoModal
