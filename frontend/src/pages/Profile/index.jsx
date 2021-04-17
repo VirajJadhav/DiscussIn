@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getUserData } from "../../redux/AuthRedux/action";
+import { getUserData } from "../../redux/UserRedux/action";
 import { Typography } from "@material-ui/core";
 import { NavBar, FullScreenDialog } from "../../components";
 import ProfileLayout from "./Layout";
@@ -23,7 +23,7 @@ class Profile extends Component {
       }
       await this.props.getUserData(userName);
       this.setState({
-        user: this.props.authReducer.payload,
+        user: this.props.userReducer.payload,
       });
     } catch (error) {
       console.log(error.message);
@@ -70,6 +70,7 @@ const mapStateToProps = state => {
   return {
     authReducer: state.authReducer,
     roomReducer: state.roomReducer,
+    userReducer: state.userReducer,
   };
 };
 

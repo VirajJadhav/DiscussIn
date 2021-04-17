@@ -1,4 +1,4 @@
-import { AUTH_FAILURE, AUTH_REQUEST, AUTH_SUCCESS } from "./types";
+import { USER_FAILURE, USER_REQUEST, USER_SUCCESS } from "./types";
 
 const initialState = {
   loading: false,
@@ -7,29 +7,30 @@ const initialState = {
   payload: "",
 };
 
-export const authReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case AUTH_REQUEST:
+    case USER_REQUEST:
       return {
         ...initialState,
         loading: true,
       };
-    case AUTH_SUCCESS:
+    case USER_SUCCESS:
       return {
-        error: false,
+        ...state,
         loading: false,
         payload:
           action.payload !== undefined && action.payload !== null
             ? action.payload
-            : "Auth Success",
+            : "User Success",
+        error: false,
         message: "",
       };
-    case AUTH_FAILURE:
+    case USER_FAILURE:
       return {
         ...state,
         loading: false,
         error: true,
-        message: action.message || "Auth Error",
+        message: action.message || "User Error",
         payload: "",
       };
     default:

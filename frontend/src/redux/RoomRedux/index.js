@@ -11,7 +11,7 @@ export const roomReducer = (state = initialState, action) => {
   switch (action.type) {
     case ROOM_REQUEST:
       return {
-        ...state,
+        ...initialState,
         loading: true,
       };
     case ROOM_SUCCESS:
