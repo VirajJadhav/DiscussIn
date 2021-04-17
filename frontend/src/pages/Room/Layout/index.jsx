@@ -97,6 +97,7 @@ export default function RoomLayout({
   children,
   users,
   title,
+  status,
   createdAt,
   message,
   handleInfoModal,
@@ -145,31 +146,33 @@ export default function RoomLayout({
             </Grid>
             <Grid item>
               <Grid container>
-                <Grid item>
-                  <Hidden smDown>
-                    <Button
-                      aria-controls="simple-menu"
-                      aria-haspopup="true"
-                      onClick={saveChat}
-                      variant="contained"
-                      endIcon={<SaveIcon />}
-                      style={{
-                        marginRight: "1rem",
-                      }}
-                    >
-                      Save Chat
-                    </Button>
-                  </Hidden>
-                  <div onClick={saveChat} className={classes.saveChat}>
-                    <Tooltip title="Save Chat">
-                      <SaveIcon
+                {status === "private" ? (
+                  <Grid item>
+                    <Hidden smDown>
+                      <Button
+                        aria-controls="simple-menu"
+                        aria-haspopup="true"
+                        onClick={saveChat}
+                        variant="contained"
+                        endIcon={<SaveIcon />}
                         style={{
-                          fontSize: "1.8rem",
+                          marginRight: "1rem",
                         }}
-                      />
-                    </Tooltip>
-                  </div>
-                </Grid>
+                      >
+                        Save Chat
+                      </Button>
+                    </Hidden>
+                    <div onClick={saveChat} className={classes.saveChat}>
+                      <Tooltip title="Save Chat">
+                        <SaveIcon
+                          style={{
+                            fontSize: "1.8rem",
+                          }}
+                        />
+                      </Tooltip>
+                    </div>
+                  </Grid>
+                ) : null}
                 <Grid item>
                   <div
                     style={{

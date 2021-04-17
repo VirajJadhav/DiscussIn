@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   messageContainer: {
     float: props => checkProps(props),
     clear: props => checkProps(props),
-    maxWidth: "45vw",
+    maxWidth: "48vw",
   },
   message: {
     padding: theme.spacing(1.5),

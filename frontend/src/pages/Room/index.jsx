@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { InfoModal, Loading, Message } from "../../components";
 import RoomLayout from "./Layout";
 import { getRoom } from "../../redux/RoomRedux/action";
+import { saveMessageChat } from "../../redux/MessageRedux/action";
 
 class Room extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class Room extends Component {
     this.state = {
       roomData: {},
       roomDataIndex: -1,
-      users: [""],
+      users: [],
       title: "",
       subTitle: "",
       description: "",
@@ -46,7 +47,6 @@ class Room extends Component {
           this.setState({
             roomData: data,
             roomDataIndex: index,
-            users: data.members,
             title: data.title,
             subTitle: data.subTitle,
             description: data.description,
@@ -60,7 +60,6 @@ class Room extends Component {
         if (typeof data === "object" && data !== null) {
           this.setState({
             roomData: data,
-            users: data.members,
             title: data.title,
             subTitle: data.subTitle,
             description: data.description,
@@ -79,8 +78,11 @@ class Room extends Component {
 
       socketIO.on("join-message", data => {
         let prevList = [...this.state.messageList];
+        const messageDate =
+          this.returnDateFormat(true) + " " + this.returnTimeFormat();
         prevList.push({
           message: data,
+          messageDate,
         });
         this.setState({
           messageList: prevList,
@@ -89,8 +91,11 @@ class Room extends Component {
 
       socketIO.on("user-joined", data => {
         let prevList = [...this.state.messageList];
+        const messageDate =
+          this.returnDateFormat(true) + " " + this.returnTimeFormat();
         prevList.push({
           message: data,
+          messageDate,
         });
         this.setState({
           messageList: prevList,
@@ -201,8 +206,17 @@ class Room extends Component {
     });
   };
 
-  saveChat = event => {
-    // console.log("saved chat");
+  saveChat = async () => {
+    let messageList = this.state.messageList.map((message, index) => {
+      return {
+        ...message,
+        roomID: this.state.roomData.roomID,
+      };
+    });
+
+    // TODO: logic for only author allowed to save chat
+
+    await this.props.saveMessageChat(messageList);
   };
 
   render() {
@@ -216,6 +230,7 @@ class Room extends Component {
       messageList,
       message,
       loading,
+      roomData,
     } = this.state;
 
     return (
@@ -240,6 +255,7 @@ class Room extends Component {
           <RoomLayout
             users={users}
             title={title}
+            status={roomData.status}
             createdAt={createdAt}
             message={message}
             handleInfoModal={this.handleInfoModal}
@@ -248,7 +264,7 @@ class Room extends Component {
             saveChat={this.saveChat}
           >
             {messageList.map((data, index) => {
-              if (data.messageDate === undefined) {
+              if (data.position === undefined) {
                 return (
                   <div
                     key={index}
@@ -283,12 +299,14 @@ class Room extends Component {
 const mapStateToProps = state => {
   return {
     roomReducer: state.roomReducer,
+    messageReducer: state.messageReducer,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getRoom: roomID => dispatch(getRoom(roomID)),
+    saveMessageChat: messageList => dispatch(saveMessageChat(messageList)),
   };
 };
 

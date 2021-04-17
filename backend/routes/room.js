@@ -12,7 +12,6 @@ router.route("/add").post(async (req, res) => {
       description,
       status,
       roomID: nanoid(),
-      members: [],
       userName: userName || "",
     };
     const newRoom = new Room(data);
