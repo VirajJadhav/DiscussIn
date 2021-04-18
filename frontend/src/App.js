@@ -8,6 +8,7 @@ import {
   JoinRoom,
 } from "./pages";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 
@@ -35,10 +36,10 @@ function App() {
             path="/joinRoom"
             render={props => <JoinRoom {...props} />}
           />
-          <Route
-            exact
+          <ProtectedRoute
+            exact={true}
             path="/profile/:userName"
-            render={props => <Profile {...props} />}
+            component={props => <Profile {...props} />}
           />
         </Switch>
       </Router>

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import {
   AppBar,
@@ -20,6 +21,7 @@ import {
   TransitEnterexit as EnterIcon,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,6 +78,10 @@ ScrollTop.propTypes = {
 export default function NavBar(props) {
   const classes = useStyles();
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const authReducer = useSelector(state => state.authReducer);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -85,6 +91,39 @@ export default function NavBar(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const logout = () => {
+    const token = localStorage.getItem("tokendiscussin");
+    if (token) {
+      localStorage.removeItem("tokendiscussin");
+    }
+    window.location.href = "/login";
+  };
+
+  useEffect(() => {
+    async function verifyLoggedIn() {
+      const payload = authReducer.payload;
+      const token = localStorage.getItem("tokendiscussin");
+      if (typeof payload !== "string" && payload.userName !== undefined) {
+        setIsLoggedIn(true);
+      } else if (token) {
+        try {
+          const backendURL = global.config.backendURL;
+          const response = await axios.post(`${backendURL}/auth/verify`, {
+            headers: { tokendiscussin: token },
+          });
+          if (response.data.result) {
+            setIsLoggedIn(true);
+          } else {
+            setIsLoggedIn(false);
+          }
+        } catch (error) {
+          setIsLoggedIn(false);
+        }
+      }
+    }
+    verifyLoggedIn();
+  }, []);
 
   return (
     <div>
@@ -154,16 +193,22 @@ export default function NavBar(props) {
               </Link>
             </Menu>
           </div>
-          <Link
-            style={{
-              textDecoration: "none",
-            }}
-            to="/login"
-          >
-            <Button variant="contained" endIcon={<VpnKey />}>
-              Login
+          {isLoggedIn ? (
+            <Button onClick={logout} variant="contained" endIcon={<VpnKey />}>
+              Logout
             </Button>
-          </Link>
+          ) : (
+            <Link
+              style={{
+                textDecoration: "none",
+              }}
+              to="/login"
+            >
+              <Button variant="contained" endIcon={<VpnKey />}>
+                Login
+              </Button>
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
       <Toolbar id="back-to-top-anchor" />

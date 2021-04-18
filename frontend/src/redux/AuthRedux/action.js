@@ -9,9 +9,11 @@ export const login = data => async dispatch => {
   });
   try {
     const response = await axios.post(`${backendURL}/auth/login`, data);
+    const token = response.data.result.token;
+    localStorage.setItem("tokendiscussin", token);
     dispatch({
       type: AUTH_SUCCESS,
-      payload: response.data.result,
+      payload: response.data.result.user,
     });
   } catch (error) {
     dispatch({

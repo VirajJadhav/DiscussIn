@@ -1,6 +1,27 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const { compareHashedPassword, returnHashedPassowrd } = require("../utils");
+
+router.route("/verify").post(async (req, res) => {
+  const token = req.body.headers["tokendiscussin"];
+  if (!token) {
+    res.status(401).json({
+      result: false,
+    });
+  }
+  try {
+    jwt.verify(token, config.get("jwtDiscussInSecret"));
+    res.status(200).json({
+      result: true,
+    });
+  } catch (error) {
+    res.status(400).json({
+      result: false,
+    });
+  }
+});
 
 router.route("/login").post(async (req, res) => {
   try {
@@ -11,9 +32,19 @@ router.route("/login").post(async (req, res) => {
       compareHashedPassword(password, parsedUser.password)
         .then(result => {
           if (result) {
-            res.status(200).json({
-              result: parsedUser,
-            });
+            jwt.sign(
+              { userID: parsedUser._id },
+              config.get("jwtDiscussInSecret"),
+              { expiresIn: 36000 },
+              (err, token) => {
+                if (err) {
+                  throw err;
+                }
+                res.status(200).json({
+                  result: { user: parsedUser, token },
+                });
+              }
+            );
           } else
             res.status(403).json({
               result: "Please check your password !",
