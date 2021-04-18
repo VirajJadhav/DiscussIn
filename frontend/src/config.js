@@ -1,10 +1,4 @@
-import io from "socket.io-client";
-
-const socketIO = io(`http://localhost:5000/`);
-
-global.config = {
+module.exports = global.config = {
   backendURL: `http://localhost:5000/api`,
-  socketIO,
+  socketURL: `http://localhost:5000/`,
 };
-
-export default global.config;

@@ -112,7 +112,7 @@ export default function RoomLayout({
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
   const goBack = () => {
-    history.replace("/");
+    history.push("/");
   };
 
   const handleMobileDrawer = () => {

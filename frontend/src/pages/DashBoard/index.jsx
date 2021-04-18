@@ -91,7 +91,7 @@ class DashBoard extends Component {
                     textDecoration: "none",
                     cursor: "pointer",
                   }}
-                  to={data.roomID ? `/join/${data.roomID}` : `/join/some`}
+                  to={data.roomID ? `/join/${data.roomID}` : `/addRoom`}
                 >
                   <RoomCard
                     title={data.title}

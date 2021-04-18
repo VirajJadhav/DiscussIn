@@ -4,6 +4,7 @@ import { InfoModal, Loading, Message } from "../../components";
 import RoomLayout from "./Layout";
 import { getRoom } from "../../redux/RoomRedux/action";
 import { saveMessageChat } from "../../redux/MessageRedux/action";
+import io from "socket.io-client";
 
 class Room extends Component {
   constructor(props) {
@@ -21,10 +22,8 @@ class Room extends Component {
       modalOpen: false,
       loading: true,
     };
-    this.socketIO = global.config.socketIO;
+    this.socketIO = io.connect(global.config.socketURL);
     this.messagesEndRef = React.createRef();
-    this.socketIO.on("chat-message", data => this.handleReceivedMessage(data));
-    this.socketIO.on("room-data", data => this.handleRoomUsers(data));
   }
   async componentDidMount() {
     try {
@@ -34,8 +33,9 @@ class Room extends Component {
         roomID = locArray[2];
       }
 
+      let index = -1;
+
       if (Array.isArray(this.props.roomReducer.payload) && roomID !== "") {
-        let index = -1;
         for (let i = 0; i < this.props.roomReducer.payload.length; i++) {
           if (this.props.roomReducer.payload[i].roomID === roomID) {
             index = i;
@@ -54,7 +54,7 @@ class Room extends Component {
           });
         }
       }
-      if (roomID !== "" && this.state.roomDataIndex === -1) {
+      if (roomID !== "" && index === -1) {
         await this.props.getRoom(roomID);
         let data = this.props.roomReducer.payload;
         if (typeof data === "object" && data !== null) {
@@ -75,6 +75,14 @@ class Room extends Component {
       };
 
       socketIO.emit("join-room", data);
+
+      this.socketIO.on("chat-message", data => {
+        this.handleReceivedMessage(data);
+      });
+
+      this.socketIO.on("room-data", data => {
+        this.handleRoomUsers(data);
+      });
 
       socketIO.on("join-message", data => {
         let prevList = [...this.state.messageList];
@@ -232,7 +240,6 @@ class Room extends Component {
       loading,
       roomData,
     } = this.state;
-
     return (
       <div>
         <InfoModal
