@@ -17,25 +17,27 @@ class JoinRoom extends Component {
       [event.target.name]: event.target.value,
     });
   };
-  onSubmit = event => {
+  onSubmit = async event => {
     event.preventDefault();
     event.persist();
 
     const { roomID, userName } = this.state;
     const { roomReducer } = this.props;
     if (userName === "" && roomReducer.payload === "") {
-      this.props.getRoom(roomID);
+      await this.props.getRoom(roomID);
     } else {
       const data = {
         roomID,
         userName,
       };
-      const response = this.props.checkRoomUser(data);
-      response
-        .then(() => {
-          console.log(this.props.roomReducer);
-        })
-        .catch(error => console.log(error.message));
+      await this.props.checkRoomUser(data);
+      if (!this.props.roomReducer.loading) {
+        if (this.props.roomReducer.error) {
+          alert(this.props.roomReducer.message);
+        } else {
+          this.props.history.push(`/join/${roomID}`);
+        }
+      }
     }
   };
   render() {

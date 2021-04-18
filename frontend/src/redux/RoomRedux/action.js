@@ -63,7 +63,7 @@ export const checkRoomUser = data => async dispatch => {
   });
   try {
     const response = await axios.get(
-      `${backendURL}/room/${data.roomID}/${data.userName}`
+      `${backendURL}/room/userName/${data.roomID}/${data.userName}`
     );
     dispatch({
       type: ROOM_SUCCESS,

@@ -6,20 +6,38 @@ const { compareHashedPassword, returnHashedPassowrd } = require("../utils");
 
 router.route("/verify").post(async (req, res) => {
   const token = req.body.headers["tokendiscussin"];
+  const userData = req.body.headers["userid"];
   if (!token) {
     res.status(401).json({
       result: false,
     });
-  }
-  try {
-    jwt.verify(token, config.get("jwtDiscussInSecret"));
-    res.status(200).json({
-      result: true,
-    });
-  } catch (error) {
-    res.status(400).json({
-      result: false,
-    });
+  } else {
+    try {
+      const decoded = jwt.verify(token, config.get("jwtDiscussInSecret"));
+      if (userData) {
+        res.status(200).json({
+          result: {
+            userName: decoded.userID,
+          },
+          error: false,
+        });
+      } else {
+        res.status(200).json({
+          result: true,
+        });
+      }
+    } catch (error) {
+      if (userData) {
+        res.status(400).json({
+          result: {},
+          error: true,
+        });
+      } else {
+        res.status(400).json({
+          result: false,
+        });
+      }
+    }
   }
 });
 
@@ -33,7 +51,7 @@ router.route("/login").post(async (req, res) => {
         .then(result => {
           if (result) {
             jwt.sign(
-              { userID: parsedUser._id },
+              { userID: parsedUser.userName },
               config.get("jwtDiscussInSecret"),
               { expiresIn: 36000 },
               (err, token) => {

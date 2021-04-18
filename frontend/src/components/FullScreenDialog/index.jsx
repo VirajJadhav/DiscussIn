@@ -7,6 +7,7 @@ import {
   Typography,
   Slide,
   makeStyles,
+  useTheme,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -40,9 +41,16 @@ export default function FullScreenDialog({
 }) {
   const classes = useStyles();
 
+  const theme = useTheme();
+
   return (
     <div>
       <Dialog
+        PaperProps={{
+          style: {
+            backgroundColor: theme.palette.freezePurple.main,
+          },
+        }}
         fullScreen
         open={open}
         onClose={handleDialog}
@@ -63,7 +71,13 @@ export default function FullScreenDialog({
             </Typography>
           </Toolbar>
         </AppBar>
-        {children}
+        <div
+          style={{
+            marginTop: "-1rem",
+          }}
+        >
+          {children}
+        </div>
       </Dialog>
     </div>
   );

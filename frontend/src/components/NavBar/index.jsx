@@ -12,13 +12,19 @@ import {
   Button,
   Menu,
   MenuItem,
+  Avatar,
+  Tooltip,
 } from "@material-ui/core";
+import { pink } from "@material-ui/core/colors";
 import {
   KeyboardArrowUp as KeyboardArrowUpIcon,
   VpnKey,
   MeetingRoom,
   Add as AddIcon,
   TransitEnterexit as EnterIcon,
+  Person,
+  ExitToApp as LogoutIcon,
+  AccountCircle,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -32,6 +38,10 @@ const useStyles = makeStyles(theme => ({
   },
   appbar: {
     backgroundColor: theme.palette.greyBlueShade.main,
+  },
+  pink: {
+    color: theme.palette.getContrastText(pink[500]),
+    backgroundColor: pink[500],
   },
 }));
 
@@ -78,11 +88,17 @@ ScrollTop.propTypes = {
 export default function NavBar(props) {
   const classes = useStyles();
 
+  const [userName, setUserName] = useState("");
+
+  const [loading, setLoading] = useState(true);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const authReducer = useSelector(state => state.authReducer);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [anchorProfileEl, setAnchorProfileEl] = React.useState(null);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -90,6 +106,14 @@ export default function NavBar(props) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleProfile = event => {
+    setAnchorProfileEl(event.currentTarget);
+  };
+
+  const handleProfileClose = event => {
+    setAnchorProfileEl(null);
   };
 
   const logout = () => {
@@ -110,9 +134,10 @@ export default function NavBar(props) {
         try {
           const backendURL = global.config.backendURL;
           const response = await axios.post(`${backendURL}/auth/verify`, {
-            headers: { tokendiscussin: token },
+            headers: { tokendiscussin: token, userid: true },
           });
-          if (response.data.result) {
+          if (!response.data.error) {
+            setUserName(response.data.result.userName);
             setIsLoggedIn(true);
           } else {
             setIsLoggedIn(false);
@@ -121,6 +146,7 @@ export default function NavBar(props) {
           setIsLoggedIn(false);
         }
       }
+      setLoading(false);
     }
     verifyLoggedIn();
   }, []);
@@ -193,10 +219,57 @@ export default function NavBar(props) {
               </Link>
             </Menu>
           </div>
-          {isLoggedIn ? (
-            <Button onClick={logout} variant="contained" endIcon={<VpnKey />}>
-              Logout
-            </Button>
+          {loading ? null : isLoggedIn ? (
+            <div>
+              <div
+                aria-controls="profile-menu"
+                aria-haspopup="true"
+                onClick={handleProfile}
+                style={{
+                  cursor: "pointer",
+                }}
+              >
+                <Tooltip title="Profile">
+                  <Avatar className={classes.pink}>
+                    <Person />
+                  </Avatar>
+                </Tooltip>
+              </div>
+              <Menu
+                id="profile-menu"
+                anchorEl={anchorProfileEl}
+                keepMounted
+                open={Boolean(anchorProfileEl)}
+                onClose={handleProfileClose}
+              >
+                <Link
+                  to={`/profile/${userName}`}
+                  style={{
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
+                >
+                  <MenuItem>
+                    Profile{" "}
+                    <AccountCircle
+                      style={{
+                        marginLeft: "0.5rem",
+                      }}
+                    />
+                  </MenuItem>
+                </Link>
+                <div onClick={logout}>
+                  <MenuItem>
+                    Logout{" "}
+                    <LogoutIcon
+                      style={{
+                        marginLeft: "0.5rem",
+                      }}
+                    />
+                  </MenuItem>
+                </div>
+              </Menu>
+            </div>
           ) : (
             <Link
               style={{
