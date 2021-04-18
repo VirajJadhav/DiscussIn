@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Form({ roomID, userName, onSubmit, handleChange }) {
+function Form({ roomID, userName, password, onSubmit, handleChange }) {
   const classes = useStyles();
 
   const state = useSelector(state => state.roomReducer);
@@ -98,22 +98,36 @@ function Form({ roomID, userName, onSubmit, handleChange }) {
                 autoComplete="discussin-roomID"
               />
               {state.payload !== "" && state.payload.status === "private" ? (
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  value={userName}
-                  onChange={handleChange}
-                  id="userName"
-                  label="Username"
-                  name="userName"
-                  // error={userName === ""}
-                  helperText={
-                    "This room is private. Please enter your username or register on DiscussIn !"
-                  }
-                  autoComplete="discussin-userName"
-                />
+                <div>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    value={userName}
+                    onChange={handleChange}
+                    id="userName"
+                    label="Username"
+                    name="userName"
+                    helperText={
+                      "This room is private. Please enter your username or register on DiscussIn !"
+                    }
+                    autoComplete="discussin-userName"
+                  />
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    value={password}
+                    onChange={handleChange}
+                    id="password"
+                    label="Password"
+                    name="password"
+                    type="password"
+                    autoComplete="discussin-password"
+                  />
+                </div>
               ) : null}
               <Button
                 type="submit"

@@ -112,7 +112,7 @@ export default function NavBar(props) {
     setAnchorProfileEl(event.currentTarget);
   };
 
-  const handleProfileClose = event => {
+  const handleProfileClose = () => {
     setAnchorProfileEl(null);
   };
 
@@ -129,6 +129,7 @@ export default function NavBar(props) {
       const payload = authReducer.payload;
       const token = localStorage.getItem("tokendiscussin");
       if (typeof payload !== "string" && payload.userName !== undefined) {
+        setUserName(payload.userName);
         setIsLoggedIn(true);
       } else if (token) {
         try {

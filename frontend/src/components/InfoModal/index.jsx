@@ -22,6 +22,7 @@ export default function InfoModal({
   title,
   subTitle,
   description,
+  status,
 }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
@@ -63,6 +64,14 @@ export default function InfoModal({
         <DialogContent dividers={true}>
           <DialogContentText>{description}</DialogContentText>
         </DialogContent>
+        {status === "private" ? (
+          <DialogContent>
+            <DialogContentText>
+              {"* Only admin can save room messages"}
+            </DialogContentText>
+          </DialogContent>
+        ) : null}
+
         <DialogActions>
           <Button
             variant="contained"

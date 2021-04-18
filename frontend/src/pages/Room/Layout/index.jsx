@@ -104,6 +104,7 @@ export default function RoomLayout({
   handleSendMessage,
   handleChange,
   saveChat,
+  userIsValid,
 }) {
   const classes = useStyles();
 
@@ -146,7 +147,7 @@ export default function RoomLayout({
             </Grid>
             <Grid item>
               <Grid container>
-                {status === "private" ? (
+                {status === "private" && userIsValid ? (
                   <Grid item>
                     <Hidden smDown>
                       <Button

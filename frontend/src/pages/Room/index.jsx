@@ -6,13 +6,15 @@ import { getRoom } from "../../redux/RoomRedux/action";
 import { saveMessageChat } from "../../redux/MessageRedux/action";
 import io from "socket.io-client";
 import { Redirect } from "react-router";
+import axios from "axios";
 
 class Room extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userName: "Guest User",
+      userIsValid: false,
       roomData: {},
-      roomDataIndex: -1,
       users: [],
       title: "",
       subTitle: "",
@@ -22,13 +24,16 @@ class Room extends Component {
       message: "",
       modalOpen: false,
       loading: true,
-      redirect: false,
+      redirectAdd: false,
+      redirectJoin: false,
     };
     this.socketIO = null;
     this.messagesEndRef = React.createRef();
   }
   async componentDidMount() {
-    let isMounted = true;
+    let isMounted = true,
+      userName = "",
+      isPrivate;
     try {
       const locArray = this.props.location.pathname.split("/");
       let roomID = "";
@@ -47,9 +52,9 @@ class Room extends Component {
         }
         if (index !== -1) {
           let data = this.props.roomReducer.payload[index];
+          isPrivate = data.status === "private";
           this.setState({
             roomData: data,
-            roomDataIndex: index,
             title: data.title,
             subTitle: data.subTitle,
             description: data.description,
@@ -62,6 +67,8 @@ class Room extends Component {
         let data = this.props.roomReducer.payload;
         if (typeof data === "object" && data !== null) {
           index = 0;
+          userName = data.userName;
+          isPrivate = data.status === "private";
           this.setState({
             roomData: data,
             title: data.title,
@@ -72,18 +79,46 @@ class Room extends Component {
         }
       }
 
-      if (index) {
+      if (index === -1) {
         isMounted = false;
         this.setState({
-          redirect: true,
+          redirectAdd: true,
         });
       } else {
+        let foundUser = false;
+        try {
+          const backendURL = global.config.backendURL;
+          const token = localStorage.getItem("tokendiscussin");
+          const response = await axios.post(`${backendURL}/auth/verify`, {
+            headers: { tokendiscussin: token, userid: true },
+          });
+
+          if (!response.data.error) {
+            foundUser = true;
+            userName = response.data.result.userName;
+            this.setState({
+              userIsValid: true,
+              userName: response.data.result.userName,
+            });
+          }
+        } catch (error) {
+          // console.log(error.message);
+          if (isPrivate) {
+            isMounted = false;
+            this.setState({
+              redirectJoin: true,
+            });
+            return;
+          }
+        }
+
         this.socketIO = io.connect(global.config.socketURL);
 
         const socketIO = this.socketIO;
 
         const data = {
           roomID,
+          userName: foundUser ? userName : null,
         };
 
         socketIO.emit("join-room", data);
@@ -205,12 +240,14 @@ class Room extends Component {
         position: "right",
         message: this.state.message,
         messageDate,
+        userName: this.state.userName,
       });
       this.socketIO.emit("room-chat-message", {
         roomID: this.state.roomData.roomID,
         message: this.state.message,
         position: "left",
         messageDate,
+        userName: this.state.userName,
       });
       this.setState({
         messageList: prevList,
@@ -224,6 +261,7 @@ class Room extends Component {
       position: data.position,
       message: data.message,
       messageDate: data.messageDate,
+      userName: data.userName,
     });
     this.setState({
       messageList: prevList,
@@ -245,14 +283,15 @@ class Room extends Component {
       };
     });
 
-    // TODO: logic for only author allowed to save chat
-
     await this.props.saveMessageChat(messageList);
   };
 
   render() {
-    if (this.state.redirect) {
+    if (this.state.redirectAdd) {
       return <Redirect to="/addRoom" />;
+    }
+    if (this.state.redirectJoin) {
+      return <Redirect to="/joinRoom" />;
     }
     const {
       users,
@@ -265,6 +304,7 @@ class Room extends Component {
       message,
       loading,
       roomData,
+      userIsValid,
     } = this.state;
     return (
       <div>
@@ -274,6 +314,7 @@ class Room extends Component {
           title={title}
           subTitle={subTitle}
           description={description}
+          status={roomData.status}
         />
         {loading ? (
           <Loading
@@ -289,6 +330,7 @@ class Room extends Component {
             users={users}
             title={title}
             status={roomData.status}
+            userIsValid={userIsValid}
             createdAt={createdAt}
             message={message}
             handleInfoModal={this.handleInfoModal}
@@ -316,6 +358,7 @@ class Room extends Component {
                     position={data.position}
                     message={data.message}
                     messageDate={data.messageDate}
+                    sender={data.userName}
                   />
                 );
               }

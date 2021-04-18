@@ -56,7 +56,7 @@ export default function Message({ position, message, messageDate, sender }) {
               fontWeight: "bold",
             }}
           />
-          <div className={classes.sender}>{sender ? sender : "Guest"}</div>
+          <div className={classes.sender}>{sender ? sender : "Guest User"}</div>
         </div>
 
         <Typography variant="subtitle1" className={classes.messageDate}>

@@ -21,6 +21,7 @@ class Profile extends Component {
     };
   }
   async componentDidMount() {
+    let isMounted = true;
     try {
       const locArray = this.props.location.pathname.split("/");
       let userName = "";
@@ -49,18 +50,26 @@ class Profile extends Component {
           });
         }
       } else {
+        isMounted = false;
         alert("Invalid User Name !");
         this.props.history.replace("/login");
       }
     } catch (error) {
       console.log(error.message);
     } finally {
-      this.setState({
-        roomLoading: false,
-        loading: false,
-      });
+      if (isMounted) {
+        this.setState({
+          roomLoading: false,
+          loading: false,
+        });
+      }
     }
   }
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
   handleDialog = () => {
     this.setState({
       open: !this.state.open,
