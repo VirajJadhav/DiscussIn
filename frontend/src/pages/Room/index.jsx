@@ -5,6 +5,7 @@ import RoomLayout from "./Layout";
 import { getRoom } from "../../redux/RoomRedux/action";
 import { saveMessageChat } from "../../redux/MessageRedux/action";
 import io from "socket.io-client";
+import { Redirect } from "react-router";
 
 class Room extends Component {
   constructor(props) {
@@ -21,11 +22,13 @@ class Room extends Component {
       message: "",
       modalOpen: false,
       loading: true,
+      redirect: false,
     };
-    this.socketIO = io.connect(global.config.socketURL);
+    this.socketIO = null;
     this.messagesEndRef = React.createRef();
   }
   async componentDidMount() {
+    let isMounted = true;
     try {
       const locArray = this.props.location.pathname.split("/");
       let roomID = "";
@@ -35,7 +38,7 @@ class Room extends Component {
 
       let index = -1;
 
-      if (Array.isArray(this.props.roomReducer.payload) && roomID !== "") {
+      if (Array.isArray(this.props.roomReducer.payload)) {
         for (let i = 0; i < this.props.roomReducer.payload.length; i++) {
           if (this.props.roomReducer.payload[i].roomID === roomID) {
             index = i;
@@ -54,10 +57,11 @@ class Room extends Component {
           });
         }
       }
-      if (roomID !== "" && index === -1) {
+      if (index === -1) {
         await this.props.getRoom(roomID);
         let data = this.props.roomReducer.payload;
         if (typeof data === "object" && data !== null) {
+          index = 0;
           this.setState({
             roomData: data,
             title: data.title,
@@ -68,71 +72,88 @@ class Room extends Component {
         }
       }
 
-      const socketIO = this.socketIO;
-
-      const data = {
-        roomID,
-      };
-
-      socketIO.emit("join-room", data);
-
-      this.socketIO.on("chat-message", data => {
-        this.handleReceivedMessage(data);
-      });
-
-      this.socketIO.on("room-data", data => {
-        this.handleRoomUsers(data);
-      });
-
-      socketIO.on("join-message", data => {
-        let prevList = [...this.state.messageList];
-        const messageDate =
-          this.returnDateFormat(true) + " " + this.returnTimeFormat();
-        prevList.push({
-          message: data,
-          messageDate,
-        });
+      if (index) {
+        isMounted = false;
         this.setState({
-          messageList: prevList,
+          redirect: true,
         });
-      });
+      } else {
+        this.socketIO = io.connect(global.config.socketURL);
 
-      socketIO.on("user-joined", data => {
-        let prevList = [...this.state.messageList];
-        const messageDate =
-          this.returnDateFormat(true) + " " + this.returnTimeFormat();
-        prevList.push({
-          message: data,
-          messageDate,
-        });
-        this.setState({
-          messageList: prevList,
-        });
-      });
+        const socketIO = this.socketIO;
 
-      socketIO.on("user-left", data => {
-        let prevList = [...this.state.messageList];
-        prevList.push({
-          message: data,
+        const data = {
+          roomID,
+        };
+
+        socketIO.emit("join-room", data);
+
+        socketIO.on("chat-message", data => {
+          this.handleReceivedMessage(data);
         });
-        this.setState({
-          messageList: prevList,
+
+        socketIO.on("room-data", data => {
+          this.handleRoomUsers(data);
         });
-      });
+
+        socketIO.on("join-message", data => {
+          let prevList = [...this.state.messageList];
+          const messageDate =
+            this.returnDateFormat(true) + " " + this.returnTimeFormat();
+          prevList.push({
+            message: data,
+            messageDate,
+          });
+          this.setState({
+            messageList: prevList,
+          });
+        });
+
+        socketIO.on("user-joined", data => {
+          let prevList = [...this.state.messageList];
+          const messageDate =
+            this.returnDateFormat(true) + " " + this.returnTimeFormat();
+          prevList.push({
+            message: data,
+            messageDate,
+          });
+          this.setState({
+            messageList: prevList,
+          });
+        });
+
+        socketIO.on("user-left", data => {
+          let prevList = [...this.state.messageList];
+          prevList.push({
+            message: data,
+          });
+          this.setState({
+            messageList: prevList,
+          });
+        });
+      }
     } catch (error) {
       console.log(error.message);
     } finally {
-      this.setState({
-        loading: !this.state.loading,
-      });
-      this.scrollToBottom();
+      if (isMounted) {
+        this.setState({
+          loading: !this.state.loading,
+        });
+        this.scrollToBottom();
+      }
     }
   }
   componentDidUpdate() {
     this.scrollToBottom();
   }
   componentWillUnmount() {
-    this.socketIO.close();
+    try {
+      if (this.socketIO) {
+        this.socketIO.close();
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   }
   returnDateFormat = date => {
     let newDate = "";
@@ -153,9 +174,11 @@ class Room extends Component {
     return date.getHours() + ":" + date.getMinutes();
   };
   scrollToBottom = () => {
-    this.messagesEndRef.current.scrollIntoView({
-      behaviour: "smooth",
-    });
+    if (this.messagesEndRef.current) {
+      this.messagesEndRef.current.scrollIntoView({
+        behaviour: "smooth",
+      });
+    }
   };
   handleInfoModal = () => {
     this.setState({
@@ -228,6 +251,9 @@ class Room extends Component {
   };
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to="/addRoom" />;
+    }
     const {
       users,
       title,
