@@ -14,9 +14,6 @@ class JoinRoom extends Component {
       password: "",
     };
   }
-  async componentDidMount() {
-    await this.props.clearRoomState();
-  }
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value,
@@ -25,6 +22,8 @@ class JoinRoom extends Component {
   onSubmit = async event => {
     event.preventDefault();
     event.persist();
+
+    await this.props.clearRoomState();
 
     const { roomID, userName, password } = this.state;
     const { roomReducer } = this.props;

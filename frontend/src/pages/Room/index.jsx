@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { InfoModal, Loading, Message } from "../../components";
 import RoomLayout from "./Layout";
+import FormDialog from "./Dialog";
 import { getRoom } from "../../redux/RoomRedux/action";
 import { saveMessageChat } from "../../redux/MessageRedux/action";
 import io from "socket.io-client";
@@ -13,6 +14,7 @@ class Room extends Component {
     super(props);
     this.state = {
       userName: "Guest User",
+      guestName: "",
       userIsValid: false,
       roomData: {},
       users: [],
@@ -23,9 +25,11 @@ class Room extends Component {
       messageList: [],
       message: "",
       modalOpen: false,
+      dialogOpen: false,
       loading: true,
       redirectAdd: false,
       redirectJoin: false,
+      redirectLogin: false,
     };
     this.socketIO = null;
     this.messagesEndRef = React.createRef();
@@ -102,7 +106,6 @@ class Room extends Component {
             });
           }
         } catch (error) {
-          // console.log(error.message);
           if (isPrivate) {
             isMounted = false;
             this.setState({
@@ -114,58 +117,33 @@ class Room extends Component {
 
         this.socketIO = io.connect(global.config.socketURL);
 
-        const socketIO = this.socketIO;
+        const guestUser = sessionStorage.getItem("guestdiscussin");
 
-        const data = {
-          roomID,
-          userName: foundUser ? userName : null,
-        };
-
-        socketIO.emit("join-room", data);
-
-        socketIO.on("chat-message", data => {
-          this.handleReceivedMessage(data);
-        });
-
-        socketIO.on("room-data", data => {
-          this.handleRoomUsers(data);
-        });
-
-        socketIO.on("join-message", data => {
-          let prevList = [...this.state.messageList];
-          const messageDate =
-            this.returnDateFormat(true) + " " + this.returnTimeFormat();
-          prevList.push({
-            message: data,
-            messageDate,
-          });
+        if (foundUser) {
+          const data = {
+            roomID,
+            userName,
+          };
+          this.socketIO.emit("join-room", data);
+        } else if (!guestUser) {
           this.setState({
-            messageList: prevList,
+            dialogOpen: true,
           });
-        });
-
-        socketIO.on("user-joined", data => {
-          let prevList = [...this.state.messageList];
-          const messageDate =
-            this.returnDateFormat(true) + " " + this.returnTimeFormat();
-          prevList.push({
-            message: data,
-            messageDate,
-          });
+        } else if (guestUser) {
+          const data = {
+            roomID,
+            userName: guestUser,
+          };
+          this.socketIO.emit("join-room", data);
+        } else {
+          isMounted = false;
           this.setState({
-            messageList: prevList,
+            redirectLogin: true,
           });
-        });
+          return;
+        }
 
-        socketIO.on("user-left", data => {
-          let prevList = [...this.state.messageList];
-          prevList.push({
-            message: data,
-          });
-          this.setState({
-            messageList: prevList,
-          });
-        });
+        this.initSocketListeners();
       }
     } catch (error) {
       console.log(error.message);
@@ -190,6 +168,52 @@ class Room extends Component {
       console.log(error.message);
     }
   }
+  initSocketListeners = () => {
+    const socketIO = this.socketIO;
+    socketIO.on("chat-message", data => {
+      this.handleReceivedMessage(data);
+    });
+
+    socketIO.on("room-data", data => {
+      this.handleRoomUsers(data);
+    });
+
+    socketIO.on("join-message", data => {
+      let prevList = [...this.state.messageList];
+      const messageDate =
+        this.returnDateFormat(true) + " " + this.returnTimeFormat();
+      prevList.push({
+        message: data,
+        messageDate,
+      });
+      this.setState({
+        messageList: prevList,
+      });
+    });
+
+    socketIO.on("user-joined", data => {
+      let prevList = [...this.state.messageList];
+      const messageDate =
+        this.returnDateFormat(true) + " " + this.returnTimeFormat();
+      prevList.push({
+        message: data,
+        messageDate,
+      });
+      this.setState({
+        messageList: prevList,
+      });
+    });
+
+    socketIO.on("user-left", data => {
+      let prevList = [...this.state.messageList];
+      prevList.push({
+        message: data,
+      });
+      this.setState({
+        messageList: prevList,
+      });
+    });
+  };
   returnDateFormat = date => {
     let newDate = "";
     if (date === true) {
@@ -219,6 +243,21 @@ class Room extends Component {
     this.setState({
       modalOpen: !this.state.modalOpen,
     });
+  };
+  handleFormDialog = () => {
+    if (this.state.guestName === "") {
+      alert("Please provide a guest name");
+      return;
+    }
+    this.setState({
+      dialogOpen: !this.state.dialogOpen,
+    });
+    const data = {
+      roomID: this.state.roomData.roomID,
+      userName: this.state.guestName,
+    };
+    sessionStorage.setItem("guestdiscussin", this.state.guestName);
+    this.socketIO.emit("join-room", data);
   };
   handleChange = event => {
     this.setState({
@@ -293,6 +332,9 @@ class Room extends Component {
     if (this.state.redirectJoin) {
       return <Redirect to="/joinRoom" />;
     }
+    if (this.state.redirectLogin) {
+      return <Redirect to="/login" />;
+    }
     const {
       users,
       title,
@@ -305,9 +347,17 @@ class Room extends Component {
       loading,
       roomData,
       userIsValid,
+      dialogOpen,
+      guestName,
     } = this.state;
     return (
       <div>
+        <FormDialog
+          open={dialogOpen}
+          guestName={guestName}
+          handleChange={this.handleChange}
+          handleFormDialog={this.handleFormDialog}
+        />
         <InfoModal
           open={modalOpen}
           handleInfoModal={this.handleInfoModal}
