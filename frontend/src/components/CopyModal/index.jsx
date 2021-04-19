@@ -9,6 +9,7 @@ import {
   Typography,
   Tooltip,
   IconButton,
+  makeStyles,
 } from "@material-ui/core";
 import { FileCopy } from "@material-ui/icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -17,12 +18,21 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const useStyles = makeStyles(theme => ({
+  roomIDText: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.7rem",
+    },
+  },
+}));
+
 export default function CopyModal({
   open,
   handleCopyModal,
   roomID,
   handleCopy,
 }) {
+  const classes = useStyles();
   return (
     <div>
       <Dialog
@@ -50,7 +60,10 @@ export default function CopyModal({
             alignItems="center"
           >
             <Grid item>
-              <Typography variant="body1">{`Room ID: ${roomID}`}</Typography>
+              <Typography
+                variant="body2"
+                className={classes.roomIDText}
+              >{`Room ID: ${roomID}`}</Typography>
             </Grid>
             <Grid item>
               <Tooltip title="Copy to Clipboard">
@@ -66,7 +79,6 @@ export default function CopyModal({
             </Grid>
           </Grid>
         </div>
-
         <DialogActions>
           <Button
             onClick={() => handleCopyModal(true)}

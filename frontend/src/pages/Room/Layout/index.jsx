@@ -13,8 +13,6 @@ import {
   Grid,
   TextField,
   IconButton,
-  Button,
-  Hidden,
   Tooltip,
 } from "@material-ui/core";
 import {
@@ -24,6 +22,7 @@ import {
   Menu as MenuIcon,
   Close as CloseIcon,
   Home as HomeIcon,
+  Share as ShareIcon,
 } from "@material-ui/icons";
 import SaveIcon from "@material-ui/icons/Save";
 import { useHistory } from "react-router-dom";
@@ -66,7 +65,7 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     bottom: 0,
     padding: "0.7rem 0 0.7rem 0",
-    backgroundColor: "white",
+    backgroundColor: theme.palette.greyBlueShade.light,
     [theme.breakpoints.down("sm")]: {
       left: 0,
     },
@@ -83,12 +82,13 @@ const useStyles = makeStyles(theme => ({
       marginLeft: "1rem",
     },
   },
-  saveChat: {
-    display: "none",
-    marginRight: "1rem",
+  roomTitle: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    width: "30rem",
+    height: "1.8rem",
     [theme.breakpoints.down("sm")]: {
-      display: "initial",
-      cursor: "pointer",
+      width: "8rem",
     },
   },
 }));
@@ -105,6 +105,7 @@ export default function RoomLayout({
   handleChange,
   saveChat,
   userIsValid,
+  handleCopyModal,
 }) {
   const classes = useStyles();
 
@@ -141,29 +142,47 @@ export default function RoomLayout({
               </div>
             </Grid>
             <Grid item>
-              <Typography variant="h6" noWrap>
-                {createdAt}
-              </Typography>
+              <div
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                <Typography variant="h6" className={classes.roomTitle}>
+                  {title}
+                </Typography>
+                <Typography variant="subtitle1" noWrap>
+                  {createdAt}
+                </Typography>
+              </div>
             </Grid>
             <Grid item>
               <Grid container>
+                <Grid item>
+                  <div
+                    onClick={handleCopyModal}
+                    style={{
+                      marginRight: "1rem",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Tooltip title="Share">
+                      <ShareIcon
+                        style={{
+                          fontSize: "1.8rem",
+                        }}
+                      />
+                    </Tooltip>
+                  </div>
+                </Grid>
                 {status === "private" && userIsValid ? (
                   <Grid item>
-                    <Hidden smDown>
-                      <Button
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        onClick={saveChat}
-                        variant="contained"
-                        endIcon={<SaveIcon />}
-                        style={{
-                          marginRight: "1rem",
-                        }}
-                      >
-                        Save Chat
-                      </Button>
-                    </Hidden>
-                    <div onClick={saveChat} className={classes.saveChat}>
+                    <div
+                      onClick={saveChat}
+                      style={{
+                        marginRight: "1rem",
+                        cursor: "pointer",
+                      }}
+                    >
                       <Tooltip title="Save Chat">
                         <SaveIcon
                           style={{
@@ -181,11 +200,13 @@ export default function RoomLayout({
                     }}
                     onClick={handleInfoModal}
                   >
-                    <InfoIcon
-                      style={{
-                        fontSize: "1.8rem",
-                      }}
-                    />
+                    <Tooltip title="Info">
+                      <InfoIcon
+                        style={{
+                          fontSize: "1.8rem",
+                        }}
+                      />
+                    </Tooltip>
                   </div>
                 </Grid>
               </Grid>
@@ -298,6 +319,9 @@ export default function RoomLayout({
         <div className={classes.textSection}>
           <Toolbar>
             <TextField
+              style={{
+                backgroundColor: "white",
+              }}
               onKeyDown={event => handleSendMessage(event)}
               value={message}
               onChange={handleChange}
@@ -305,7 +329,7 @@ export default function RoomLayout({
               id="message"
               label="Message"
               placeholder="Type a message here ..."
-              variant="outlined"
+              variant="filled"
               fullWidth
             />
             <IconButton onClick={event => handleSendMessage(event)} edge="end">

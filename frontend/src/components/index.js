@@ -6,3 +6,5 @@ export { default as ProfileCard } from "./ProfileCard";
 export { default as Loading } from "./Loading";
 export { default as FormBackground } from "./FormBackground";
 export { default as FullScreenDialog } from "./FullScreenDialog";
+export { default as CopyModal } from "./CopyModal";
+export { default as FormDialog } from "./FormDialog";

@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addRoom } from "../../../redux/RoomRedux/action";
 import { checkUser } from "../../../redux/UserRedux/action";
-import { NavBar } from "../../../components";
+import { NavBar, CopyModal } from "../../../components";
 import Form from "./form";
-import CopyModal from "./CopyModal";
 import { verifyUser } from "../../../util";
 
 class AddRoom extends Component {

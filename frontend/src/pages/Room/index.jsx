@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { InfoModal, Loading, Message } from "../../components";
+import {
+  InfoModal,
+  Loading,
+  Message,
+  FormDialog,
+  CopyModal,
+} from "../../components";
 import RoomLayout from "./Layout";
-import FormDialog from "./Dialog";
 import { getRoom } from "../../redux/RoomRedux/action";
 import { saveMessageChat } from "../../redux/MessageRedux/action";
 import io from "socket.io-client";
 import { Redirect } from "react-router";
-import axios from "axios";
+import { verifyUser } from "../../util";
 
 class Room extends Component {
   constructor(props) {
@@ -24,6 +29,7 @@ class Room extends Component {
       createdAt: "",
       messageList: [],
       message: "",
+      openCopy: false,
       modalOpen: false,
       dialogOpen: false,
       loading: true,
@@ -62,7 +68,7 @@ class Room extends Component {
             title: data.title,
             subTitle: data.subTitle,
             description: data.description,
-            createdAt: data.timestamp,
+            createdAt: this.returnDateFormat(data.createdAt),
           });
         }
       }
@@ -91,18 +97,14 @@ class Room extends Component {
       } else {
         let foundUser = false;
         try {
-          const backendURL = global.config.backendURL;
-          const token = localStorage.getItem("tokendiscussin");
-          const response = await axios.post(`${backendURL}/auth/verify`, {
-            headers: { tokendiscussin: token, userid: true },
-          });
+          const result = await verifyUser(this.props.authReducer);
 
-          if (!response.data.error) {
+          if (result.isLoggedIn) {
             foundUser = true;
-            userName = response.data.result.userName;
+            userName = result.userName;
             this.setState({
               userIsValid: true,
-              userName: response.data.result.userName,
+              userName: result.userName,
             });
           }
         } catch (error) {
@@ -317,6 +319,17 @@ class Room extends Component {
     });
   };
 
+  handleCopyModal = clear => {
+    this.setState({
+      openCopy: !this.state.openCopy,
+    });
+  };
+
+  handleCopy = () => {
+    alert("Room ID copied");
+    this.handleCopyModal();
+  };
+
   saveChat = async () => {
     let messageList = this.state.messageList.map((message, index) => {
       return {
@@ -326,6 +339,8 @@ class Room extends Component {
     });
 
     await this.props.saveMessageChat(messageList);
+
+    alert("chat saved");
   };
 
   render() {
@@ -352,9 +367,16 @@ class Room extends Component {
       userIsValid,
       dialogOpen,
       guestName,
+      openCopy,
     } = this.state;
     return (
       <div>
+        <CopyModal
+          open={openCopy}
+          roomID={roomData.roomID}
+          handleCopyModal={this.handleCopyModal}
+          handleCopy={this.handleCopy}
+        />
         <FormDialog
           open={dialogOpen}
           guestName={guestName}
@@ -390,6 +412,7 @@ class Room extends Component {
             handleSendMessage={this.handleSendMessage}
             handleChange={this.handleChange}
             saveChat={this.saveChat}
+            handleCopyModal={this.handleCopyModal}
           >
             {messageList.map((data, index) => {
               if (data.position === undefined) {
@@ -429,6 +452,7 @@ const mapStateToProps = state => {
   return {
     roomReducer: state.roomReducer,
     messageReducer: state.messageReducer,
+    authReducer: state.authReducer,
   };
 };
 

@@ -34,6 +34,7 @@ const theme = createMuiTheme({
     },
     greyBlueShade: {
       main: "#494D5F",
+      light: "#c5c8d3",
     },
     darkSlateBlue: {
       main: "#483D8B",
