@@ -1,4 +1,6 @@
 const bcrypt = require("bcrypt");
+const axios = require("axios");
+const config = require("config");
 
 async function compareHashedPassword(password, dbpassword) {
   try {
@@ -20,4 +22,14 @@ async function returnHashedPassowrd(password) {
   }
 }
 
-module.exports = { compareHashedPassword, returnHashedPassowrd };
+async function deleteRoom(roomID) {
+  try {
+    const backendURL = config.get("backendURL");
+    const response = await axios.delete(`${backendURL}/room/delete/${roomID}`);
+    return response.data.result;
+  } catch (error) {
+    return false;
+  }
+}
+
+module.exports = { compareHashedPassword, returnHashedPassowrd, deleteRoom };

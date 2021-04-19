@@ -99,7 +99,7 @@ class Profile extends Component {
     const { rooms, searchValue, open, user, loading, roomLoading } = this.state;
     let newRooms = [];
     newRooms = rooms.filter(data => {
-      return data.title.toLowerCase().includes(searchValue);
+      return data.title.toLowerCase().includes(searchValue.toLowerCase());
     });
     return (
       <div>
