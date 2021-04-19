@@ -42,4 +42,18 @@ router.route("/room/:roomID").get(async (req, res) => {
   }
 });
 
+router.route("/room").post(async (req, res) => {
+  try {
+    const { roomID } = req.body;
+    await Message.deleteMany({ roomID });
+    res.status(200).json({
+      result: "Chat Cleared",
+    });
+  } catch (error) {
+    res.status(400).json({
+      result: error.message,
+    });
+  }
+});
+
 module.exports = router;

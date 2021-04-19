@@ -26,7 +26,25 @@ export const getSavedMessages = roomID => async dispatch => {
     type: MESSAGE_REQUEST,
   });
   try {
-    const response = await axios.post(`${backendURL}/message/room/${roomID}`);
+    const response = await axios.get(`${backendURL}/message/room/${roomID}`);
+    dispatch({
+      type: MESSAGE_SUCCESS,
+      payload: response.data.result,
+    });
+  } catch (error) {
+    dispatch({
+      type: MESSAGE_FAILURE,
+      message: error.response ? error.response.data.result : error.message,
+    });
+  }
+};
+
+export const clearChatMessages = roomID => async dispatch => {
+  dispatch({
+    type: MESSAGE_REQUEST,
+  });
+  try {
+    const response = await axios.post(`${backendURL}/message/room`, { roomID });
     dispatch({
       type: MESSAGE_SUCCESS,
       payload: response.data.result,

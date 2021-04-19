@@ -14,6 +14,8 @@ import {
   TextField,
   IconButton,
   Tooltip,
+  Menu,
+  MenuItem,
 } from "@material-ui/core";
 import {
   Person,
@@ -23,6 +25,9 @@ import {
   Close as CloseIcon,
   Home as HomeIcon,
   Share as ShareIcon,
+  Chat as ChatIcon,
+  Clear as ClearIcon,
+  Group as GroupIcon,
 } from "@material-ui/icons";
 import SaveIcon from "@material-ui/icons/Save";
 import { useHistory } from "react-router-dom";
@@ -104,6 +109,7 @@ export default function RoomLayout({
   handleSendMessage,
   handleChange,
   saveChat,
+  clearChat,
   userIsValid,
   handleCopyModal,
 }) {
@@ -113,12 +119,22 @@ export default function RoomLayout({
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
+  const [anchorChatEl, setAnchorChatEl] = React.useState(null);
+
   const goBack = () => {
     history.push("/");
   };
 
   const handleMobileDrawer = () => {
     setMobileDrawerOpen(prevState => !prevState);
+  };
+
+  const handleChatMenu = event => {
+    setAnchorChatEl(event.currentTarget);
+  };
+
+  const handleChatMenuClose = () => {
+    setAnchorChatEl(null);
   };
 
   return (
@@ -168,7 +184,7 @@ export default function RoomLayout({
                     <Tooltip title="Share">
                       <ShareIcon
                         style={{
-                          fontSize: "1.8rem",
+                          fontSize: "1.7rem",
                         }}
                       />
                     </Tooltip>
@@ -177,20 +193,50 @@ export default function RoomLayout({
                 {status === "private" && userIsValid ? (
                   <Grid item>
                     <div
-                      onClick={saveChat}
+                      aria-controls="profile-menu"
+                      aria-haspopup="true"
+                      onClick={handleChatMenu}
                       style={{
-                        marginRight: "1rem",
                         cursor: "pointer",
+                        marginRight: "1rem",
                       }}
                     >
-                      <Tooltip title="Save Chat">
-                        <SaveIcon
+                      <Tooltip title="Chat Options">
+                        <ChatIcon
                           style={{
-                            fontSize: "1.8rem",
+                            fontSize: "1.7rem",
                           }}
                         />
                       </Tooltip>
                     </div>
+                    <Menu
+                      id="profile-menu"
+                      anchorEl={anchorChatEl}
+                      keepMounted
+                      open={Boolean(anchorChatEl)}
+                      onClose={handleChatMenuClose}
+                    >
+                      <div onClick={saveChat}>
+                        <MenuItem>
+                          Save Chat{" "}
+                          <SaveIcon
+                            style={{
+                              marginLeft: "0.5rem",
+                            }}
+                          />
+                        </MenuItem>
+                      </div>
+                      <div onClick={clearChat}>
+                        <MenuItem>
+                          Clear Chat{" "}
+                          <ClearIcon
+                            style={{
+                              marginLeft: "0.5rem",
+                            }}
+                          />
+                        </MenuItem>
+                      </div>
+                    </Menu>
                   </Grid>
                 ) : null}
                 <Grid item>
@@ -203,7 +249,7 @@ export default function RoomLayout({
                     <Tooltip title="Info">
                       <InfoIcon
                         style={{
-                          fontSize: "1.8rem",
+                          fontSize: "1.7rem",
                         }}
                       />
                     </Tooltip>
@@ -216,7 +262,7 @@ export default function RoomLayout({
             className={classes.mobileDrawerIcon}
             onClick={handleMobileDrawer}
           >
-            <MenuIcon />
+            <GroupIcon />
           </div>
         </Toolbar>
       </AppBar>
