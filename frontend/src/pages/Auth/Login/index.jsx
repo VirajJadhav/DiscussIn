@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { login } from "../../../redux/AuthRedux/action";
-import { NavBar, FormBackground } from "../../../components";
+import { NavBar, FormBackground, Footer } from "../../../components";
 import Form from "./form";
 class Login extends Component {
   constructor(props) {
@@ -60,6 +60,7 @@ class Login extends Component {
             onSubmit={this.onSubmit}
           />
         </FormBackground>
+        <Footer />
       </div>
     );
   }

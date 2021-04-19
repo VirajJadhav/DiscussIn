@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NavBar, RoomCard, Loading } from "../../components";
+import { NavBar, RoomCard, Loading, Footer } from "../../components";
 import { Container, Grid, TextField } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
@@ -112,6 +112,7 @@ class DashBoard extends Component {
             ))}
           </Grid>
         )}
+        <Footer />
       </div>
     );
   }
