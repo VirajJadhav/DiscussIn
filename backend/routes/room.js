@@ -104,4 +104,18 @@ router.route("/userName/status/:userName/:status").get(async (req, res) => {
   }
 });
 
+router.route("/delete/:roomID").delete(async (req, res) => {
+  try {
+    const roomID = req.params.roomID;
+    await Room.deleteOne({ roomID });
+    res.status(200).json({
+      result: true,
+    });
+  } catch (error) {
+    res.status(400).json({
+      result: false,
+    });
+  }
+});
+
 module.exports = router;

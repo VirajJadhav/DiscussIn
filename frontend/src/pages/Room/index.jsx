@@ -123,6 +123,7 @@ class Room extends Component {
           const data = {
             roomID,
             userName,
+            status: isPrivate ? "private" : "public",
           };
           this.socketIO.emit("join-room", data);
         } else if (!guestUser) {
@@ -133,6 +134,7 @@ class Room extends Component {
           const data = {
             roomID,
             userName: guestUser,
+            status: isPrivate ? "private" : "public",
           };
           this.socketIO.emit("join-room", data);
         } else {
@@ -255,6 +257,7 @@ class Room extends Component {
     const data = {
       roomID: this.state.roomData.roomID,
       userName: this.state.guestName,
+      status: "public",
     };
     sessionStorage.setItem("guestdiscussin", this.state.guestName);
     this.socketIO.emit("join-room", data);

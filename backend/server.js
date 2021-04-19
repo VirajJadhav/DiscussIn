@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const connectDatabase = require("./config/database");
+const { deleteRoom } = require("./utils");
 // require("dotenv").config();
 
 const PORT = process.env.PORT || 5000;
@@ -34,21 +35,31 @@ httpServer.listen(PORT, () => {
 
 const totalUsers = {};
 
+const roomTimers = {};
+
 io.on("connection", socket => {
   socket.on("join-room", data => {
     const roomID = data.roomID;
     const userName = data.userName || "Guest User";
+    const status = data.status;
+
+    if (roomTimers[roomID]) {
+      clearTimeout(roomTimers[roomID]);
+      delete roomTimers[roomID];
+    }
 
     if (totalUsers[roomID] === undefined) {
       totalUsers[roomID] = new Set();
       totalUsers[roomID].add({
         userName,
         id: socket.id,
+        status,
       });
     } else {
       totalUsers[roomID].add({
         userName,
         id: socket.id,
+        status,
       });
     }
 
@@ -71,24 +82,51 @@ io.on("connection", socket => {
     const id = socket.id;
     let found = false,
       roomID = null,
-      userName = "";
+      userName = "",
+      status = "";
     Object.keys(totalUsers).forEach(key => {
       found = false;
-      if (totalUsers[key].size === 1) {
-        found = true;
-        delete totalUsers[key];
-      } else {
-        for (const ele of totalUsers[key]) {
-          if (ele.id === id) {
-            userName = ele.userName;
-            roomID = key;
-            found = true;
-            totalUsers[key].delete(ele);
-            break;
-          }
+      for (const ele of totalUsers[key]) {
+        if (ele.id === id) {
+          userName = ele.userName;
+          roomID = key;
+          found = true;
+          status = ele.status;
+          totalUsers[key].delete(ele);
+          break;
         }
       }
       if (found) {
+        if (totalUsers[key].size == 0) {
+          if (status === "public") {
+            // to be changed later
+            const DELETETIMER = 5000;
+            roomTimers[key] = setTimeout(function () {
+              deleteRoom(roomID)
+                .then(response => {
+                  if (response) {
+                    io.emit("room-delete", {
+                      roomID: key,
+                      error: false,
+                    });
+                  } else {
+                    io.emit("room-delete", {
+                      roomID: null,
+                      error: true,
+                    });
+                  }
+                })
+                .catch(error => {
+                  io.emit("room-delete", {
+                    roomID: null,
+                    error: true,
+                  });
+                });
+            }, DELETETIMER);
+          }
+
+          delete totalUsers[key];
+        }
         return;
       }
     });

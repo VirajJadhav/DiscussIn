@@ -5,6 +5,7 @@ import { Container, Grid, TextField } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { getRoomByStatus } from "../../redux/RoomRedux/action";
+import io from "socket.io-client";
 
 class DashBoard extends Component {
   constructor(props) {
@@ -14,22 +15,19 @@ class DashBoard extends Component {
       searchValue: "",
       loading: true,
     };
+    this.socketIO = null;
   }
   async componentDidMount() {
     try {
       await this.props.getRoomByStatus("public");
       if (!this.props.roomReducer.error) {
-        // let newRooms = [];
-        // newRooms = this.props.roomReducer.payload.map((r, i) => {
-        //   return {
-        //     ...r,
-        //     timestamp: this.returnDateFormat(r.createdAt || new Date()),
-        //   };
-        // });
         this.setState({
           rooms: this.props.roomReducer.payload,
         });
       }
+      const socketURL = global.config.socketURL;
+      this.socketIO = io.connect(`${socketURL}`);
+      this.socketIO.on("room-delete", data => this.handleRoomDelete(data));
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -43,11 +41,20 @@ class DashBoard extends Component {
       [event.target.name]: event.target.value,
     });
   };
+  handleRoomDelete = data => {
+    if (!data.error) {
+      const roomID = data.roomID;
+      const newRooms = this.state.rooms.filter(room => room.roomID !== roomID);
+      this.setState({
+        rooms: newRooms,
+      });
+    }
+  };
   render() {
     const { rooms, searchValue, loading } = this.state;
     let newRooms = [];
     newRooms = rooms.filter(data => {
-      return data.title.toLowerCase().includes(searchValue);
+      return data.title.toLowerCase().includes(searchValue.toLowerCase());
     });
     return (
       <div>

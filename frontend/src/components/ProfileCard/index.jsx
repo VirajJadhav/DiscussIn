@@ -104,6 +104,9 @@ export default function ProfileCard({
 
     updateProfile(data);
 
+    setnewPassword("");
+    setConfPassword("");
+
     handelUpdateProfOpen();
   };
 
