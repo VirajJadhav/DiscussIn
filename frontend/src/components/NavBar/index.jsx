@@ -40,8 +40,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.greyBlueShade.main,
   },
   pink: {
-    color: theme.palette.getContrastText(pink[500]),
-    backgroundColor: pink[500],
+    color: theme.palette.getContrastText(pink[300]),
+    backgroundColor: pink[600],
   },
 }));
 
@@ -272,9 +272,7 @@ export default function NavBar(props) {
       <Toolbar id="back-to-top-anchor" />
       <ScrollTop {...props}>
         <Fab
-          style={{
-            boxShadow: "1px 1px 2px 3px #888888",
-          }}
+          className={classes.pink}
           color="secondary"
           size="small"
           aria-label="scroll back to top"
