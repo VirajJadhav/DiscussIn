@@ -35,7 +35,8 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.iceCold.main,
+    color: "black",
+    backgroundColor: "whitesmoke",
     padding: theme.spacing(1.2),
   },
   form: {
@@ -74,7 +75,11 @@ function Form({ roomID, userName, password, onSubmit, handleChange }) {
               }}
               badgeContent={
                 <SmallAvatar alt="join">
-                  <EnterIcon />
+                  <EnterIcon
+                    style={{
+                      color: "black",
+                    }}
+                  />
                 </SmallAvatar>
               }
             >

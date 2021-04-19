@@ -27,7 +27,7 @@ import {
   AccountCircle,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { verifyUser } from "../../util";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -125,31 +125,15 @@ export default function NavBar(props) {
   };
 
   useEffect(() => {
-    async function verifyLoggedIn() {
-      const payload = authReducer.payload;
-      const token = localStorage.getItem("tokendiscussin");
-      if (typeof payload !== "string" && payload.userName !== undefined) {
-        setUserName(payload.userName);
+    async function verify() {
+      const result = await verifyUser(authReducer);
+      if (result.isLoggedIn) {
+        setUserName(result.userName);
         setIsLoggedIn(true);
-      } else if (token) {
-        try {
-          const backendURL = global.config.backendURL;
-          const response = await axios.post(`${backendURL}/auth/verify`, {
-            headers: { tokendiscussin: token, userid: true },
-          });
-          if (!response.data.error) {
-            setUserName(response.data.result.userName);
-            setIsLoggedIn(true);
-          } else {
-            setIsLoggedIn(false);
-          }
-        } catch (error) {
-          setIsLoggedIn(false);
-        }
       }
       setLoading(false);
     }
-    verifyLoggedIn();
+    verify();
   }, []);
 
   return (

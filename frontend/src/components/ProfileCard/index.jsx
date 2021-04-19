@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     height: "auto",
     borderRadius: "1rem",
     margin: "0.5rem",
-    boxShadow: "1px 1px 2px 4px grey",
+    boxShadow: `1px 1px 4px 5px ${theme.palette.heavyPurple.light}`,
     backgroundColor: "rgba(129, 162, 162, 0.6)",
   },
   paper: {
@@ -202,7 +202,7 @@ export default function ProfileCard({
                 color="secondary"
                 className={classes.submit}
               >
-                Update Profile
+                Edit Profile
               </Button>
             </div>
             <form
