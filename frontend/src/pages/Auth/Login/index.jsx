@@ -41,8 +41,9 @@ class Login extends Component {
       if (this.props.authReducer.error) {
         alert(this.props.authReducer.message);
       } else {
-        const userName = this.props.authReducer.payload.userName;
-        this.props.history.push(`/profile/${userName}`);
+        // const userName = this.props.authReducer.payload.userName;
+        this.props.history.push("/");
+        // this.props.history.push(`/profile/${userName}`);
       }
     }
   };

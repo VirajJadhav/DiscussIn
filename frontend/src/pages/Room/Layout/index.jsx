@@ -13,17 +13,20 @@ import {
   Grid,
   TextField,
   IconButton,
-  Button,
-  Hidden,
   Tooltip,
+  Menu,
+  MenuItem,
 } from "@material-ui/core";
 import {
   Person,
   Info as InfoIcon,
   Send as SendIcon,
-  Menu as MenuIcon,
   Close as CloseIcon,
   Home as HomeIcon,
+  Share as ShareIcon,
+  Chat as ChatIcon,
+  Clear as ClearIcon,
+  Group as GroupIcon,
 } from "@material-ui/icons";
 import SaveIcon from "@material-ui/icons/Save";
 import { useHistory } from "react-router-dom";
@@ -66,7 +69,7 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     bottom: 0,
     padding: "0.7rem 0 0.7rem 0",
-    backgroundColor: "white",
+    backgroundColor: theme.palette.greyBlueShade.light,
     [theme.breakpoints.down("sm")]: {
       left: 0,
     },
@@ -83,12 +86,13 @@ const useStyles = makeStyles(theme => ({
       marginLeft: "1rem",
     },
   },
-  saveChat: {
-    display: "none",
-    marginRight: "1rem",
+  roomTitle: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    width: "30rem",
+    height: "1.8rem",
     [theme.breakpoints.down("sm")]: {
-      display: "initial",
-      cursor: "pointer",
+      width: "8rem",
     },
   },
 }));
@@ -104,7 +108,9 @@ export default function RoomLayout({
   handleSendMessage,
   handleChange,
   saveChat,
+  clearChat,
   userIsValid,
+  handleCopyModal,
 }) {
   const classes = useStyles();
 
@@ -112,12 +118,22 @@ export default function RoomLayout({
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
+  const [anchorChatEl, setAnchorChatEl] = React.useState(null);
+
   const goBack = () => {
     history.push("/");
   };
 
   const handleMobileDrawer = () => {
     setMobileDrawerOpen(prevState => !prevState);
+  };
+
+  const handleChatMenu = event => {
+    setAnchorChatEl(event.currentTarget);
+  };
+
+  const handleChatMenuClose = () => {
+    setAnchorChatEl(null);
   };
 
   return (
@@ -141,37 +157,85 @@ export default function RoomLayout({
               </div>
             </Grid>
             <Grid item>
-              <Typography variant="h6" noWrap>
-                {createdAt}
-              </Typography>
+              <div
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                <Typography variant="h6" className={classes.roomTitle}>
+                  {title}
+                </Typography>
+                <Typography variant="subtitle1" noWrap>
+                  {createdAt}
+                </Typography>
+              </div>
             </Grid>
             <Grid item>
               <Grid container>
+                <Grid item>
+                  <div
+                    onClick={handleCopyModal}
+                    style={{
+                      marginRight: "1rem",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Tooltip title="Share">
+                      <ShareIcon
+                        style={{
+                          fontSize: "1.7rem",
+                        }}
+                      />
+                    </Tooltip>
+                  </div>
+                </Grid>
                 {status === "private" && userIsValid ? (
                   <Grid item>
-                    <Hidden smDown>
-                      <Button
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        onClick={saveChat}
-                        variant="contained"
-                        endIcon={<SaveIcon />}
-                        style={{
-                          marginRight: "1rem",
-                        }}
-                      >
-                        Save Chat
-                      </Button>
-                    </Hidden>
-                    <div onClick={saveChat} className={classes.saveChat}>
-                      <Tooltip title="Save Chat">
-                        <SaveIcon
+                    <div
+                      aria-controls="profile-menu"
+                      aria-haspopup="true"
+                      onClick={handleChatMenu}
+                      style={{
+                        cursor: "pointer",
+                        marginRight: "1rem",
+                      }}
+                    >
+                      <Tooltip title="Chat Options">
+                        <ChatIcon
                           style={{
-                            fontSize: "1.8rem",
+                            fontSize: "1.7rem",
                           }}
                         />
                       </Tooltip>
                     </div>
+                    <Menu
+                      id="profile-menu"
+                      anchorEl={anchorChatEl}
+                      keepMounted
+                      open={Boolean(anchorChatEl)}
+                      onClose={handleChatMenuClose}
+                    >
+                      <div onClick={saveChat}>
+                        <MenuItem>
+                          Save Chat{" "}
+                          <SaveIcon
+                            style={{
+                              marginLeft: "0.5rem",
+                            }}
+                          />
+                        </MenuItem>
+                      </div>
+                      <div onClick={clearChat}>
+                        <MenuItem>
+                          Clear Chat{" "}
+                          <ClearIcon
+                            style={{
+                              marginLeft: "0.5rem",
+                            }}
+                          />
+                        </MenuItem>
+                      </div>
+                    </Menu>
                   </Grid>
                 ) : null}
                 <Grid item>
@@ -181,11 +245,13 @@ export default function RoomLayout({
                     }}
                     onClick={handleInfoModal}
                   >
-                    <InfoIcon
-                      style={{
-                        fontSize: "1.8rem",
-                      }}
-                    />
+                    <Tooltip title="Info">
+                      <InfoIcon
+                        style={{
+                          fontSize: "1.7rem",
+                        }}
+                      />
+                    </Tooltip>
                   </div>
                 </Grid>
               </Grid>
@@ -195,7 +261,7 @@ export default function RoomLayout({
             className={classes.mobileDrawerIcon}
             onClick={handleMobileDrawer}
           >
-            <MenuIcon />
+            <GroupIcon />
           </div>
         </Toolbar>
       </AppBar>
@@ -298,6 +364,9 @@ export default function RoomLayout({
         <div className={classes.textSection}>
           <Toolbar>
             <TextField
+              style={{
+                backgroundColor: "white",
+              }}
               onKeyDown={event => handleSendMessage(event)}
               value={message}
               onChange={handleChange}
@@ -305,7 +374,7 @@ export default function RoomLayout({
               id="message"
               label="Message"
               placeholder="Type a message here ..."
-              variant="outlined"
+              variant="filled"
               fullWidth
             />
             <IconButton onClick={event => handleSendMessage(event)} edge="end">

@@ -8,3 +8,5 @@ export { default as FormBackground } from "./FormBackground";
 export { default as FullScreenDialog } from "./FullScreenDialog";
 export { default as Notification } from "./Notification";
 export { default as Footer } from "./Footer";
+export { default as CopyModal } from "./CopyModal";
+export { default as FormDialog } from "./FormDialog";

@@ -60,7 +60,7 @@ class DashBoard extends Component {
       <div>
         <NavBar />
 
-        <Container>
+        <Container maxWidth="md">
           <TextField
             name="searchValue"
             onChange={this.handleChange}
@@ -85,32 +85,34 @@ class DashBoard extends Component {
             isloading={loading}
           />
         ) : (
-          <Grid
-            container
-            direction="row"
-            justify="space-evenly"
-            alignItems="center"
-          >
-            {newRooms.map((data, index) => (
-              <Grid key={`room-${index}`} item>
-                <Link
-                  style={{
-                    textDecoration: "none",
-                    cursor: "pointer",
-                  }}
-                  to={data.roomID ? `/join/${data.roomID}` : `/addRoom`}
-                >
-                  <RoomCard
-                    title={data.title}
-                    subTitle={data.subTitle}
-                    description={data.description}
-                    author={data.userName}
-                    date={data.createdAt || new Date()}
-                  />
-                </Link>
-              </Grid>
-            ))}
-          </Grid>
+          <Container maxWidth="xl">
+            <Grid
+              container
+              direction="row"
+              justify="space-evenly"
+              alignItems="center"
+            >
+              {newRooms.map((data, index) => (
+                <Grid key={`room-${index}`} item>
+                  <Link
+                    style={{
+                      textDecoration: "none",
+                      cursor: "pointer",
+                    }}
+                    to={data.roomID ? `/join/${data.roomID}` : `/addRoom`}
+                  >
+                    <RoomCard
+                      title={data.title}
+                      subTitle={data.subTitle}
+                      description={data.description}
+                      author={data.userName}
+                      date={data.createdAt || new Date()}
+                    />
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
         )}
         <Footer />
       </div>

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addRoom } from "../../../redux/RoomRedux/action";
 import { checkUser } from "../../../redux/UserRedux/action";
-import { NavBar, Footer } from "../../../components";
+import { NavBar, CopyModal, Footer } from "../../../components";
 import Form from "./form";
-import CopyModal from "./CopyModal";
+import { verifyUser } from "../../../util";
 
 class AddRoom extends Component {
   constructor(props) {
@@ -19,7 +19,21 @@ class AddRoom extends Component {
       roomID: "",
       checkedUser: false,
       helperText: "",
+      isLoggedIn: false,
     };
+  }
+  async componentDidMount() {
+    try {
+      const result = await verifyUser(this.props.authReducer);
+      if (result.isLoggedIn) {
+        this.setState({
+          userName: result.userName,
+          isLoggedIn: true,
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   }
   handleChange = event => {
     this.setState({
@@ -29,7 +43,7 @@ class AddRoom extends Component {
   handleCopyModal = clear => {
     if (clear) {
       this.setState({
-        userName: "",
+        userName: this.state.isLoggedIn ? this.state.userName : "",
         title: "",
         subTitle: "",
         description: "",
@@ -103,6 +117,7 @@ class AddRoom extends Component {
       roomID,
       checkedUser,
       helperText,
+      isLoggedIn,
     } = this.state;
     return (
       <div>
@@ -114,6 +129,7 @@ class AddRoom extends Component {
           handleCopy={this.handleCopy}
         />
         <Form
+          isLoggedIn={isLoggedIn}
           title={title}
           subTitle={subTitle}
           description={description}

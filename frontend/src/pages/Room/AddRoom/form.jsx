@@ -36,7 +36,8 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.iceCold.main,
+    color: "black",
+    backgroundColor: "whitesmoke",
     padding: theme.spacing(1.2),
   },
   form: {
@@ -57,6 +58,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Form({
+  isLoggedIn,
   userName,
   title,
   subTitle,
@@ -82,7 +84,11 @@ function Form({
               }}
               badgeContent={
                 <SmallAvatar alt="add">
-                  <AddIcon />
+                  <AddIcon
+                    style={{
+                      color: "black",
+                    }}
+                  />
                 </SmallAvatar>
               }
             >
@@ -91,20 +97,22 @@ function Form({
               </Avatar>
             </Badge>
             <form onSubmit={onSubmit} className={classes.form}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={userName}
-                onChange={handleChange}
-                id="userName"
-                label="Username"
-                name="userName"
-                helperText={"Please enter a guest name, if not registered !"}
-                autoComplete="discussin-userName"
-                autoFocus
-              />
+              {isLoggedIn ? null : (
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  value={userName}
+                  onChange={handleChange}
+                  id="userName"
+                  label="Username"
+                  name="userName"
+                  helperText={"Please enter a guest name, if not registered !"}
+                  autoComplete="discussin-userName"
+                  autoFocus
+                />
+              )}
               <TextField
                 variant="outlined"
                 margin="normal"
