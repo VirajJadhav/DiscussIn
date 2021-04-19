@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
-const { returnHashedPassowrd } = require("../utils");
+const { returnHashedPassowrd } = require("../util");
 
 router.route("/verify/:userName").get(async (req, res) => {
   try {

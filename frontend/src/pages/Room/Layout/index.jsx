@@ -21,7 +21,6 @@ import {
   Person,
   Info as InfoIcon,
   Send as SendIcon,
-  Menu as MenuIcon,
   Close as CloseIcon,
   Home as HomeIcon,
   Share as ShareIcon,

@@ -6,7 +6,6 @@ import { Search as SearchIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { getRoomByStatus } from "../../redux/RoomRedux/action";
 import io from "socket.io-client";
-
 class DashBoard extends Component {
   constructor(props) {
     super(props);

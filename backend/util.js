@@ -31,5 +31,8 @@ async function deleteRoom(roomID) {
     return false;
   }
 }
-
-module.exports = { compareHashedPassword, returnHashedPassowrd, deleteRoom };
+module.exports = {
+  compareHashedPassword,
+  returnHashedPassowrd,
+  deleteRoom,
+};

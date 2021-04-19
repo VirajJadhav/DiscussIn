@@ -2,7 +2,7 @@ const router = require("express").Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const { compareHashedPassword, returnHashedPassowrd } = require("../utils");
+const { compareHashedPassword, returnHashedPassowrd } = require("../util");
 
 router.route("/verify").post(async (req, res) => {
   const token = req.body.headers["tokendiscussin"];

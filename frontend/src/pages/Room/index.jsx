@@ -463,7 +463,6 @@ class Room extends Component {
             handleChange={this.handleChange}
             saveChat={this.saveChat}
             clearChat={this.clearChat}
-            handleCopyModal={this.handleCopyModal}
           >
             {messageList.map((data, index) => {
               if (data.position === undefined) {
