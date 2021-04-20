@@ -72,32 +72,32 @@ const connectSocket = io => {
         }
         if (found) {
           if (totalUsers[key].size == 0) {
-            // if (status === "public") {
-            //   // to be changed later
-            //   const DELETETIMER = 5000;
-            //   roomTimers[key] = setTimeout(function () {
-            //     deleteRoom(roomID)
-            //       .then(response => {
-            //         if (response) {
-            //           io.emit("room-delete", {
-            //             roomID: key,
-            //             error: false,
-            //           });
-            //         } else {
-            //           io.emit("room-delete", {
-            //             roomID: null,
-            //             error: true,
-            //           });
-            //         }
-            //       })
-            //       .catch(error => {
-            //         io.emit("room-delete", {
-            //           roomID: null,
-            //           error: true,
-            //         });
-            //       });
-            //   }, DELETETIMER);
-            // }
+            if (status === "public") {
+              // to be changed later
+              const DELETETIMER = 5000;
+              roomTimers[key] = setTimeout(function () {
+                deleteRoom(roomID)
+                  .then(response => {
+                    if (response) {
+                      io.emit("room-delete", {
+                        roomID: key,
+                        error: false,
+                      });
+                    } else {
+                      io.emit("room-delete", {
+                        roomID: null,
+                        error: true,
+                      });
+                    }
+                  })
+                  .catch(error => {
+                    io.emit("room-delete", {
+                      roomID: null,
+                      error: true,
+                    });
+                  });
+              }, DELETETIMER);
+            }
 
             delete totalUsers[key];
           }

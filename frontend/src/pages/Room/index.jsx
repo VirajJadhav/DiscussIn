@@ -24,7 +24,7 @@ class Room extends Component {
     super(props);
     this.state = {
       userName: "Guest User",
-      guestName: "",
+      guestName: "Guest User",
       userIsValid: false,
       roomData: {},
       users: [],
@@ -73,6 +73,7 @@ class Room extends Component {
           this.setState({
             roomData: data,
             title: data.title,
+            userName: data.userName,
             subTitle: data.subTitle,
             description: data.description,
             createdAt: this.returnDateFormat(data.createdAt),
@@ -91,6 +92,7 @@ class Room extends Component {
             title: data.title,
             subTitle: data.subTitle,
             description: data.description,
+            userName: data.userName,
             createdAt: this.returnDateFormat(data.createdAt),
           });
         }
@@ -446,7 +448,7 @@ class Room extends Component {
       message,
       loading,
       roomData,
-      userIsValid,
+      userName,
       dialogOpen,
       guestName,
       openCopy,
@@ -509,7 +511,7 @@ class Room extends Component {
             users={users}
             title={title}
             status={roomData.status}
-            userIsValid={userIsValid}
+            userIsValid={userName === roomData.userName}
             createdAt={createdAt}
             message={message}
             handleInfoModal={this.handleInfoModal}

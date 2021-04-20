@@ -263,7 +263,11 @@ export default function RoomLayout({
             className={classes.mobileDrawerIcon}
             onClick={handleMobileDrawer}
           >
-            <GroupIcon />
+            <GroupIcon
+              style={{
+                fontSize: "1.7rem",
+              }}
+            />
           </div>
         </Toolbar>
       </AppBar>
