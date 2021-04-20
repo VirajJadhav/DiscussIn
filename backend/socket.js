@@ -46,6 +46,12 @@ const connectSocket = io => {
       socket.broadcast.to(roomID).emit("chat-message", data);
     });
 
+    socket.on("room-editor-data", data => {
+      const roomID = data.roomID;
+
+      socket.broadcast.to(roomID).emit("editor-data", data);
+    });
+
     socket.on("disconnect", () => {
       const id = socket.id;
       let found = false,

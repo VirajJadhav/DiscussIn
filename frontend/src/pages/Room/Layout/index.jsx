@@ -27,6 +27,7 @@ import {
   Chat as ChatIcon,
   Clear as ClearIcon,
   Group as GroupIcon,
+  Assignment as DocumentIcon,
 } from "@material-ui/icons";
 import SaveIcon from "@material-ui/icons/Save";
 import { useHistory } from "react-router-dom";
@@ -111,6 +112,7 @@ export default function RoomLayout({
   clearChat,
   userIsValid,
   handleCopyModal,
+  handleEditor,
 }) {
   const classes = useStyles();
 
@@ -363,6 +365,22 @@ export default function RoomLayout({
         {children}
         <div className={classes.textSection}>
           <Toolbar>
+            <div
+              onClick={handleEditor}
+              style={{
+                marginLeft: "-0.5rem",
+                marginRight: "1rem",
+                cursor: "pointer",
+              }}
+            >
+              <Tooltip title="Notepad">
+                <DocumentIcon
+                  style={{
+                    color: "orangered",
+                  }}
+                />
+              </Tooltip>
+            </div>
             <TextField
               style={{
                 backgroundColor: "white",
