@@ -96,3 +96,23 @@ export const getRoomUserNameStatus = data => async dispatch => {
     });
   }
 };
+
+export const deleteRoomData = roomID => async dispatch => {
+  dispatch({
+    type: ROOM_REQUEST,
+  });
+  try {
+    const response = await axios.delete(
+      `${backendURL}/room/delete/data/${roomID}`
+    );
+    dispatch({
+      type: ROOM_SUCCESS,
+      payload: response.data.result,
+    });
+  } catch (error) {
+    dispatch({
+      type: ROOM_FAILURE,
+      message: error.response ? error.response.data.result : error.message,
+    });
+  }
+};

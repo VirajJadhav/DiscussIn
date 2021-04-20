@@ -1,12 +1,14 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardContent,
   CardActions,
   Typography,
   Grid,
+  makeStyles,
 } from "@material-ui/core";
+import { Delete as DeleteIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,6 +31,13 @@ const useStyles = makeStyles(theme => ({
     textOverflow: "ellipsis",
     width: "11rem",
   },
+  cardDelete: {
+    display: "flex",
+    justifyContent: "center",
+    cursor: "pointer",
+    color: theme.palette.error.main,
+    backgroundColor: theme.palette.secondary.main,
+  },
 }));
 
 export default function RoomCard({
@@ -37,6 +46,9 @@ export default function RoomCard({
   description,
   author,
   date,
+  status,
+  link,
+  deleteRoom,
 }) {
   const classes = useStyles();
 
@@ -51,41 +63,57 @@ export default function RoomCard({
   };
 
   return (
-    <Card className={classes.root}>
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="h2" noWrap>
-          {title}
-        </Typography>
-        <Typography gutterBottom variant="subtitle1" component="p" noWrap>
-          {subTitle}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          className={classes.description}
+    <div>
+      <Card className={classes.root}>
+        <Link
+          style={{
+            textDecoration: "none",
+            cursor: "pointer",
+            color: "inherit",
+          }}
+          to={link}
         >
-          {description}
-        </Typography>
-      </CardContent>
-      <CardActions className={classes.cardBottom}>
-        <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-        >
-          <Grid item>
-            <Typography className={classes.ellipse} variant="body2" noWrap>
-              {author}
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2" noWrap>
+              {title}
             </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body2" noWrap>
-              {returnDateFormat(date)}
+            <Typography gutterBottom variant="subtitle1" component="p" noWrap>
+              {subTitle}
             </Typography>
-          </Grid>
-        </Grid>
-      </CardActions>
-    </Card>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              className={classes.description}
+            >
+              {description}
+            </Typography>
+          </CardContent>
+          <CardActions className={classes.cardBottom}>
+            <Grid
+              container
+              direction="row"
+              justify="space-between"
+              alignItems="center"
+            >
+              <Grid item>
+                <Typography className={classes.ellipse} variant="body2" noWrap>
+                  {author}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="body2" noWrap>
+                  {returnDateFormat(date)}
+                </Typography>
+              </Grid>
+            </Grid>
+          </CardActions>
+        </Link>
+        {status === "private" ? (
+          <CardActions onClick={deleteRoom} className={classes.cardDelete}>
+            <DeleteIcon />
+          </CardActions>
+        ) : null}
+      </Card>
+    </div>
   );
 }
