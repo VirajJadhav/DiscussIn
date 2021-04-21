@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { NavBar, RoomCard, Loading, Footer } from "../../components";
 import { Container, Grid, TextField } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
 import { getRoomByStatus } from "../../redux/RoomRedux/action";
 import io from "socket.io-client";
+
 class DashBoard extends Component {
   constructor(props) {
     super(props);
@@ -93,21 +93,15 @@ class DashBoard extends Component {
             >
               {newRooms.map((data, index) => (
                 <Grid key={`room-${index}`} item>
-                  <Link
-                    style={{
-                      textDecoration: "none",
-                      cursor: "pointer",
-                    }}
-                    to={data.roomID ? `/join/${data.roomID}` : `/addRoom`}
-                  >
-                    <RoomCard
-                      title={data.title}
-                      subTitle={data.subTitle}
-                      description={data.description}
-                      author={data.userName}
-                      date={data.createdAt || new Date()}
-                    />
-                  </Link>
+                  <RoomCard
+                    title={data.title}
+                    link={data.roomID ? `/join/${data.roomID}` : `/addRoom`}
+                    subTitle={data.subTitle}
+                    description={data.description}
+                    author={data.userName}
+                    status={data.status}
+                    date={data.createdAt || new Date()}
+                  />
                 </Grid>
               ))}
             </Grid>

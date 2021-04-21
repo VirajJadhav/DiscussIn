@@ -6,6 +6,7 @@ import {
   Message,
   FormDialog,
   CopyModal,
+  FullScreenDialog,
 } from "../../components";
 import RoomLayout from "./Layout";
 import { getRoom } from "../../redux/RoomRedux/action";
@@ -17,13 +18,13 @@ import {
 import io from "socket.io-client";
 import { Redirect } from "react-router";
 import { verifyUser } from "../../util";
-
+import RichTextEditor from "react-rte";
 class Room extends Component {
   constructor(props) {
     super(props);
     this.state = {
       userName: "Guest User",
-      guestName: "",
+      guestName: "Guest User",
       userIsValid: false,
       roomData: {},
       users: [],
@@ -33,6 +34,7 @@ class Room extends Component {
       createdAt: "",
       messageList: [],
       message: "",
+      editorOpen: false,
       openCopy: false,
       modalOpen: false,
       dialogOpen: false,
@@ -40,6 +42,7 @@ class Room extends Component {
       redirectAdd: false,
       redirectJoin: false,
       redirectLogin: false,
+      editorValue: RichTextEditor.createEmptyValue(),
     };
     this.socketIO = null;
     this.messagesEndRef = React.createRef();
@@ -70,6 +73,7 @@ class Room extends Component {
           this.setState({
             roomData: data,
             title: data.title,
+            userName: data.userName,
             subTitle: data.subTitle,
             description: data.description,
             createdAt: this.returnDateFormat(data.createdAt),
@@ -88,6 +92,7 @@ class Room extends Component {
             title: data.title,
             subTitle: data.subTitle,
             description: data.description,
+            userName: data.userName,
             createdAt: this.returnDateFormat(data.createdAt),
           });
         }
@@ -238,6 +243,8 @@ class Room extends Component {
         messageList: prevList,
       });
     });
+
+    socketIO.on("editor-data", data => this.onRecieve(data));
 
     socketIO.on("user-left", data => {
       let prevList = [...this.state.messageList];
@@ -393,6 +400,33 @@ class Room extends Component {
     }
   };
 
+  handleEditor = () => {
+    this.setState({
+      editorOpen: !this.state.editorOpen,
+    });
+  };
+
+  onRecieve = data => {
+    const editorData = RichTextEditor.createValueFromString(
+      data.data,
+      "markdown"
+    );
+    this.setState({
+      editorValue: editorData,
+    });
+  };
+
+  onChange = value => {
+    this.setState({
+      editorValue: value,
+    });
+    const data = {
+      roomID: this.state.roomData.roomID,
+      data: value.toString("markdown"),
+    };
+    this.socketIO.emit("room-editor-data", data);
+  };
+
   render() {
     if (this.state.redirectAdd) {
       return <Redirect to="/addRoom" />;
@@ -414,10 +448,12 @@ class Room extends Component {
       message,
       loading,
       roomData,
-      userIsValid,
+      userName,
       dialogOpen,
       guestName,
       openCopy,
+      editorValue,
+      editorOpen,
     } = this.state;
     return (
       <div>
@@ -441,6 +477,26 @@ class Room extends Component {
           description={description}
           status={roomData.status}
         />
+        <FullScreenDialog
+          title="Notepad"
+          handleDialog={this.handleEditor}
+          open={editorOpen}
+        >
+          <div
+            style={{
+              marginTop: "3rem",
+              width: "95%",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            <RichTextEditor
+              key={roomData.roomID}
+              value={editorValue}
+              onChange={this.onChange}
+            />
+          </div>
+        </FullScreenDialog>
         {loading ? (
           <Loading
             isloading={loading}
@@ -455,7 +511,7 @@ class Room extends Component {
             users={users}
             title={title}
             status={roomData.status}
-            userIsValid={userIsValid}
+            userIsValid={userName === roomData.userName}
             createdAt={createdAt}
             message={message}
             handleInfoModal={this.handleInfoModal}
@@ -463,6 +519,8 @@ class Room extends Component {
             handleChange={this.handleChange}
             saveChat={this.saveChat}
             clearChat={this.clearChat}
+            handleCopyModal={this.handleCopyModal}
+            handleEditor={this.handleEditor}
           >
             {messageList.map((data, index) => {
               if (data.position === undefined) {

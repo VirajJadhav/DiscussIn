@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUserData, updateUser } from "../../redux/UserRedux/action";
-import { getRoomUserNameStatus } from "../../redux/RoomRedux/action";
+import {
+  getRoomUserNameStatus,
+  deleteRoomData,
+} from "../../redux/RoomRedux/action";
 import { Container, TextField, Grid } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 import { NavBar, Loading, RoomCard } from "../../components";
@@ -95,6 +97,19 @@ class Profile extends Component {
       }
     }
   };
+  deleteRoom = async roomID => {
+    await this.props.deleteRoomData(roomID);
+    if (!this.props.roomReducer.loading) {
+      if (this.props.roomReducer.error) {
+        alert(this.props.roomReducer.message);
+      } else {
+        let newRooms = this.state.rooms.filter(room => room.roomID !== roomID);
+        this.setState({
+          rooms: newRooms,
+        });
+      }
+    }
+  };
   render() {
     const { rooms, searchValue, open, user, loading, roomLoading } = this.state;
     let newRooms = [];
@@ -158,23 +173,18 @@ class Profile extends Component {
                   >
                     {newRooms.map((data, index) => (
                       <Grid key={`room-${index}`} item>
-                        <Link
-                          style={{
-                            textDecoration: "none",
-                            cursor: "pointer",
-                          }}
-                          to={
-                            data.roomID ? `/join/${data.roomID}` : `/join/some`
+                        <RoomCard
+                          title={data.title}
+                          subTitle={data.subTitle}
+                          description={data.description}
+                          author={data.userName}
+                          link={
+                            data.roomID ? `/join/${data.roomID}` : `/addRoom`
                           }
-                        >
-                          <RoomCard
-                            title={data.title}
-                            subTitle={data.subTitle}
-                            description={data.description}
-                            author={data.userName}
-                            date={data.createdAt || new Date()}
-                          />
-                        </Link>
+                          deleteRoom={() => this.deleteRoom(data.roomID)}
+                          status={data.status}
+                          date={data.createdAt || new Date()}
+                        />
                       </Grid>
                     ))}
                   </Grid>
@@ -201,6 +211,7 @@ const mapDispatchToProps = dispatch => {
     getUserData: userName => dispatch(getUserData(userName)),
     getRoomUserNameStatus: data => dispatch(getRoomUserNameStatus(data)),
     updateUser: data => dispatch(updateUser(data)),
+    deleteRoomData: roomID => dispatch(deleteRoomData(roomID)),
   };
 };
 

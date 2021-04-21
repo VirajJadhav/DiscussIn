@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Room = require("../models/Room");
+const Message = require("../models/Message");
 
 const { nanoid } = require("nanoid");
 
@@ -114,6 +115,21 @@ router.route("/delete/:roomID").delete(async (req, res) => {
   } catch (error) {
     res.status(400).json({
       result: false,
+    });
+  }
+});
+
+router.route("/delete/data/:roomID").delete(async (req, res) => {
+  try {
+    const roomID = req.params.roomID;
+    await Room.deleteOne({ roomID });
+    await Message.deleteMany({ roomID });
+    res.status(200).json({
+      result: "Room data deleted",
+    });
+  } catch (error) {
+    res.status(400).json({
+      result: "Failed to delete room data",
     });
   }
 });
