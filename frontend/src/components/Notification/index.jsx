@@ -16,7 +16,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Notification({ varient, duration, show, message }) {
+export default function Notification({
+  varient,
+  duration,
+  show,
+  message,
+  vertical,
+  horizontal,
+}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(show);
 
@@ -29,6 +36,12 @@ export default function Notification({ varient, duration, show, message }) {
   if (!message) {
     message = "success message";
   }
+  if (!vertical) {
+    vertical = "bottom";
+  }
+  if (!horizontal) {
+    horizontal = "right";
+  }
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -40,7 +53,12 @@ export default function Notification({ varient, duration, show, message }) {
 
   return (
     <div className={classes.root}>
-      <Snackbar open={open} autoHideDuration={duration} onClose={handleClose}>
+      <Snackbar
+        open={open}
+        autoHideDuration={duration}
+        onClose={handleClose}
+        anchorOrigin={{ vertical, horizontal }}
+      >
         <Alert onClose={handleClose} severity={varient}>
           {message}
         </Alert>

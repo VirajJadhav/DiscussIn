@@ -84,7 +84,7 @@ class DashBoard extends Component {
             isloading={loading}
           />
         ) : (
-          <Container maxWidth="xl">
+          <Container maxWidth="xl" style={{ minHeight: "70vh" }}>
             <Grid
               container
               direction="row"

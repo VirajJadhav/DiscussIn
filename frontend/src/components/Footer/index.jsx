@@ -1,37 +1,51 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import { Typography } from "@material-ui/core";
+import {
+  CssBaseline,
+  Typography,
+  makeStyles,
+  Container,
+  Link,
+} from "@material-ui/core";
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary">
+      {"Copyright © "}
+      <Link color="inherit" href="http://localhost:3000/">
+        DiscussIn
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%",
-    position: "relative",
-    bottom: "0",
-    marginTop: "2rem",
-    backgroundColor: theme.palette.darkGrey.main,
+    display: "flex",
+    flexDirection: "column",
   },
-  copyright: {
-    margin: "auto",
+  footer: {
+    padding: theme.spacing(3, 2),
+    marginTop: "auto",
+    backgroundColor:
+      theme.palette.type === "light"
+        ? theme.palette.grey[200]
+        : theme.palette.grey[800],
   },
 }));
 
 export default function Footer() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
   return (
-    <div>
-      <BottomNavigation
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        showLabels
-        className={classes.root}
-      >
-        <Typography className={classes.copyright}>© 2021 DiscussIn</Typography>
-      </BottomNavigation>
+    <div className={classes.root}>
+      <CssBaseline />
+      <footer className={classes.footer}>
+        <Container maxWidth="sm" justify="center">
+          <Copyright />
+        </Container>
+      </footer>
     </div>
   );
 }
