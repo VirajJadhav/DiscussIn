@@ -1,50 +1,42 @@
 import React from "react";
-import {
-  CssBaseline,
-  Typography,
-  makeStyles,
-  Container,
-  Link,
-} from "@material-ui/core";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary">
-      {"Copyright © "}
-      <Link color="inherit" href="http://localhost:3000/">
-        DiscussIn
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { Typography, makeStyles, Link } from "@material-ui/core";
+import { pink } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
+    minHeight: props => (props.height ? props.height : "36vh"),
   },
   footer: {
-    padding: theme.spacing(3, 2),
+    backgroundColor: theme.palette.grey[500],
+    textAlign: "center",
+    color: pink[500],
     marginTop: "auto",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[200]
-        : theme.palette.grey[800],
+    padding: "2rem 0 2rem 0",
   },
 }));
 
-export default function Footer() {
-  const classes = useStyles();
+export default function Footer({ height }) {
+  const classes = useStyles({ height });
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <footer className={classes.footer}>
-        <Container maxWidth="sm" justify="center">
-          <Copyright />
-        </Container>
+        <Typography variant="body1" color="inherit">
+          {"Copyright © "}
+          <Link
+            color="inherit"
+            href="/"
+            style={{
+              color: "#010101",
+            }}
+          >
+            DiscussIn
+          </Link>{" "}
+          {new Date().getFullYear()}
+          {"."}
+        </Typography>
       </footer>
     </div>
   );

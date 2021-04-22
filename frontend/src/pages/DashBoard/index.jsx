@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NavBar, RoomCard, Loading, Footer } from "../../components";
+import { NavBar, RoomCard, Loading } from "../../components";
 import { Container, Grid, TextField } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 import { getRoomByStatus } from "../../redux/RoomRedux/action";
@@ -84,7 +84,7 @@ class DashBoard extends Component {
             isloading={loading}
           />
         ) : (
-          <Container maxWidth="xl" style={{ minHeight: "70vh" }}>
+          <Container maxWidth="xl">
             <Grid
               container
               direction="row"
@@ -107,7 +107,6 @@ class DashBoard extends Component {
             </Grid>
           </Container>
         )}
-        <Footer />
       </div>
     );
   }

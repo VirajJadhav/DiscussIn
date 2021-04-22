@@ -82,7 +82,7 @@ class SignUp extends Component {
             onSubmit={this.onSubmit}
           />
         </FormBackground>
-        <Footer />
+        <Footer height="15vh" />
       </div>
     );
   }

@@ -4,8 +4,7 @@ import { login } from "../../../redux/AuthRedux/action";
 import {
   NavBar,
   FormBackground,
-  Footer,
-  Notification,
+  Footer
 } from "../../../components";
 import Form from "./form";
 class Login extends Component {

@@ -72,7 +72,7 @@ class JoinRoom extends Component {
           handleChange={this.handleChange}
           onSubmit={this.onSubmit}
         />
-        <Footer />
+        <Footer height="38vh" />
       </div>
     );
   }

@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Notification({
-  varient,
+  variant,
   duration,
   show,
   message,
@@ -27,8 +27,8 @@ export default function Notification({
   const classes = useStyles();
   const [open, setOpen] = React.useState(show);
 
-  if (!varient) {
-    varient = "success";
+  if (!variant) {
+    variant = "success";
   }
   if (!duration) {
     duration = 4000;
@@ -59,7 +59,7 @@ export default function Notification({
         onClose={handleClose}
         anchorOrigin={{ vertical, horizontal }}
       >
-        <Alert onClose={handleClose} severity={varient}>
+        <Alert onClose={handleClose} severity={variant}>
           {message}
         </Alert>
       </Snackbar>
