@@ -74,7 +74,7 @@ const connectSocket = io => {
           if (totalUsers[key].size == 0) {
             if (status === "public") {
               // to be changed later
-              const DELETETIMER = 5000;
+              const DELETETIMER = 60 * 1000;
               roomTimers[key] = setTimeout(function () {
                 deleteRoom(roomID)
                   .then(response => {

@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { login } from "../../../redux/AuthRedux/action";
 import {
-  NavBar,
-  FormBackground,
-  Footer
-} from "../../../components";
+  showSuccess,
+  showError,
+} from "../../../redux/NotificationRedux/action";
+import { NavBar, FormBackground, Footer } from "../../../components";
 import Form from "./form";
 class Login extends Component {
   constructor(props) {
@@ -43,11 +43,11 @@ class Login extends Component {
         loading: false,
       });
       if (this.props.authReducer.error) {
-        alert(this.props.authReducer.message);
+        this.props.showError(this.props.authReducer.message);
       } else {
-        // const userName = this.props.authReducer.payload.userName;
+        const userName = this.props.authReducer.payload.userName;
+        this.props.showSuccess(`Welcome, ${userName}`);
         this.props.history.push("/");
-        // this.props.history.push(`/profile/${userName}`);
       }
     }
   };
@@ -80,6 +80,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     login: data => dispatch(login(data)),
+    showSuccess: message => dispatch(showSuccess(message)),
+    showError: message => dispatch(showError(message)),
   };
 };
 

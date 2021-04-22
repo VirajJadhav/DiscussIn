@@ -7,6 +7,7 @@ import {
   AddRoom,
   JoinRoom,
 } from "./pages";
+import { Notification } from "./components";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import { ThemeProvider } from "@material-ui/core";
@@ -16,6 +17,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+        <Notification />
         <Switch>
           <Route exact path="/signup" render={props => <Signup {...props} />} />
           <Route exact path="/login" render={props => <Login {...props} />} />

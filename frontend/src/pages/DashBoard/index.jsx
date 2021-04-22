@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { NavBar, RoomCard, Loading } from "../../components";
 import { Container, Grid, TextField } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
+import { showInfo, showError } from "../../redux/NotificationRedux/action";
 import { getRoomByStatus } from "../../redux/RoomRedux/action";
 import io from "socket.io-client";
 
@@ -28,7 +29,7 @@ class DashBoard extends Component {
       this.socketIO = io.connect(`${socketURL}`);
       this.socketIO.on("room-delete", data => this.handleRoomDelete(data));
     } catch (error) {
-      console.log(error.message);
+      this.props.showError(error.message);
     } finally {
       this.setState({
         loading: !this.state.loading,
@@ -47,6 +48,7 @@ class DashBoard extends Component {
       this.setState({
         rooms: newRooms,
       });
+      this.props.showInfo(`Rooms updated !`);
     }
   };
   render() {
@@ -121,6 +123,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getRoomByStatus: status => dispatch(getRoomByStatus(status)),
+    showInfo: message => dispatch(showInfo(message)),
+    showError: message => dispatch(showError(message)),
   };
 };
 

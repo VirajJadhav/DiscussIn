@@ -2,6 +2,7 @@ import React from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -16,52 +17,39 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Notification({
-  variant,
-  duration,
-  show,
-  message,
-  vertical,
-  horizontal,
-}) {
+export default function Notification() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(show);
 
-  if (!variant) {
-    variant = "success";
-  }
-  if (!duration) {
-    duration = 4000;
-  }
-  if (!message) {
-    message = "success message";
-  }
-  if (!vertical) {
-    vertical = "bottom";
-  }
-  if (!horizontal) {
-    horizontal = "right";
-  }
+  const noti = useSelector(state => state.notificationReducer);
+
+  const dispatch = useDispatch();
+
+  const { variant, duration, show, message, vertical, horizontal } = noti;
+
+  const ver = vertical ? vertical : "bottom";
+  const hor = horizontal ? horizontal : "right";
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
-    setOpen(false);
+    dispatch({
+      type: "NOTI_CLEAR",
+    });
   };
-
   return (
     <div className={classes.root}>
       <Snackbar
-        open={open}
-        autoHideDuration={duration}
+        open={show}
+        autoHideDuration={duration ? duration : 3000}
         onClose={handleClose}
-        anchorOrigin={{ vertical, horizontal }}
+        anchorOrigin={{ vertical: ver, horizontal: hor }}
       >
-        <Alert onClose={handleClose} severity={variant}>
-          {message}
-        </Alert>
+        {show ? (
+          <Alert onClose={handleClose} severity={variant}>
+            {message ? message : "success message"}
+          </Alert>
+        ) : null}
       </Snackbar>
     </div>
   );

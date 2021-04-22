@@ -5,6 +5,7 @@ import {
   getRoomUserNameStatus,
   deleteRoomData,
 } from "../../redux/RoomRedux/action";
+import { showSuccess, showError } from "../../redux/NotificationRedux/action";
 import { Container, TextField, Grid } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 import { NavBar, Loading, RoomCard } from "../../components";
@@ -53,11 +54,11 @@ class Profile extends Component {
         }
       } else {
         isMounted = false;
-        alert("Invalid User Name !");
+        this.props.showError("Invalid User Name !");
         this.props.history.replace("/login");
       }
     } catch (error) {
-      console.log(error.message);
+      this.props.showError(error.message);
     } finally {
       if (isMounted) {
         this.setState({
@@ -89,11 +90,14 @@ class Profile extends Component {
     await this.props.updateUser(newUserData);
     if (!this.props.userReducer.loading) {
       if (this.props.userReducer.error) {
-        alert(this.props.userReducer.message);
+        this.props.showError(this.props.userReducer.message);
       } else {
         this.setState({
           user: newUserData,
         });
+        this.props.showSuccess(
+          `Profile updated, ${this.state.user.userName} !`
+        );
       }
     }
   };
@@ -101,12 +105,13 @@ class Profile extends Component {
     await this.props.deleteRoomData(roomID);
     if (!this.props.roomReducer.loading) {
       if (this.props.roomReducer.error) {
-        alert(this.props.roomReducer.message);
+        this.props.showError(this.props.roomReducer.message);
       } else {
         let newRooms = this.state.rooms.filter(room => room.roomID !== roomID);
         this.setState({
           rooms: newRooms,
         });
+        this.props.showSuccess(`Room data deleted !`);
       }
     }
   };
@@ -212,6 +217,8 @@ const mapDispatchToProps = dispatch => {
     getRoomUserNameStatus: data => dispatch(getRoomUserNameStatus(data)),
     updateUser: data => dispatch(updateUser(data)),
     deleteRoomData: roomID => dispatch(deleteRoomData(roomID)),
+    showSuccess: message => dispatch(showSuccess(message)),
+    showError: message => dispatch(showError(message)),
   };
 };
 

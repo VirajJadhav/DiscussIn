@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addRoom } from "../../../redux/RoomRedux/action";
 import { checkUser } from "../../../redux/UserRedux/action";
+import {
+  showSuccess,
+  showError,
+} from "../../../redux/NotificationRedux/action";
 import { NavBar, CopyModal, Footer } from "../../../components";
 import Form from "./form";
 import { verifyUser } from "../../../util";
@@ -32,7 +36,7 @@ class AddRoom extends Component {
         });
       }
     } catch (error) {
-      console.log(error.message);
+      this.props.showError(error.message);
     }
   }
   handleChange = event => {
@@ -89,19 +93,29 @@ class AddRoom extends Component {
       } else {
         await this.props.addRoom(data);
         if (!this.props.roomReducer.loading) {
-          this.setState({
-            roomID: this.props.roomReducer.payload.roomID,
-          });
-          this.handleCopyModal();
+          if (this.props.roomReducer.error) {
+            this.props.showError(this.props.roomReducer.message);
+          } else {
+            this.setState({
+              roomID: this.props.roomReducer.payload.roomID,
+            });
+            this.handleCopyModal();
+            this.props.showSuccess(`Room added !`);
+          }
         }
       }
     } else {
       await this.props.addRoom(data);
       if (!this.props.roomReducer.loading) {
-        this.setState({
-          roomID: this.props.roomReducer.payload.roomID,
-        });
-        this.handleCopyModal();
+        if (this.props.roomReducer.error) {
+          this.props.showError(this.props.roomReducer.message);
+        } else {
+          this.setState({
+            roomID: this.props.roomReducer.payload.roomID,
+          });
+          this.handleCopyModal();
+          this.props.showSuccess(`Room added !`);
+        }
       }
     }
   };
@@ -162,6 +176,8 @@ const mapDispatchToprops = dispatch => {
       dispatch({
         type: "CLEAR_STATE",
       }),
+    showSuccess: message => dispatch(showSuccess(message)),
+    showError: message => dispatch(showError(message)),
   };
 };
 

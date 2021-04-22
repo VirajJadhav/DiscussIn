@@ -10,6 +10,8 @@ import {
   Card,
   CardContent,
 } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { showError } from "../../redux/NotificationRedux/action";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -78,6 +80,8 @@ export default function ProfileCard({
   const [newLastName, setnewLastName] = useState(lastName);
   const [newEmail, setnewEmail] = useState(email);
 
+  const dispatch = useDispatch();
+
   const [newPassword, setnewPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
 
@@ -86,7 +90,7 @@ export default function ProfileCard({
     event.persist();
     if (resetPassOpen) {
       if (newPassword !== confPassword) {
-        alert("Please check your passwords !");
+        dispatch(showError(`Please check your passwords !`));
         return;
       }
     }

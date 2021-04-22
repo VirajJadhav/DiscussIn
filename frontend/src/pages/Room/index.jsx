@@ -11,6 +11,11 @@ import {
 import RoomLayout from "./Layout";
 import { getRoom } from "../../redux/RoomRedux/action";
 import {
+  showSuccess,
+  showError,
+  showInfo,
+} from "../../redux/NotificationRedux/action";
+import {
   saveMessageChat,
   getSavedMessages,
   clearChatMessages,
@@ -137,7 +142,7 @@ class Room extends Component {
             await this.props.getSavedMessages(roomID);
             if (!this.props.messageReducer.loading) {
               if (this.props.messageReducer.error) {
-                alert(this.props.messageReducer.message);
+                this.props.showError(this.props.messageReducer.message);
               } else {
                 let prevMessages = this.props.messageReducer.payload;
                 prevMessages.sort((a, b) =>
@@ -150,7 +155,7 @@ class Room extends Component {
             }
           }
         } catch (error) {
-          console.log(error.message);
+          this.props.showError(error.message);
         }
 
         this.socketIO = io.connect(global.config.socketURL);
@@ -364,7 +369,7 @@ class Room extends Component {
   };
 
   handleCopy = () => {
-    alert("Room ID copied");
+    this.props.showInfo("Room ID copied");
     this.handleCopyModal();
   };
 
@@ -379,9 +384,9 @@ class Room extends Component {
     await this.props.saveMessageChat(messageList);
     if (!this.props.messageReducer.loading) {
       if (this.props.messageReducer.error) {
-        alert(this.props.messageReducer.message);
+        this.props.showError(this.props.messageReducer.message);
       } else {
-        alert("chat saved");
+        this.props.showSuccess("Chat Saved !");
       }
     }
   };
@@ -390,12 +395,12 @@ class Room extends Component {
     await this.props.clearChatMessages(this.state.roomData.roomID);
     if (!this.props.messageReducer.loading) {
       if (this.props.messageReducer.error) {
-        alert(this.props.messageReducer.message);
+        this.props.showError(this.props.messageReducer.message);
       } else {
         this.setState({
           messageList: [],
         });
-        alert("chat cleared");
+        this.props.showSuccess("Chat Cleared !");
       }
     }
   };
@@ -570,6 +575,9 @@ const mapDispatchToProps = dispatch => {
     saveMessageChat: messageList => dispatch(saveMessageChat(messageList)),
     getSavedMessages: roomID => dispatch(getSavedMessages(roomID)),
     clearChatMessages: roomID => dispatch(clearChatMessages(roomID)),
+    showSuccess: message => dispatch(showSuccess(message)),
+    showError: message => dispatch(showError(message)),
+    showInfo: message => dispatch(showInfo(message)),
   };
 };
 

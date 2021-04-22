@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { register } from "../../../redux/AuthRedux/action";
+import {
+  showSuccess,
+  showError,
+} from "../../../redux/NotificationRedux/action";
 import { NavBar, FormBackground, Footer } from "../../../components";
 import Form from "./form";
 
@@ -36,7 +40,7 @@ class SignUp extends Component {
     } = this.state;
 
     if (password !== confPassword) {
-      alert("Passwords don't match !");
+      this.props.showError("Passwords don't match !");
       return;
     }
 
@@ -52,8 +56,9 @@ class SignUp extends Component {
 
     if (!this.props.authReducer.loading) {
       if (this.props.authReducer.error) {
-        alert(this.props.authReducer.message);
+        this.props.showError(this.props.authReducer.message);
       } else {
+        this.props.showSuccess(`${userName}, You are registered !`);
         this.props.history.push("/login");
       }
     }
@@ -97,6 +102,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     register: data => dispatch(register(data)),
+    showSuccess: message => dispatch(showSuccess(message)),
+    showError: message => dispatch(showError(message)),
   };
 };
 

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getRoom, checkRoomUser } from "../../../redux/RoomRedux/action";
+import { showError } from "../../../redux/NotificationRedux/action";
 import { login } from "../../../redux/AuthRedux/action";
 import { NavBar, Footer } from "../../../components";
 import Form from "./form";
@@ -30,7 +31,7 @@ class JoinRoom extends Component {
     if (userName === "" && roomReducer.payload === "") {
       await this.props.getRoom(roomID);
       if (!this.props.roomReducer.loading && this.props.roomReducer.error) {
-        alert(this.props.roomReducer.message);
+        this.props.showError(this.props.roomReducer.message);
       } else {
         this.props.history.push(`/join/${roomID}`);
       }
@@ -42,7 +43,7 @@ class JoinRoom extends Component {
       await this.props.checkRoomUser(data);
       if (!this.props.roomReducer.loading) {
         if (this.props.roomReducer.error) {
-          alert(this.props.roomReducer.message);
+          this.props.showError(this.props.roomReducer.message);
         } else {
           const authData = {
             userName,
@@ -51,7 +52,7 @@ class JoinRoom extends Component {
           await this.props.login(authData);
           if (!this.props.authReducer.loading) {
             if (this.props.authReducer.error) {
-              alert(this.props.authReducer.message);
+              this.props.showError(this.props.authReducer.message);
             } else {
               this.props.history.push(`/join/${roomID}`);
             }
@@ -94,6 +95,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "CLEAR_STATE",
       }),
+    showError: message => dispatch(showError(message)),
   };
 };
 
