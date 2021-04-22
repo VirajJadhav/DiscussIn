@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addRoom } from "../../../redux/RoomRedux/action";
 import { checkUser } from "../../../redux/UserRedux/action";
-import { NavBar, CopyModal } from "../../../components";
+import { NavBar, CopyModal, Footer } from "../../../components";
 import Form from "./form";
 import { verifyUser } from "../../../util";
 
@@ -140,6 +140,7 @@ class AddRoom extends Component {
           onSubmit={this.onSubmit}
           handleChange={this.handleChange}
         />
+        <Footer />
       </div>
     );
   }

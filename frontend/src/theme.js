@@ -42,6 +42,9 @@ const theme = createMuiTheme({
     silverGrey: {
       main: "rgba(215, 218, 218, 0.7)",
     },
+    darkGrey: {
+      main: "#9D9D9D",
+    },
   },
   props: {
     MuiPaper: {

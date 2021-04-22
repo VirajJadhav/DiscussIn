@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getRoom, checkRoomUser } from "../../../redux/RoomRedux/action";
 import { login } from "../../../redux/AuthRedux/action";
-import { NavBar } from "../../../components";
+import { NavBar, Footer } from "../../../components";
 import Form from "./form";
 
 class JoinRoom extends Component {
@@ -72,6 +72,7 @@ class JoinRoom extends Component {
           handleChange={this.handleChange}
           onSubmit={this.onSubmit}
         />
+        <Footer />
       </div>
     );
   }
