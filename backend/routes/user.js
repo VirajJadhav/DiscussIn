@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const Types = require("mongoose").Types;
 const { returnHashedPassowrd } = require("../util");
 
 router.route("/verify/:userName").get(async (req, res) => {
@@ -33,15 +34,35 @@ router.route("/:userName").get(async (req, res) => {
 router.route("/update").post(async (req, res) => {
   try {
     const data = req.body;
+    const ID = Types.ObjectId(data["_id"]);
     if (data["password"] !== undefined) {
-      returnHashedPassowrd(data["password"])
-        .then(hashedPassword => {
-          data["password"] = hashedPassword;
-          User.findOneAndUpdate(data["_id"], data);
-        })
-        .catch(error => console.log(error.message));
+      const hashedPassword = await returnHashedPassowrd(data["password"]);
+      await User.updateOne(
+        {
+          _id: ID,
+        },
+        {
+          $set: {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            password: hashedPassword,
+          },
+        }
+      );
     } else {
-      await User.findOneAndUpdate(data["_id"], data);
+      await User.updateOne(
+        {
+          _id: ID,
+        },
+        {
+          $set: {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+          },
+        }
+      );
     }
     res.status(200).json({
       result: "User data updated !",

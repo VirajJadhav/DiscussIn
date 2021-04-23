@@ -79,7 +79,9 @@ class Profile extends Component {
     });
   };
   updateProfile = async data => {
-    let newUserData = { ...this.state.user };
+    let newUserData = {
+      _id: this.state.user._id,
+    };
     newUserData["firstName"] = data.firstName;
     newUserData["lastName"] = data.lastName;
     newUserData["email"] = data.email;
