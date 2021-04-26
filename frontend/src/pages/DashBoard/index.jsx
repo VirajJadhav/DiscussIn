@@ -65,56 +65,6 @@ class DashBoard extends Component {
       <div>
         <NavBar />
 
-        <Container maxWidth="md">
-          {rooms !== undefined && rooms.length === 0 ? (
-            <div
-              style={{
-                textAlign: "center",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "5rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                <Typography
-                  style={{
-                    marginRight: "1rem",
-                  }}
-                  variant="h4"
-                >
-                  {"No Rooms"}
-                </Typography>
-                <SadIcon fontSize="large" />
-              </div>
-              <Link
-                style={{
-                  textDecoration: "none",
-                }}
-                to="/addRoom"
-              >
-                Create new room ?
-              </Link>
-            </div>
-          ) : (
-            <TextField
-              name="searchValue"
-              onChange={this.handleChange}
-              fullWidth
-              placeholder="Search Title"
-              style={{
-                margin: "1rem 0 1rem 0",
-              }}
-              InputProps={{
-                endAdornment: <SearchIcon />,
-              }}
-            />
-          )}
-        </Container>
-
         {loading ? (
           <Loading
             style={{
@@ -125,28 +75,79 @@ class DashBoard extends Component {
             isloading={loading}
           />
         ) : (
-          <Container maxWidth="xl">
-            <Grid
-              container
-              direction="row"
-              justify="space-evenly"
-              alignItems="center"
-            >
-              {newRooms.map((data, index) => (
-                <Grid key={`room-${index}`} item>
-                  <RoomCard
-                    title={data.title}
-                    link={data.roomID ? `/join/${data.roomID}` : `/addRoom`}
-                    subTitle={data.subTitle}
-                    description={data.description}
-                    author={data.userName}
-                    status={data.status}
-                    date={data.createdAt || new Date()}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
+          <div>
+            <Container maxWidth="md">
+              {rooms !== undefined && rooms.length === 0 ? (
+                <div
+                  style={{
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "5rem",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        marginRight: "1rem",
+                      }}
+                      variant="h4"
+                    >
+                      {"No Rooms"}
+                    </Typography>
+                    <SadIcon fontSize="large" />
+                  </div>
+                  <Link
+                    style={{
+                      textDecoration: "none",
+                    }}
+                    to="/addRoom"
+                  >
+                    Create new room ?
+                  </Link>
+                </div>
+              ) : (
+                <TextField
+                  name="searchValue"
+                  onChange={this.handleChange}
+                  fullWidth
+                  placeholder="Search Title"
+                  style={{
+                    margin: "1rem 0 1rem 0",
+                  }}
+                  InputProps={{
+                    endAdornment: <SearchIcon />,
+                  }}
+                />
+              )}
+            </Container>
+            <Container maxWidth="xl">
+              <Grid
+                container
+                direction="row"
+                justify="space-evenly"
+                alignItems="center"
+              >
+                {newRooms.map((data, index) => (
+                  <Grid key={`room-${index}`} item>
+                    <RoomCard
+                      title={data.title}
+                      link={data.roomID ? `/join/${data.roomID}` : `/addRoom`}
+                      subTitle={data.subTitle}
+                      description={data.description}
+                      author={data.userName}
+                      status={data.status}
+                      date={data.createdAt || new Date()}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+          </div>
         )}
       </div>
     );

@@ -75,17 +75,17 @@ export default function RoomCard({
         >
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2" noWrap>
-              {title}
+              {title ? title : "-"}
             </Typography>
             <Typography gutterBottom variant="subtitle1" component="p" noWrap>
-              {subTitle}
+              {subTitle ? subTitle : "-"}
             </Typography>
             <Typography
               variant="body2"
               color="textSecondary"
               className={classes.description}
             >
-              {description}
+              {description ? description : "-"}
             </Typography>
           </CardContent>
           <CardActions className={classes.cardBottom}>

@@ -9,6 +9,7 @@ import {
 import { NavBar, CopyModal, Footer } from "../../../components";
 import Form from "./form";
 import { verifyUser } from "../../../util";
+import { AddRoomSchema } from "../../../validation";
 
 class AddRoom extends Component {
   constructor(props) {
@@ -82,14 +83,32 @@ class AddRoom extends Component {
       status,
     };
 
-    if (status === "private" && !this.state.checkedUser) {
-      await this.props.checkUser(userName);
-      if (!this.props.userReducer.payload) {
-        this.setState({
-          status: "public",
-          helperText: "You are not registered. You can add only public rooms.",
-          checkedUser: true,
-        });
+    try {
+      await AddRoomSchema.validate({ title });
+
+      if (status === "private" && !this.state.checkedUser) {
+        await this.props.checkUser(userName);
+        if (!this.props.userReducer.payload) {
+          this.setState({
+            status: "public",
+            helperText:
+              "You are not registered. You can add only public rooms.",
+            checkedUser: true,
+          });
+        } else {
+          await this.props.addRoom(data);
+          if (!this.props.roomReducer.loading) {
+            if (this.props.roomReducer.error) {
+              this.props.showError(this.props.roomReducer.message);
+            } else {
+              this.setState({
+                roomID: this.props.roomReducer.payload.roomID,
+              });
+              this.handleCopyModal();
+              this.props.showSuccess(`Room added !`);
+            }
+          }
+        }
       } else {
         await this.props.addRoom(data);
         if (!this.props.roomReducer.loading) {
@@ -104,19 +123,8 @@ class AddRoom extends Component {
           }
         }
       }
-    } else {
-      await this.props.addRoom(data);
-      if (!this.props.roomReducer.loading) {
-        if (this.props.roomReducer.error) {
-          this.props.showError(this.props.roomReducer.message);
-        } else {
-          this.setState({
-            roomID: this.props.roomReducer.payload.roomID,
-          });
-          this.handleCopyModal();
-          this.props.showSuccess(`Room added !`);
-        }
-      }
+    } catch (error) {
+      this.props.showError(error.message);
     }
   };
 
@@ -154,7 +162,7 @@ class AddRoom extends Component {
           onSubmit={this.onSubmit}
           handleChange={this.handleChange}
         />
-        <Footer height="16vh" />
+        <Footer height="14vh" />
       </div>
     );
   }

@@ -18,6 +18,7 @@ import {
 } from "@material-ui/icons";
 import { NavBar, Loading, RoomCard } from "../../components";
 import ProfileLayout from "./Layout";
+import { ProfileSchema } from "../../validation";
 
 class Profile extends Component {
   constructor(props) {
@@ -97,19 +98,27 @@ class Profile extends Component {
       newUserData["password"] = data.password;
     }
 
-    await this.props.updateUser(newUserData);
-    if (!this.props.userReducer.loading) {
-      if (this.props.userReducer.error) {
-        this.props.showError(this.props.userReducer.message);
-      } else {
-        this.setState({
-          user: newUserData,
-        });
-        this.props.showSuccess(
-          `Profile updated, ${this.state.user.userName} !`
-        );
+    try {
+      await ProfileSchema.validate(newUserData);
+
+      await this.props.updateUser(newUserData);
+      if (!this.props.userReducer.loading) {
+        if (this.props.userReducer.error) {
+          this.props.showError(this.props.userReducer.message);
+        } else {
+          this.setState({
+            user: newUserData,
+          });
+          this.props.showSuccess(
+            `Profile updated, ${this.state.user.userName} !`
+          );
+          return true;
+        }
       }
+    } catch (error) {
+      this.props.showError(error.message);
     }
+    return false;
   };
   handleDeleteProf = async () => {
     let data = {

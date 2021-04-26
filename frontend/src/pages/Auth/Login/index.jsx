@@ -7,6 +7,8 @@ import {
 } from "../../../redux/NotificationRedux/action";
 import { NavBar, FormBackground, Footer } from "../../../components";
 import Form from "./form";
+import { LoginSchema } from "../../../validation";
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -36,19 +38,27 @@ class Login extends Component {
       password,
     };
 
-    await this.props.login(data);
+    try {
+      await LoginSchema.validate(data);
+      await this.props.login(data);
 
-    if (!this.props.authReducer.loading) {
+      if (!this.props.authReducer.loading) {
+        this.setState({
+          loading: false,
+        });
+        if (this.props.authReducer.error) {
+          this.props.showError(this.props.authReducer.message);
+        } else {
+          const userName = this.props.authReducer.payload.userName;
+          this.props.showSuccess(`Welcome, ${userName}`);
+          this.props.history.push("/");
+        }
+      }
+    } catch (error) {
+      this.props.showError(error.message);
       this.setState({
         loading: false,
       });
-      if (this.props.authReducer.error) {
-        this.props.showError(this.props.authReducer.message);
-      } else {
-        const userName = this.props.authReducer.payload.userName;
-        this.props.showSuccess(`Welcome, ${userName}`);
-        this.props.history.push("/");
-      }
     }
   };
   render() {
@@ -65,7 +75,7 @@ class Login extends Component {
             onSubmit={this.onSubmit}
           />
         </FormBackground>
-        <Footer />
+        <Footer height="37vh" />
       </div>
     );
   }

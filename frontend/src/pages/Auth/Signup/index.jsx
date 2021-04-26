@@ -7,6 +7,7 @@ import {
 } from "../../../redux/NotificationRedux/action";
 import { NavBar, FormBackground, Footer } from "../../../components";
 import Form from "./form";
+import { SignupSchema } from "../../../validation";
 
 class SignUp extends Component {
   constructor(props) {
@@ -52,15 +53,23 @@ class SignUp extends Component {
       password,
     };
 
-    await this.props.register(data);
+    try {
+      await SignupSchema.validate(data);
 
-    if (!this.props.authReducer.loading) {
-      if (this.props.authReducer.error) {
-        this.props.showError(this.props.authReducer.message);
-      } else {
-        this.props.showSuccess(`${userName}, You are registered !`);
-        this.props.history.push("/login");
+      await this.props.register(data);
+      if (!this.props.authReducer.loading) {
+        if (this.props.authReducer.error) {
+          this.props.showError(this.props.authReducer.message);
+        } else {
+          this.props.showSuccess(`${userName}, You are registered !`);
+          this.props.history.push("/login");
+        }
       }
+    } catch (error) {
+      this.props.showError(error.message);
+      this.setState({
+        loading: false,
+      });
     }
   };
   render() {
@@ -87,7 +96,7 @@ class SignUp extends Component {
             onSubmit={this.onSubmit}
           />
         </FormBackground>
-        <Footer height="15vh" />
+        <Footer height="10vh" />
       </div>
     );
   }

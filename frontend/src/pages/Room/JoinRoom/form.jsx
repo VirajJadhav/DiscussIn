@@ -56,7 +56,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Form({ roomID, userName, password, onSubmit, handleChange }) {
+function Form({
+  roomID,
+  userName,
+  password,
+  isPrivate,
+  onSubmit,
+  handleChange,
+}) {
   const classes = useStyles();
 
   const state = useSelector(state => state.roomReducer);
@@ -102,7 +109,7 @@ function Form({ roomID, userName, password, onSubmit, handleChange }) {
                 autoFocus
                 autoComplete="discussin-roomID"
               />
-              {state.payload !== "" && state.payload.status === "private" ? (
+              {isPrivate ? (
                 <div>
                   <TextField
                     variant="outlined"

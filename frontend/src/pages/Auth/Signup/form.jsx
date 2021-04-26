@@ -115,6 +115,7 @@ function Form({
             label="Username"
             name="userName"
             autoComplete="discussin-userName"
+            helperText="Should be atleast 4 to 16 characters in length"
           />
           <TextField
             variant="outlined"
@@ -128,6 +129,7 @@ function Form({
             name="password"
             type="password"
             autoComplete="discussin-password"
+            helperText="Should be atleast 8 characters long and must have a lowercase alphabet, uppercase alphabet, numeric digit and a special character"
           />
           <TextField
             variant="outlined"

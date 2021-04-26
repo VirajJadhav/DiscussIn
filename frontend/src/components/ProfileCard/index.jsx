@@ -95,7 +95,7 @@ export default function ProfileCard({
   const [newPassword, setnewPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
 
-  const onSubmit = event => {
+  const onSubmit = async event => {
     event.preventDefault();
     event.persist();
     if (resetPassOpen) {
@@ -116,12 +116,13 @@ export default function ProfileCard({
       data["password"] = newPassword;
     }
 
-    updateProfile(data);
+    const updated = await updateProfile(data);
+    if (updated) {
+      setnewPassword("");
+      setConfPassword("");
 
-    setnewPassword("");
-    setConfPassword("");
-
-    handelUpdateProfOpen();
+      handelUpdateProfOpen();
+    }
   };
 
   const [updateProfOpen, setUpdateProfOpen] = useState(false);
