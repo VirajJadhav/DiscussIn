@@ -50,8 +50,11 @@ export const SignupSchema = yup.object().shape({
 export const AddRoomSchema = yup.object().shape({
   title: yup
     .string()
-    .matches(onlyLetters, "Title must contain only alphabets !")
     .required("Room title is required !"),
+  // title: yup
+  //   .string()
+  //   .matches(onlyLetters, "Title must contain only alphabets !")
+  //   .required("Room title is required !"),
 });
 
 export const ProfileSchema = yup.object().shape({
