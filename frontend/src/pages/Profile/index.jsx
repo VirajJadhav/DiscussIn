@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getUserData, updateUser } from "../../redux/UserRedux/action";
+import {
+  getUserData,
+  updateUser,
+  deleteUser,
+} from "../../redux/UserRedux/action";
 import {
   getRoomUserNameStatus,
   deleteRoomData,
@@ -103,6 +107,24 @@ class Profile extends Component {
       }
     }
   };
+  handleDeleteProf = async () => {
+    let data = {
+      userName: this.state.user.userName,
+    };
+    await this.props.deleteUser(data);
+    if (!this.props.userReducer.loading) {
+      if (this.props.userReducer.error) {
+        this.props.showError(this.props.userReducer.message);
+      } else {
+        this.props.showSuccess(`Account data deleted !`);
+        const token = localStorage.getItem("tokendiscussin");
+        if (token) {
+          localStorage.removeItem("tokendiscussin");
+        }
+        window.location.href = "/login";
+      }
+    }
+  };
   deleteRoom = async roomID => {
     await this.props.deleteRoomData(roomID);
     if (!this.props.roomReducer.loading) {
@@ -141,6 +163,7 @@ class Profile extends Component {
             userData={user}
             handleDialog={this.handleDialog}
             updateProfile={this.updateProfile}
+            handleDeleteProf={this.handleDeleteProf}
           >
             {roomLoading ? (
               <Loading
@@ -221,6 +244,7 @@ const mapDispatchToProps = dispatch => {
     deleteRoomData: roomID => dispatch(deleteRoomData(roomID)),
     showSuccess: message => dispatch(showSuccess(message)),
     showError: message => dispatch(showError(message)),
+    deleteUser: data => dispatch(deleteUser(data)),
   };
 };
 

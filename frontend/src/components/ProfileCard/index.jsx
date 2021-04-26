@@ -10,6 +10,7 @@ import {
   Card,
   CardContent,
 } from "@material-ui/core";
+import { Edit as EditIcon, Delete as DeleteIcon } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
 import { showError } from "../../redux/NotificationRedux/action";
 
@@ -66,6 +67,14 @@ const useStyles = makeStyles(theme => ({
     margin: "1rem 0 0.5rem 0",
     cursor: "pointer",
   },
+  delProfile: {
+    margin: theme.spacing(2, 0, 2),
+    backgroundColor: theme.palette.error.light,
+    color: "white",
+    "&:hover": {
+      color: "black",
+    },
+  },
 }));
 
 export default function ProfileCard({
@@ -74,6 +83,7 @@ export default function ProfileCard({
   lastName,
   email,
   updateProfile,
+  handleDeleteProf,
 }) {
   const classes = useStyles();
   const [newFirstName, setnewFirstName] = useState(firstName);
@@ -133,7 +143,7 @@ export default function ProfileCard({
         <Container component="main" maxWidth="xs">
           <div className={classes.paper}>
             <Avatar className={classes.avatar} />
-            <Grid item xs={12}>
+            <Grid item xs={10}>
               <Typography className={classes.userName} variant="h6" noWrap>
                 {userName}
               </Typography>
@@ -205,8 +215,18 @@ export default function ProfileCard({
                 variant="contained"
                 color="secondary"
                 className={classes.submit}
+                endIcon={<EditIcon />}
               >
-                Edit Profile
+                Edit
+              </Button>
+              <Button
+                onClick={handleDeleteProf}
+                fullWidth
+                variant="contained"
+                className={classes.delProfile}
+                endIcon={<DeleteIcon />}
+              >
+                Delete
               </Button>
             </div>
             <form

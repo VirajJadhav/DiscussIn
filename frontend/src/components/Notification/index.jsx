@@ -41,7 +41,7 @@ export default function Notification() {
     <div className={classes.root}>
       <Snackbar
         open={show}
-        autoHideDuration={duration ? duration : 3000}
+        autoHideDuration={duration ? duration : 4000}
         onClose={handleClose}
         anchorOrigin={{ vertical: ver, horizontal: hor }}
       >

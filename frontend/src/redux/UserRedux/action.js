@@ -56,3 +56,23 @@ export const updateUser = data => async dispatch => {
     });
   }
 };
+
+export const deleteUser = data => async dispatch => {
+  dispatch({
+    type: USER_REQUEST,
+  });
+  try {
+    const response = await axios.delete(
+      `${backendURL}/user/delete/${data.userName}`
+    );
+    dispatch({
+      type: USER_SUCCESS,
+      payload: response.data.result,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_FAILURE,
+      message: error.response ? error.response.data.result : error.message,
+    });
+  }
+};

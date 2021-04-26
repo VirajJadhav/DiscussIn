@@ -79,6 +79,7 @@ export default function ProfileLayout({
   userData,
   handleDialog,
   updateProfile,
+  handleDeleteProf,
 }) {
   const classes = useStyles();
 
@@ -118,6 +119,7 @@ export default function ProfileLayout({
               lastName={userData.lastName ? userData.lastName : ""}
               email={userData.email ? userData.email : ""}
               updateProfile={updateProfile}
+              handleDeleteProf={handleDeleteProf}
             />
           </div>
         </div>
