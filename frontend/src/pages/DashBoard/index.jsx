@@ -1,8 +1,12 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { NavBar, RoomCard, Loading } from "../../components";
-import { Container, Grid, TextField } from "@material-ui/core";
-import { Search as SearchIcon } from "@material-ui/icons";
+import { Container, Grid, TextField, Typography } from "@material-ui/core";
+import {
+  Search as SearchIcon,
+  SentimentVeryDissatisfied as SadIcon,
+} from "@material-ui/icons";
 import { showInfo, showError } from "../../redux/NotificationRedux/action";
 import { getRoomByStatus } from "../../redux/RoomRedux/action";
 import io from "socket.io-client";
@@ -62,18 +66,53 @@ class DashBoard extends Component {
         <NavBar />
 
         <Container maxWidth="md">
-          <TextField
-            name="searchValue"
-            onChange={this.handleChange}
-            fullWidth
-            placeholder="Search Title"
-            style={{
-              margin: "1rem 0 1rem 0",
-            }}
-            InputProps={{
-              endAdornment: <SearchIcon />,
-            }}
-          />
+          {rooms !== undefined && rooms.length === 0 ? (
+            <div
+              style={{
+                textAlign: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "5rem",
+                  marginBottom: "1rem",
+                }}
+              >
+                <Typography
+                  style={{
+                    marginRight: "1rem",
+                  }}
+                  variant="h4"
+                >
+                  {"No Rooms"}
+                </Typography>
+                <SadIcon fontSize="large" />
+              </div>
+              <Link
+                style={{
+                  textDecoration: "none",
+                }}
+                to="/addRoom"
+              >
+                Create new room ?
+              </Link>
+            </div>
+          ) : (
+            <TextField
+              name="searchValue"
+              onChange={this.handleChange}
+              fullWidth
+              placeholder="Search Title"
+              style={{
+                margin: "1rem 0 1rem 0",
+              }}
+              InputProps={{
+                endAdornment: <SearchIcon />,
+              }}
+            />
+          )}
         </Container>
 
         {loading ? (
