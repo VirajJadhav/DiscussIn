@@ -80,6 +80,11 @@ class DashBoard extends Component {
               {rooms !== undefined && rooms.length === 0 ? (
                 <div
                   style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "38%",
+                    WebkitTransform: "translate(-50%, -50%)",
+                    transform: "translate(-50%, -50%)",
                     textAlign: "center",
                   }}
                 >
