@@ -316,6 +316,12 @@ class Room extends Component {
     if (this.state.message === "") {
       return;
     }
+    if (this.state.message.length > 500) {
+      this.props.showInfo(
+        `Message length is ${this.state.message.length}. Should be less than 500 characters !`
+      );
+      return;
+    }
     if (
       (event.type === "keydown" && event.keyCode === 13) ||
       event.type === "click"

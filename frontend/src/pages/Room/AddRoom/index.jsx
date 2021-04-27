@@ -162,7 +162,7 @@ class AddRoom extends Component {
           onSubmit={this.onSubmit}
           handleChange={this.handleChange}
         />
-        <Footer height="14vh" />
+        <Footer height="12vh" />
       </div>
     );
   }

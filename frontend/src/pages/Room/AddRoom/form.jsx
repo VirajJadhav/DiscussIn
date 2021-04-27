@@ -124,6 +124,7 @@ function Form({
                 label="Title"
                 name="title"
                 autoComplete="discussin-title"
+                helperText="Should be from 1 - 10 characters in length"
               />
               <TextField
                 variant="outlined"
@@ -135,6 +136,7 @@ function Form({
                 label="Subtitle"
                 name="subTitle"
                 autoComplete="discussin-subTitle"
+                helperText="Should be from 1 - 20 characters in length"
               />
               <TextField
                 style={{

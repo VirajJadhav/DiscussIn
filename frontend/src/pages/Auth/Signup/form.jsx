@@ -75,6 +75,7 @@ function Form({
                 name="firstName"
                 autoComplete="discussin-firstName"
                 autoFocus
+                helperText="Should be from 1 - 15 characters in length"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -89,6 +90,7 @@ function Form({
                 label="Last Name"
                 name="lastName"
                 autoComplete="discussin-lastName"
+                helperText="Should be from 1 - 15 characters in length"
               />
             </Grid>
           </Grid>
@@ -129,6 +131,7 @@ function Form({
             name="password"
             type="password"
             autoComplete="discussin-password"
+            // helperText="Should be from 8 - 30 characters in length"
             helperText="Should be atleast 8 characters long and must have a lowercase alphabet, uppercase alphabet, numeric digit and a special character"
           />
           <TextField

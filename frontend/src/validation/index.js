@@ -22,10 +22,14 @@ export const LoginSchema = yup.object().shape({
 export const SignupSchema = yup.object().shape({
   firstName: yup
     .string()
+    .min(1, "First name should contain atleast a single character !")
+    .max(15, "First name should be less than 15 characters")
     .matches(onlyLetters, "Please enter only valid alphabets as first name")
     .required("Firstname is required"),
   lastName: yup
     .string()
+    .min(1, "Last name should contain atleast a single character !")
+    .max(15, "Last name should be less than 15 characters")
     .matches(onlyLetters, "Please enter only valid alphabets as last name")
     .required("Lastname is required"),
   email: yup
@@ -40,6 +44,7 @@ export const SignupSchema = yup.object().shape({
   password: yup
     .string()
     .min(8, "Password is too short, must be atleast 8 characters !")
+    .max(30, "Password should be less than 30 characters !")
     .matches(lowerCase, "Password must contain a single lowercase character !")
     .matches(upperCase, "Password must contain a single uppercase character !")
     .matches(numberRegex, "Password must contain a single numeric digit !")
@@ -50,20 +55,25 @@ export const SignupSchema = yup.object().shape({
 export const AddRoomSchema = yup.object().shape({
   title: yup
     .string()
+    .min(1, "Title should contain atleast a single character !")
+    .max(10, "Title should be less than 10 characters")
     .required("Room title is required !"),
-  // title: yup
-  //   .string()
-  //   .matches(onlyLetters, "Title must contain only alphabets !")
-  //   .required("Room title is required !"),
+  subTitle: yup
+    .string()
+    .max(20, "Sub title should be less than 20 characters !"),
 });
 
 export const ProfileSchema = yup.object().shape({
   firstName: yup
     .string()
+    .min(1, "First name should contain atleast a single character !")
+    .max(15, "First name should be less than 15 characters")
     .matches(onlyLetters, "Please enter only valid alphabets as first name")
     .required("Firstname is required"),
   lastName: yup
     .string()
+    .min(1, "Last name should contain atleast a single character !")
+    .max(15, "Last name should be less than 15 characters")
     .matches(onlyLetters, "Please enter only valid alphabets as last name")
     .required("Lastname is required"),
   email: yup
@@ -73,6 +83,7 @@ export const ProfileSchema = yup.object().shape({
   password: yup
     .string()
     .min(8, "Password is too short, must be atleast 8 characters !")
+    .max(30, "Password should be less than 30 characters !")
     .matches(lowerCase, "Password must contain a single lowercase character !")
     .matches(upperCase, "Password must contain a single uppercase character !")
     .matches(numberRegex, "Password must contain a single numeric digit !")
