@@ -9,6 +9,7 @@
     </h3>
   </p>
   
+  <hr />
   
 <p align="center">
   <img alt="MERN Stack" src="https://img.shields.io/badge/TechStack-MERN-brightgreen">
@@ -39,7 +40,7 @@ DiscussIn helps people to initiate, participate and contribute their views on an
 -   Share room invites and Join other rooms
 -   No registration required and easy to use
 
-## Built with
+## 🛠️ Built with
 
 -   ReactJS
 -   Express
