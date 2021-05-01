@@ -179,6 +179,9 @@ class Room extends Component {
             userName: guestUser,
             status: isPrivate ? "private" : "public",
           };
+          this.setState({
+            guestName: guestUser,
+          });
           this.socketIO.emit("join-room", data);
         } else {
           isMounted = false;
@@ -191,7 +194,7 @@ class Room extends Component {
         this.initSocketListeners();
       }
     } catch (error) {
-      console.log(error.message);
+      this.props.showError(error.message);
     } finally {
       if (isMounted) {
         this.setState({
@@ -210,7 +213,7 @@ class Room extends Component {
         this.socketIO.close();
       }
     } catch (error) {
-      console.log(error.message);
+      this.props.showError(error.message);
     }
   }
   initSocketListeners = () => {
@@ -293,7 +296,7 @@ class Room extends Component {
   };
   handleFormDialog = () => {
     if (this.state.guestName === "") {
-      alert("Please provide a guest name");
+      this.props.showError("Please provide a guest name !");
       return;
     }
     this.setState({
@@ -333,14 +336,18 @@ class Room extends Component {
         position: "right",
         message: this.state.message,
         messageDate,
-        userName: this.state.userName,
+        userName: this.state.userIsValid
+          ? this.state.userName
+          : this.state.guestName,
       });
       this.socketIO.emit("room-chat-message", {
         roomID: this.state.roomData.roomID,
         message: this.state.message,
         position: "left",
         messageDate,
-        userName: this.state.userName,
+        userName: this.state.userIsValid
+          ? this.state.userName
+          : this.state.guestName,
       });
       this.setState({
         messageList: prevList,

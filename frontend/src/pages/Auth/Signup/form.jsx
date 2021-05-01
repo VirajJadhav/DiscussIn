@@ -131,8 +131,8 @@ function Form({
             name="password"
             type="password"
             autoComplete="discussin-password"
-            // helperText="Should be from 8 - 30 characters in length"
-            helperText="Should be atleast 8 characters long and must have a lowercase alphabet, uppercase alphabet, numeric digit and a special character"
+            helperText="Should be from 8 - 30 characters in length"
+            // helperText="Should be atleast 8 characters long and must have a lowercase alphabet, uppercase alphabet, numeric digit and a special character"
           />
           <TextField
             variant="outlined"
