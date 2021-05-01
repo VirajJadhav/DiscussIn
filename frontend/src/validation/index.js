@@ -2,10 +2,10 @@ import * as yup from "yup";
 
 let onlyLetters = /(^[a-zA-Z]+$)/;
 
-let lowerCase = /(?=.*[a-z])/;
-let upperCase = /(?=.*[A-Z])/;
-let numberRegex = /(?=.*[0-9])/;
-let specialChar = /(?=.*[!@#$%^&*])/;
+// let lowerCase = /(?=.*[a-z])/;
+// let upperCase = /(?=.*[A-Z])/;
+// let numberRegex = /(?=.*[0-9])/;
+// let specialChar = /(?=.*[!@#$%^&*])/;
 
 export const LoginSchema = yup.object().shape({
   userName: yup
@@ -45,10 +45,10 @@ export const SignupSchema = yup.object().shape({
     .string()
     .min(8, "Password is too short, must be atleast 8 characters !")
     .max(30, "Password should be less than 30 characters !")
-    .matches(lowerCase, "Password must contain a single lowercase character !")
-    .matches(upperCase, "Password must contain a single uppercase character !")
-    .matches(numberRegex, "Password must contain a single numeric digit !")
-    .matches(specialChar, "Password must contain a single special character !")
+    // .matches(lowerCase, "Password must contain a single lowercase character !")
+    // .matches(upperCase, "Password must contain a single uppercase character !")
+    // .matches(numberRegex, "Password must contain a single numeric digit !")
+    // .matches(specialChar, "Password must contain a single special character !")
     .required("Password is required"),
 });
 
@@ -83,9 +83,9 @@ export const ProfileSchema = yup.object().shape({
   password: yup
     .string()
     .min(8, "Password is too short, must be atleast 8 characters !")
-    .max(30, "Password should be less than 30 characters !")
-    .matches(lowerCase, "Password must contain a single lowercase character !")
-    .matches(upperCase, "Password must contain a single uppercase character !")
-    .matches(numberRegex, "Password must contain a single numeric digit !")
-    .matches(specialChar, "Password must contain a single special character !"),
+    .max(30, "Password should be less than 30 characters !"),
+  // .matches(lowerCase, "Password must contain a single lowercase character !")
+  // .matches(upperCase, "Password must contain a single uppercase character !")
+  // .matches(numberRegex, "Password must contain a single numeric digit !")
+  // .matches(specialChar, "Password must contain a single special character !"),
 });
