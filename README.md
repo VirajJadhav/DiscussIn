@@ -36,10 +36,10 @@ DiscussIn helps people to initiate, participate and contribute their views on an
 -   Real time Discussions 💬
 -   Collaborative Rich Text Editor 📝
 -   Emoji Support 😃
--   Auto room deletion for public rooms (after certain amount of room inactivity)
+-   Auto room deletion for public rooms (after certain amount of room inactivity) ✨
 -   Public and Private rooms 🚪
--   Share room invites and Join other rooms
--   No registration required and easy to use 
+-   Share room invites and Join other rooms 👥
+-   No registration required and easy to use 💥
 
 ## 🛠️ Built with
 
