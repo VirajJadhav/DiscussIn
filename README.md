@@ -33,18 +33,19 @@ DiscussIn helps people to initiate, participate and contribute their views on an
 
 ## 🌟 Features
 
--   Real time Discussions
--   Collaborative rict text editor
+-   Real time Discussions 💬
+-   Collaborative Rich Text Editor 📝
+-   Emoji Support 😃
 -   Auto room deletion for public rooms (after certain amount of room inactivity)
--   Public and Private rooms
+-   Public and Private rooms 🚪
 -   Share room invites and Join other rooms
--   No registration required and easy to use
+-   No registration required and easy to use 
 
 ## 🛠️ Built with
 
--   ReactJS
--   Express
--   NodeJS
--   Socket.io
--   MongoDB (Database)
--   Material UI
+-   <a href="https://reactjs.org/" target="_blank">ReactJS</a>
+-   <a href="https://expressjs.com/" target="_blank">Express<a>
+-   <a href="https://nodejs.org/en/" target="_blank">NodeJS</a>
+-   <a href="https://socket.io/" target="_blank">Socket.io</a>
+-   <a href="https://www.mongodb.com/" target="_blank">MongoDB</a>
+-   <a href="https://material-ui.com/" target="_blank">Material UI</a>
