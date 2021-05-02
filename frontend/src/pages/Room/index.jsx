@@ -310,10 +310,16 @@ class Room extends Component {
     sessionStorage.setItem("guestdiscussin", this.state.guestName);
     this.socketIO.emit("join-room", data);
   };
-  handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+  handleChange = (event, emojiObject) => {
+    if (emojiObject !== undefined) {
+      this.setState({
+        message: this.state.message + emojiObject.emoji,
+      });
+    } else {
+      this.setState({
+        [event.target.name]: event.target.value,
+      });
+    }
   };
   handleSendMessage = event => {
     if (this.state.message === "") {
@@ -413,7 +419,7 @@ class Room extends Component {
         this.setState({
           messageList: [],
         });
-        this.props.showSuccess("Chat Cleared !");
+        this.props.showSuccess("Saved Chat Cleared !");
       }
     }
   };

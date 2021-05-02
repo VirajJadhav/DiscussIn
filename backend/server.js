@@ -2,9 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const connectDatabase = require("./config/database");
 const connectSocket = require("./socket");
-// require("dotenv").config();
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 const routes = ["auth", "room", "user", "message"];
 

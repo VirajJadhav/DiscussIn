@@ -160,7 +160,6 @@ export default function ProfileLayout({
       <main className={classes.content}>
         <Typography variant="h4">{"Private Rooms"}</Typography>
         <Divider />
-        {/* <Toolbar /> */}
         {children}
       </main>
     </div>

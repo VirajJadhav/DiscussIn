@@ -28,9 +28,11 @@ import {
   Clear as ClearIcon,
   Group as GroupIcon,
   Assignment as DocumentIcon,
+  Save as SaveIcon,
+  EmojiEmotions,
 } from "@material-ui/icons";
-import SaveIcon from "@material-ui/icons/Save";
 import { useHistory } from "react-router-dom";
+import Picker from "emoji-picker-react";
 
 const drawerWidth = 260;
 
@@ -74,6 +76,14 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down("sm")]: {
       left: 0,
     },
+  },
+  pickerSection: {
+    position: "fixed",
+    top: "auto",
+    left: "auto",
+    right: 10,
+    bottom: 85,
+    padding: "0.7rem 0 0.7rem 0",
   },
   sendButton: {
     // color: theme.palette.darkSlateBlue.main,
@@ -122,6 +132,8 @@ export default function RoomLayout({
 
   const [anchorChatEl, setAnchorChatEl] = React.useState(null);
 
+  const [ pickerVisible, setPickerVisible ] = useState(false);
+
   const goBack = () => {
     history.push("/");
   };
@@ -137,6 +149,10 @@ export default function RoomLayout({
   const handleChatMenuClose = () => {
     setAnchorChatEl(null);
   };
+
+  const handlePicker = () => {
+    setPickerVisible(prevState => !prevState);
+  }
 
   return (
     <div className={classes.root}>
@@ -367,6 +383,11 @@ export default function RoomLayout({
       <main className={classes.content}>
         <Toolbar />
         {children}
+        <div style={{
+            display: pickerVisible ? "initial" : "none"
+          }}  className={classes.pickerSection}>
+          <Picker onEmojiClick={handleChange} />
+        </div>
         <div className={classes.textSection}>
           <Toolbar>
             <div
@@ -380,7 +401,7 @@ export default function RoomLayout({
               <Tooltip title="Notepad">
                 <DocumentIcon
                   style={{
-                    color: "orangered",
+                    color: "#496b71",
                   }}
                 />
               </Tooltip>
@@ -388,6 +409,7 @@ export default function RoomLayout({
             <TextField
               style={{
                 backgroundColor: "white",
+                marginRight: "1rem ",
               }}
               onKeyDown={event => handleSendMessage(event)}
               value={message}
@@ -399,6 +421,21 @@ export default function RoomLayout({
               variant="filled"
               fullWidth
             />
+            <div
+              style={{
+                marginRight: "0.5rem",
+                cursor: "pointer",
+              }}
+              onClick={handlePicker}
+            >
+              <Tooltip title="Emojis">
+                <EmojiEmotions
+                  style={{
+                    color: "#8b4513ba",
+                  }}
+                />
+              </Tooltip>
+            </div>
             <IconButton onClick={event => handleSendMessage(event)} edge="end">
               <SendIcon className={classes.sendButton} />
             </IconButton>

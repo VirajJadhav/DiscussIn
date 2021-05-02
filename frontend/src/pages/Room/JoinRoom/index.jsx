@@ -44,30 +44,18 @@ class JoinRoom extends Component {
         this.props.history.push(`/join/${roomID}`);
       }
     } else {
-      const data = {
-        roomID,
-        userName,
-      };
       try {
         await LoginSchema.validate({ userName, password });
-
-        await this.props.checkRoomUser(data);
-        if (!this.props.roomReducer.loading) {
-          if (this.props.roomReducer.error) {
-            this.props.showError(this.props.roomReducer.message);
+        const authData = {
+          userName,
+          password,
+        };
+        await this.props.login(authData);
+        if (!this.props.authReducer.loading) {
+          if (this.props.authReducer.error) {
+            this.props.showError(this.props.authReducer.message);
           } else {
-            const authData = {
-              userName,
-              password,
-            };
-            await this.props.login(authData);
-            if (!this.props.authReducer.loading) {
-              if (this.props.authReducer.error) {
-                this.props.showError(this.props.authReducer.message);
-              } else {
-                this.props.history.push(`/join/${roomID}`);
-              }
-            }
+            this.props.history.push(`/join/${roomID}`);
           }
         }
       } catch (error) {

@@ -2,5 +2,5 @@
     "mongoURI": "mongodb://localhost:27017",
     "mongoAtlas": "",
     "backendURL": "http://localhost:5000/api",
-    "jwtDiscussInSecret": "jwtsecret"
+    "jwtDiscussInSecret": "disZUecussRniIngdjwtb_7SecretdXAswoo7l98tC"
 }
