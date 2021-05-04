@@ -6,9 +6,15 @@ import {
   Profile,
   AddRoom,
   JoinRoom,
+  NotFound,
 } from "./pages";
 import { Notification } from "./components";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
@@ -43,6 +49,12 @@ function App() {
             path="/profile/:userName"
             component={props => <Profile {...props} />}
           />
+          <Route
+            exact
+            path="/notFound"
+            render={props => <NotFound {...props} />}
+          />
+          <Redirect from="*" to="/notFound" />
         </Switch>
       </Router>
     </ThemeProvider>

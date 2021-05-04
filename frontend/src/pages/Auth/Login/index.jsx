@@ -75,7 +75,7 @@ class Login extends Component {
             onSubmit={this.onSubmit}
           />
         </FormBackground>
-        <Footer height="37vh" />
+        <Footer height="40vh" />
       </div>
     );
   }

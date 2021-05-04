@@ -76,7 +76,7 @@ class JoinRoom extends Component {
           handleChange={this.handleChange}
           onSubmit={this.onSubmit}
         />
-        {isPrivate ? <Footer height="24vh" /> : <Footer height="38vh" />}
+        {isPrivate ? <Footer height="24vh" /> : <Footer height="42vh" />}
       </div>
     );
   }

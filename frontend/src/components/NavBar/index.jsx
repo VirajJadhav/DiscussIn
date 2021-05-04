@@ -28,6 +28,7 @@ import {
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { verifyUser } from "../../util";
+import logo from "../../logoLight.png";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -148,8 +149,12 @@ export default function NavBar(props) {
             }}
             to="/"
           >
-            <Typography variant="h6">DiscussIn</Typography>
+            <Typography variant="h6">
+              DiscussIn{" "}
+              <img src={logo} height="25px" alt="DiscussIn-logo-light" />
+            </Typography>
           </Link>
+
           <div>
             <Button
               aria-controls="simple-menu"
