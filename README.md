@@ -40,6 +40,7 @@ DiscussIn helps people to initiate, participate and contribute their views on an
 -   Public and Private rooms 🚪
 -   Share room invites and Join other rooms 👥
 -   No registration required and easy to use 💥
+-   Progressive Web Application 📱
 
 ## 🛠️ Built with
 
